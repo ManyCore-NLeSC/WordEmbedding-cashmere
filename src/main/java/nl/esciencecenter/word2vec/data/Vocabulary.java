@@ -1,9 +1,7 @@
 package nl.esciencecenter.word2vec.data;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
 public class Vocabulary {
     private Integer occurrenceThreshold;
