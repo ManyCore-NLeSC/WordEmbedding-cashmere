@@ -1,5 +1,6 @@
 package nl.esciencecenter.word2vec.data;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -62,10 +63,15 @@ public class Vocabulary {
     }
 
     public void reduce() {
+        ArrayList<String> wordsToRemove = new ArrayList<>();
+
         for ( Word word : words.values() ) {
             if ( word.getOccurrences() <= occurrenceThreshold ) {
-                removeWord(word.getWord());
+                wordsToRemove.add(word.getWord());
             }
+        }
+        for ( String word : wordsToRemove ) {
+            words.remove(word);
         }
         occurrenceThreshold++;
     }
