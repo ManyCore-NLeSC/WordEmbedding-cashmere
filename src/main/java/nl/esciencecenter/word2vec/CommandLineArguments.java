@@ -11,6 +11,8 @@ public class CommandLineArguments {
     private String outVocabularyFilename = "";
     @Parameter(names = {"-load_vocabulary", "-read-vocab"}, description = "File to load a previously learned vocabulary from.")
     private String inVocabularyFilename = "";
+    @Parameter(names = {"-vocabulary_max_size"}, description = "Maximum number of words in the vocabulary.")
+    private Integer vocabularyMaxSize = 1000;
 
     public String getTrainingFilename() {
         return trainingFilename;
@@ -26,5 +28,9 @@ public class CommandLineArguments {
 
     public String getInVocabularyFilename() {
         return inVocabularyFilename;
+    }
+
+    public Integer getVocabularyMaxSize() {
+        return vocabularyMaxSize;
     }
 }
