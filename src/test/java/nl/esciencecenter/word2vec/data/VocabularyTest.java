@@ -9,6 +9,14 @@ public class VocabularyTest {
     private final String stringTwo = "word";
 
     @Test
+    public void size() {
+        Vocabulary vocabularyOne = new Vocabulary();
+
+        vocabularyOne.setMaxSize(13);
+        assertEquals(13, vocabularyOne.getMaxSize().intValue());
+    }
+
+    @Test
     public void threshold() {
         Vocabulary vocabularyOne = new Vocabulary();
         Vocabulary vocabularyTwo = new Vocabulary(7);
