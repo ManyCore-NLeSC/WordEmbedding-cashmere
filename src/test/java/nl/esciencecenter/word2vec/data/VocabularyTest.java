@@ -13,7 +13,7 @@ public class VocabularyTest {
         Vocabulary vocabularyOne = new Vocabulary();
         Vocabulary vocabularyTwo = new Vocabulary(7);
 
-        assertEquals(5, vocabularyOne.getOccurrenceThreshold().intValue());
+        assertEquals(0, vocabularyOne.getOccurrenceThreshold().intValue());
         assertEquals(7, vocabularyTwo.getOccurrenceThreshold().intValue());
         vocabularyOne.setOccurrenceThreshold(14);
         assertEquals(14, vocabularyOne.getOccurrenceThreshold().intValue());

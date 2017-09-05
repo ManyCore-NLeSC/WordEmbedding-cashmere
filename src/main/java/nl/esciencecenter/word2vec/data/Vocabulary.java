@@ -8,7 +8,7 @@ public class Vocabulary {
     private HashMap<String, Word> words;
 
     public Vocabulary() {
-        occurrenceThreshold = 5;
+        occurrenceThreshold = 0;
         words = new HashMap<>();
     }
 
