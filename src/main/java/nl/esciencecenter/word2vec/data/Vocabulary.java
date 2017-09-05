@@ -21,6 +21,10 @@ public class Vocabulary {
         this.occurrenceThreshold = occurrenceThreshold;
     }
 
+    public Integer getOccurrenceThreshold() {
+        return occurrenceThreshold;
+    }
+
     public void addWord(Word word) {
         if ( words.containsKey(word.getWord()) ) {
             words.get(word.getWord()).incrementOccurrences();
