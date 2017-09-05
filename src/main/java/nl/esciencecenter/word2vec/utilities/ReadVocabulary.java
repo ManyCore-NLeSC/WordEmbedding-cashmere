@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ReadVocabulary {
 
-    public void read(BufferedReader fileReader, Vocabulary vocabulary) throws IOException {
+    public void read(Vocabulary vocabulary, BufferedReader fileReader) throws IOException {
         String line;
 
         while ( (line = fileReader.readLine()) != null ) {
