@@ -4,17 +4,28 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class Vocabulary {
+    private Integer maxSize;
     private Integer occurrenceThreshold;
     private HashMap<String, Word> words;
 
     public Vocabulary() {
+        maxSize = Integer.MAX_VALUE;
         occurrenceThreshold = 0;
         words = new HashMap<>();
     }
 
     public Vocabulary(Integer occurrenceThreshold) {
+        maxSize = Integer.MAX_VALUE;
         this.occurrenceThreshold = occurrenceThreshold;
         words = new HashMap<>();
+    }
+
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    public Integer getMaxSize() {
+        return maxSize;
     }
 
     public void setOccurrenceThreshold(Integer occurrenceThreshold) {
