@@ -12,8 +12,8 @@ public class LearnVocabulary {
     public void learn(Vocabulary vocabulary, BufferedReader fileReader) throws IOException {
         String line;
 
-        vocabulary.addWord(new Word("</s>"));
         while ( (line = fileReader.readLine()) != null ) {
+            vocabulary.addWord(new Word("</s>"));
             for ( String word : line.split("[ \t]") ) {
                 vocabulary.addWord(new Word(word));
                 if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
@@ -21,6 +21,7 @@ public class LearnVocabulary {
                 }
             }
         }
+        vocabulary.reduce();
     }
 
 }
