@@ -70,7 +70,7 @@ public class Vocabulary {
         ArrayList<String> wordsToRemove = new ArrayList<>();
 
         for ( Word word : words.values() ) {
-            if ( word.getOccurrences() <= occurrenceThreshold ) {
+            if ( word.getOccurrences() < occurrenceThreshold ) {
                 wordsToRemove.add(word.getWord());
             }
         }
