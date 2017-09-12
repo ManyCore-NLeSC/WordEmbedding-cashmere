@@ -75,7 +75,7 @@ public class Vocabulary {
             }
         }
         for ( String word : wordsToRemove ) {
-            words.remove(word);
+            removeWord(word);
         }
         occurrenceThreshold++;
     }
