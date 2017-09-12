@@ -30,6 +30,9 @@ public class Word2Vec {
             }catch ( IOException err) {
                 err.printStackTrace();
             }
+            if ( arguments.getDebug() ) {
+                System.err.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\"; the vocabulary contains " + vocabulary.getNrWords() + " words.");
+            }
         } else {
             LearnVocabulary learner = new LearnVocabulary();
             BufferedReader trainingFile;
@@ -40,6 +43,9 @@ public class Word2Vec {
                 trainingFile.close();
             } catch ( IOException err ) {
                 err.printStackTrace();
+            }
+            if ( arguments.getDebug() ) {
+                System.err.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\"; the vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         }
 
