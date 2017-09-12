@@ -13,9 +13,9 @@ public class LearnVocabulary {
         String line;
 
         while ( (line = fileReader.readLine()) != null ) {
-            vocabulary.addWord(new Word("</s>"));
+            vocabulary.addWord("</s>");
             for ( String word : line.split("[ \t]") ) {
-                vocabulary.addWord(new Word(word));
+                vocabulary.addWord(word);
                 if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
                     vocabulary.reduce();
                 }
