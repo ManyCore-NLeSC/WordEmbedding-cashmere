@@ -15,6 +15,8 @@ public class CommandLineArguments {
     private Integer vocabularyMaxSize = 30000000;
     @Parameter(names = {"-strict"}, description = "Only consider alphanumeric words, and remove punctuation.")
     private Boolean strict = false;
+    @Parameter(names = {"-debug"}, description = "Enable debug mode.")
+    private Boolean debug = false;
 
     public String getTrainingFilename() {
         return trainingFilename;
@@ -38,5 +40,9 @@ public class CommandLineArguments {
 
     public Boolean getStrict() {
         return strict;
+    }
+
+    public Boolean getDebug() {
+        return debug;
     }
 }
