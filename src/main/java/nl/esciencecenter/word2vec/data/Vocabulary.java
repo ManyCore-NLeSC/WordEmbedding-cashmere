@@ -46,6 +46,10 @@ public class Vocabulary {
         }
     }
 
+    public void addWord(String word) {
+        addWord(new Word(word));
+    }
+
     private void removeWord(String word) {
         words.remove(word);
     }
