@@ -14,6 +14,9 @@ public class LearnVocabulary {
         while ( (line = fileReader.readLine()) != null ) {
             vocabulary.addWord("</s>");
             for ( String word : line.split("[ \t]") ) {
+                if ( word.equals(" ") || word.equals("\t") ) {
+                    continue;
+                }
                 if ( strict ) {
                     word = word.replaceAll("\\W", "");
                 }
