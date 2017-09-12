@@ -9,12 +9,15 @@ import java.io.IOException;
 public class LearnVocabulary {
     private final Double fillingThreshold = 0.7;
 
-    public void learn(Vocabulary vocabulary, BufferedReader fileReader) throws IOException {
+    public void learn(Vocabulary vocabulary, BufferedReader fileReader, Boolean strict) throws IOException {
         String line;
 
         while ( (line = fileReader.readLine()) != null ) {
             vocabulary.addWord("</s>");
             for ( String word : line.split("[ \t]") ) {
+                if ( strict ) {
+                    word = word.replaceAll("\\W", "");
+                }
                 vocabulary.addWord(word);
                 if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
                     vocabulary.reduce();

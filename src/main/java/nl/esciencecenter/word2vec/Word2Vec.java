@@ -36,7 +36,7 @@ public class Word2Vec {
 
             try {
                 trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-                learner.learn(vocabulary, trainingFile);
+                learner.learn(vocabulary, trainingFile, arguments.getStrict());
                 trainingFile.close();
             } catch ( IOException err ) {
                 err.printStackTrace();

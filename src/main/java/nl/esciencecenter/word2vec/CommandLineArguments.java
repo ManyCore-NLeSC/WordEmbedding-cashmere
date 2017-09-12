@@ -13,6 +13,8 @@ public class CommandLineArguments {
     private String inVocabularyFilename = "";
     @Parameter(names = {"-vocabulary_max_size"}, description = "Maximum number of words in the vocabulary.")
     private Integer vocabularyMaxSize = 30000000;
+    @Parameter(names = {"-strict"}, description = "Only consider alphanumeric words, and remove punctuation.")
+    private Boolean strict = false;
 
     public String getTrainingFilename() {
         return trainingFilename;
@@ -32,5 +34,9 @@ public class CommandLineArguments {
 
     public Integer getVocabularyMaxSize() {
         return vocabularyMaxSize;
+    }
+
+    public Boolean getStrict() {
+        return strict;
     }
 }
