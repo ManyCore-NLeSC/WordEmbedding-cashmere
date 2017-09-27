@@ -12,9 +12,15 @@ public class Word2Vec {
 
     public static void main(String [] argv) {
         Vocabulary vocabulary;
+
         // Command line arguments parsing
         CommandLineArguments arguments = new CommandLineArguments();
-        JCommander.newBuilder().addObject(arguments).build().parse(argv);
+        JCommander commander = JCommander.newBuilder().addObject(arguments).build();
+        commander.parse(argv);
+        if ( arguments.getHelp() ) {
+            commander.usage();
+            return;
+        }
 
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());

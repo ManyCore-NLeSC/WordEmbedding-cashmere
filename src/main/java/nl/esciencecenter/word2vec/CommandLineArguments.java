@@ -3,6 +3,8 @@ package nl.esciencecenter.word2vec;
 import com.beust.jcommander.Parameter;
 
 public class CommandLineArguments {
+    @Parameter(names = {"--help", "-h"}, help = true)
+    private Boolean help = false;
     @Parameter(names = {"-training_file", "-train"}, description = "Text file containing the data to train the model.", required = true)
     private String trainingFilename = "";
     @Parameter(names = {"-occurrence_threshold", "-min-count"}, description = "Only consider words that occur more than the threshold; default is 5.")
@@ -17,6 +19,10 @@ public class CommandLineArguments {
     private Boolean strict = false;
     @Parameter(names = {"-debug"}, description = "Enable debug mode.")
     private Boolean debug = false;
+
+    public Boolean getHelp() {
+        return help;
+    }
 
     public String getTrainingFilename() {
         return trainingFilename;
