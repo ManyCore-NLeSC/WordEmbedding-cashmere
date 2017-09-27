@@ -14,11 +14,11 @@ public class LearnVocabulary {
         while ( (line = fileReader.readLine()) != null ) {
             vocabulary.addWord("</s>");
             for ( String word : line.split("[ \t]") ) {
-                if ( word.equals("") ) {
-                    continue;
-                }
                 if ( strict ) {
                     word = word.replaceAll("\\W", "");
+                }
+                if ( word.equals("") ) {
+                    continue;
                 }
                 vocabulary.addWord(word);
                 if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
