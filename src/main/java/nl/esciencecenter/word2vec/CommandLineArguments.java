@@ -3,7 +3,7 @@ package nl.esciencecenter.word2vec;
 import com.beust.jcommander.Parameter;
 
 public class CommandLineArguments {
-    @Parameter(names = {"--help", "-h"}, help = true)
+    @Parameter(names = {"-help", "-h"}, help = true)
     private Boolean help = false;
     @Parameter(names = {"-training_file", "-train"}, description = "Text file containing the data to train the model.", required = true)
     private String trainingFilename = "";
