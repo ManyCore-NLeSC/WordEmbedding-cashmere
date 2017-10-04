@@ -31,6 +31,8 @@ public class CommandLineArguments {
     private Boolean useCBOW = false;
     @Parameter(names = {"-use_position", "-pos"}, description = "Use position for model training.")
     private Boolean usePosition = false;
+    @Parameter(names = {"-vector_size", "-size"}, description = "Size of the word vectors.")
+    private Integer vectorSize = 100;
 
     public Boolean getHelp() {
         return help;
@@ -86,5 +88,9 @@ public class CommandLineArguments {
 
     public Boolean getUsePosition() {
         return usePosition;
+    }
+
+    public Integer getVectorSize() {
+        return vectorSize;
     }
 }
