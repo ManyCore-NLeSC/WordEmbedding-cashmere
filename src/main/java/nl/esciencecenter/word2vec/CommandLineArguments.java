@@ -33,6 +33,8 @@ public class CommandLineArguments {
     private Boolean usePosition = false;
     @Parameter(names = {"-vector_size", "-size"}, description = "Size of the word vectors.")
     private Integer vectorSize = 100;
+    @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words")
+    private Float samplingFactor = 0.0f;
 
     public Boolean getHelp() {
         return help;
@@ -92,5 +94,9 @@ public class CommandLineArguments {
 
     public Integer getVectorSize() {
         return vectorSize;
+    }
+
+    public Float getSamplingFactor() {
+        return samplingFactor;
     }
 }
