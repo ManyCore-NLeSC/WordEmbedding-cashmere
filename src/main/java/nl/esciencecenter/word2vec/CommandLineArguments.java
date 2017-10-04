@@ -19,6 +19,8 @@ public class CommandLineArguments {
     private Boolean strict = false;
     @Parameter(names = {"-debug"}, description = "Enable debug mode.")
     private Boolean debug = false;
+    @Parameter(names = {"-window"}, description = "Window size.")
+    private Integer window = 5;
 
     public Boolean getHelp() {
         return help;
@@ -50,5 +52,9 @@ public class CommandLineArguments {
 
     public Boolean getDebug() {
         return debug;
+    }
+
+    public Integer getWindow() {
+        return window;
     }
 }
