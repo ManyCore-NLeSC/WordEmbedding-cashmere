@@ -29,6 +29,8 @@ public class CommandLineArguments {
     private Integer negativeSamples = 0;
     @Parameter(names = {"-cbow"}, description = "Use the continuous bag of words (CBOW) model.")
     private Boolean useCBOW = false;
+    @Parameter(names = {"-use_position", "-pos"}, description = "Use position for model training.")
+    private Boolean usePosition = false;
 
     public Boolean getHelp() {
         return help;
@@ -80,5 +82,9 @@ public class CommandLineArguments {
 
     public Boolean getUseCBOW() {
         return useCBOW;
+    }
+
+    public Boolean getUsePosition() {
+        return usePosition;
     }
 }
