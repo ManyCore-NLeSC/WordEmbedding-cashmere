@@ -21,6 +21,8 @@ public class CommandLineArguments {
     private Boolean debug = false;
     @Parameter(names = {"-window"}, description = "Window size.")
     private Integer window = 5;
+    @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
+    private Boolean softmax = true;
 
     public Boolean getHelp() {
         return help;
@@ -56,5 +58,9 @@ public class CommandLineArguments {
 
     public Integer getWindow() {
         return window;
+    }
+
+    public Boolean getSoftmax() {
+        return softmax;
     }
 }
