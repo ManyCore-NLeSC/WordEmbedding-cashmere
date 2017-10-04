@@ -39,6 +39,8 @@ public class CommandLineArguments {
     private Integer classes = 0;
     @Parameter(names = {"-binary_output", "-binary"}, description = "Use binary mode for output vectors.")
     private Boolean binaryMode = false;
+    @Parameter(names = {"-store_context_vectors", "-dumpcv"}, description = "File where to store the context vectors.")
+    private String outContextVectorsFilename = "";
 
     public Boolean getHelp() {
         return help;
@@ -110,5 +112,9 @@ public class CommandLineArguments {
 
     public Boolean getBinaryMode() {
         return binaryMode;
+    }
+
+    public String getOutContextVectorsFilename() {
+        return outContextVectorsFilename;
     }
 }
