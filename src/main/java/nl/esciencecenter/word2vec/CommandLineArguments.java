@@ -37,6 +37,8 @@ public class CommandLineArguments {
     private Float samplingFactor = 0.0f;
     @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
     private Integer classes = 0;
+    @Parameter(names = {"-binary_output", "-binary"}, description = "Use binary mode for output vectors.")
+    private Boolean binaryMode = false;
 
     public Boolean getHelp() {
         return help;
@@ -104,5 +106,9 @@ public class CommandLineArguments {
 
     public Integer getClasses() {
         return classes;
+    }
+
+    public Boolean getBinaryMode() {
+        return binaryMode;
     }
 }
