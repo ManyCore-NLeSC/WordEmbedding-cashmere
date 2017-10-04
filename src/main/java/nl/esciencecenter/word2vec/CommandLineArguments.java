@@ -23,6 +23,8 @@ public class CommandLineArguments {
     private Integer window = 5;
     @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
     private Boolean softmax = true;
+    @Parameter(names = {"-learning_rate", "-alpha"}, description = "Starting learning rate.")
+    private Float alpha = 0.025f;
 
     public Boolean getHelp() {
         return help;
@@ -62,5 +64,9 @@ public class CommandLineArguments {
 
     public Boolean getSoftmax() {
         return softmax;
+    }
+
+    public Float getAlpha() {
+        return alpha;
     }
 }
