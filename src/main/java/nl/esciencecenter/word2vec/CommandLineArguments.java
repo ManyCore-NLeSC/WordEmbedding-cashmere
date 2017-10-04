@@ -35,6 +35,8 @@ public class CommandLineArguments {
     private Integer vectorSize = 100;
     @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words")
     private Float samplingFactor = 0.0f;
+    @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
+    private Integer classes = 0;
 
     public Boolean getHelp() {
         return help;
@@ -98,5 +100,9 @@ public class CommandLineArguments {
 
     public Float getSamplingFactor() {
         return samplingFactor;
+    }
+
+    public Integer getClasses() {
+        return classes;
     }
 }
