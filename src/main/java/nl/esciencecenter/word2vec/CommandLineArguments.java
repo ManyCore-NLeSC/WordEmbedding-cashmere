@@ -27,6 +27,8 @@ public class CommandLineArguments {
     private Float alpha = 0.025f;
     @Parameter(names = {"-negative_samples", "-negative"}, description = "Number of negative samples.")
     private Integer negativeSamples = 0;
+    @Parameter(names = {"-cbow"}, description = "Use the continuous bag of words (CBOW) model.")
+    private Boolean useCBOW = false;
 
     public Boolean getHelp() {
         return help;
@@ -74,5 +76,9 @@ public class CommandLineArguments {
 
     public Integer getNegativeSamples() {
         return negativeSamples;
+    }
+
+    public Boolean getUseCBOW() {
+        return useCBOW;
     }
 }
