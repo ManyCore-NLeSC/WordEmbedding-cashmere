@@ -1,24 +1,25 @@
 package nl.esciencecenter.word2vec.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class Vocabulary {
     private Integer maxSize;
     private Integer occurrenceThreshold;
     private HashMap<String, Word> words;
+    private ArrayList<String> sortedWords;
 
     public Vocabulary() {
         maxSize = Integer.MAX_VALUE;
         occurrenceThreshold = 0;
         words = new HashMap<>();
+        sortedWords = new ArrayList<>();
     }
 
     public Vocabulary(Integer occurrenceThreshold) {
         maxSize = Integer.MAX_VALUE;
         this.occurrenceThreshold = occurrenceThreshold;
         words = new HashMap<>();
+        sortedWords = new ArrayList<>();
     }
 
     public void setMaxSize(Integer maxSize) {
@@ -42,6 +43,7 @@ public class Vocabulary {
             words.get(word.getWord()).incrementOccurrences();
         } else {
             words.put(word.getWord(), word);
+            sortedWords.add(word.getWord());
             word.incrementOccurrences();
         }
     }
@@ -62,6 +64,10 @@ public class Vocabulary {
         return words.values();
     }
 
+    public ArrayList<String> getSortedWords() {
+        return sortedWords;
+    }
+
     public Integer getNrWords() {
         return words.size();
     }
@@ -78,5 +84,14 @@ public class Vocabulary {
             removeWord(word);
         }
         occurrenceThreshold++;
+    }
+
+    public void sort() {
+        Collections.sort(sortedWords, new Comparator<String>() {
+            @Override
+            public int compare(String stringOne, String stringTwo) {
+                return Integer.compare(getWord(stringOne).getOccurrences(), getWord(stringTwo).getOccurrences());
+            }
+        });
     }
 }
