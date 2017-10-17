@@ -87,11 +87,6 @@ public class Vocabulary {
     }
 
     public void sort() {
-        Collections.sort(sortedWords, new Comparator<String>() {
-            @Override
-            public int compare(String stringOne, String stringTwo) {
-                return Integer.compare(getWord(stringOne).getOccurrences(), getWord(stringTwo).getOccurrences());
-            }
-        });
+        sortedWords.sort((stringOne, stringTwo) -> Integer.compare(getWord(stringOne).getOccurrences(), getWord(stringTwo).getOccurrences()));
     }
 }
