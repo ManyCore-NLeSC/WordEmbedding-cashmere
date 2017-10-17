@@ -31,8 +31,8 @@ public class CommandLineArguments {
     private Boolean useCBOW = false;
     @Parameter(names = {"-use_position", "-pos"}, description = "Use position for model training.")
     private Boolean usePosition = false;
-    @Parameter(names = {"-vector_size", "-size"}, description = "Size of the word vectors.")
-    private Integer vectorSize = 100;
+    @Parameter(names = {"-vector_dimensions", "-size"}, description = "Dimensions of the word vectors.")
+    private Integer vectorDimensions = 100;
     @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words")
     private Float samplingFactor = 0.0f;
     @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
@@ -98,8 +98,8 @@ public class CommandLineArguments {
         return usePosition;
     }
 
-    public Integer getVectorSize() {
-        return vectorSize;
+    public Integer getVectorDimensions() {
+        return vectorDimensions;
     }
 
     public Float getSamplingFactor() {
