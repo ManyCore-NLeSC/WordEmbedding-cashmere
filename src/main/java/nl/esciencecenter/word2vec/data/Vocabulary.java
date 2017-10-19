@@ -89,4 +89,69 @@ public class Vocabulary {
     public void sort() {
         sortedWords.sort((stringOne, stringTwo) -> Integer.compare(getWord(stringOne).getOccurrences(), getWord(stringTwo).getOccurrences()));
     }
+
+    // The code of this method is a straightforward translation of Google's C code
+    // TODO: check if it could be written in a better way
+    public void generateCodes() {
+        int positionOne, positionTwo;
+        int minimumOne, minimumTwo;
+        ArrayList<Integer> count = new ArrayList<>((sortedWords.size() * 2) + 1);
+        ArrayList<Character> binary = new ArrayList<>((sortedWords.size() * 2) + 1);
+        ArrayList<Integer> parent = new ArrayList<>((sortedWords.size() * 2) + 1);
+
+        for ( int item = 0; item < sortedWords.size(); item++ ) {
+            count.set(item, words.get(sortedWords.get(item)).getOccurrences());
+        }
+        for ( int item = sortedWords.size(); item < sortedWords.size() * 2; item++ ) {
+            count.set(item, Integer.MAX_VALUE);
+        }
+        positionOne = sortedWords.size() - 1;
+        positionTwo = sortedWords.size();
+        for ( int item = 0; item < sortedWords.size() - 1; item++ ) {
+            if ( positionOne >= 0 ) {
+                if ( count.get(positionOne) < count.get(positionTwo) ) {
+                    minimumOne = positionOne;
+                    positionOne--;
+                } else {
+                    minimumOne = positionTwo;
+                    positionTwo++;
+                }
+            } else {
+                minimumOne = positionTwo;
+                positionTwo++;
+            }
+            if ( positionOne >= 0 ) {
+                if ( count.get(positionOne) < count.get(positionTwo) ) {
+                    minimumTwo = positionOne;
+                    positionOne--;
+                } else {
+                    minimumTwo = positionTwo;
+                    positionTwo++;
+                }
+            } else {
+                minimumTwo = positionTwo;
+                positionTwo++;
+            }
+            count.set(sortedWords.size() + item, count.get(minimumOne) + count.get(minimumTwo));
+            parent.set(minimumOne, sortedWords.size() + item);
+            parent.set(minimumTwo, sortedWords.size() + item);
+            binary.set(minimumTwo, '1');
+        }
+        for ( int item = 0; item < sortedWords.size(); item++ ) {
+            ArrayList<Character> code = new ArrayList<>();
+            ArrayList<Integer> points = new ArrayList<>();
+            int source = item;
+            int index = 0;
+
+            points.add(0, sortedWords.size() - 2);
+            while ( source < ((sortedWords.size() * 2) - 2) ) {
+                code.add(index, binary.get(source));
+                points.add(index + 1, source);
+                index++;
+                source = parent.get(source);
+            }
+            words.get(sortedWords.get(item)).setCode(code);
+            words.get(sortedWords.get(item)).setPoints(points);
+        }
+    }
 }
