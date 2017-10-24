@@ -12,11 +12,9 @@ public class LearnVocabulary {
 
         while ( (line = fileReader.readLine()) != null ) {
             vocabulary.addWord("</s>");
-            for ( String word : line.split("[ \t]") ) {
-                if ( strict ) {
-                    word = word.replaceAll("\\W", "");
-                }
-                if ( word.equals("") ) {
+            while ( !line.isEmpty() ) {
+                String word = ReadWord.readWord(line, strict);
+                if ( word == null ) {
                     continue;
                 }
                 vocabulary.addWord(word);
