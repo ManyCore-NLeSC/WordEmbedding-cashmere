@@ -12,7 +12,7 @@ public class ReadVocabulary {
         String line;
 
         while ( (line = fileReader.readLine()) != null ) {
-            String [] values = line.split("[ ]");
+            String [] values = line.split(" ");
             vocabulary.addWord(new Word(values[0], Integer.parseInt(values[1])));
         }
     }
