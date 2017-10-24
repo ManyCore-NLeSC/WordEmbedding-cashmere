@@ -68,6 +68,10 @@ public class Vocabulary {
         return sortedWords;
     }
 
+    public Integer getSortedIndex(String word) {
+        return sortedWords.indexOf(word);
+    }
+
     public Integer getNrWords() {
         return words.size();
     }
