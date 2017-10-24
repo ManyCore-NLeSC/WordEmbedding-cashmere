@@ -33,7 +33,7 @@ public class CommandLineArguments {
     private Boolean usePosition = false;
     @Parameter(names = {"-vector_dimensions", "-size"}, description = "Dimensions of the word vectors.")
     private Integer vectorDimensions = 100;
-    @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words")
+    @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words.")
     private Float samplingFactor = 0.0f;
     @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
     private Integer classes = 0;
