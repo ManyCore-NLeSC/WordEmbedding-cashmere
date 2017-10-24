@@ -109,7 +109,7 @@ public class Vocabulary {
         int positionOne, positionTwo;
         int minimumOne, minimumTwo;
         ArrayList<Integer> count = new ArrayList<>((sortedWords.size() * 2) + 1);
-        ArrayList<Character> binary = new ArrayList<>((sortedWords.size() * 2) + 1);
+        ArrayList<Integer> binary = new ArrayList<>((sortedWords.size() * 2) + 1);
         ArrayList<Integer> parent = new ArrayList<>((sortedWords.size() * 2) + 1);
 
         for ( int item = 0; item < sortedWords.size(); item++ ) {
@@ -148,10 +148,10 @@ public class Vocabulary {
             count.set(sortedWords.size() + item, count.get(minimumOne) + count.get(minimumTwo));
             parent.set(minimumOne, sortedWords.size() + item);
             parent.set(minimumTwo, sortedWords.size() + item);
-            binary.set(minimumTwo, '1');
+            binary.set(minimumTwo, 1);
         }
         for ( int item = 0; item < sortedWords.size(); item++ ) {
-            ArrayList<Character> code = new ArrayList<>();
+            ArrayList<Integer> code = new ArrayList<>();
             ArrayList<Integer> points = new ArrayList<>();
             int source = item;
             int index = 0;

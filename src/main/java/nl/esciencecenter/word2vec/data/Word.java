@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Word {
     private Integer occurrences;
     private String word;
-    private ArrayList<Character> code;
+    private ArrayList<Integer> code;
     private ArrayList<Integer> points;
 
     public Word(String word) {
@@ -34,11 +34,11 @@ public class Word {
         return code.size();
     }
 
-    public void setCode(ArrayList<Character> code) {
+    public void setCode(ArrayList<Integer> code) {
         this.code = code;
     }
 
-    public ArrayList<Character> getCode() {
+    public ArrayList<Integer> getCode() {
         return code;
     }
 
