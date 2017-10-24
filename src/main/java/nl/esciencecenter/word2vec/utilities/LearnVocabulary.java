@@ -6,9 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class LearnVocabulary {
-    private final Double fillingThreshold = 0.7;
-
-    public void learn(Vocabulary vocabulary, BufferedReader fileReader, Boolean strict) throws IOException {
+    public static void learn(Vocabulary vocabulary, BufferedReader fileReader, Boolean strict) throws IOException {
+        final Double fillingThreshold = 0.7;
         String line;
 
         while ( (line = fileReader.readLine()) != null ) {
@@ -28,5 +27,4 @@ public class LearnVocabulary {
         }
         vocabulary.reduce();
     }
-
 }
