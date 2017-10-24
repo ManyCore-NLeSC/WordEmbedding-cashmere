@@ -89,9 +89,9 @@ public class Vocabulary {
     public void sort() {
         sortedWords.sort((stringOne, stringTwo) -> {
             if ( stringOne.equals("</s>") ) {
-                return -1;
-            } else if ( stringTwo.equals("</s>") ) {
                 return 1;
+            } else if ( stringTwo.equals("</s>") ) {
+                return -1;
             } else {
                 return Integer.compare(getWord(stringOne).getOccurrences(), getWord(stringTwo).getOccurrences());
             }
