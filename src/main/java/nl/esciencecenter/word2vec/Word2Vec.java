@@ -26,12 +26,11 @@ public class Word2Vec {
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
 
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
-            ReadVocabulary reader = new ReadVocabulary();
             BufferedReader inVocabularyFile;
 
             try {
                 inVocabularyFile = new BufferedReader(new FileReader(arguments.getInVocabularyFilename()));
-                reader.read(vocabulary, inVocabularyFile);
+                ReadVocabulary.read(vocabulary, inVocabularyFile);
                 inVocabularyFile.close();
             }catch ( IOException err) {
                 err.printStackTrace();
@@ -40,12 +39,11 @@ public class Word2Vec {
                 System.err.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\"; the vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
-            LearnVocabulary learner = new LearnVocabulary();
             BufferedReader trainingFile;
 
             try {
                 trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-                learner.learn(vocabulary, trainingFile, arguments.getStrict());
+                LearnVocabulary.learn(vocabulary, trainingFile, arguments.getStrict());
                 trainingFile.close();
             } catch ( IOException err ) {
                 err.printStackTrace();
@@ -56,12 +54,11 @@ public class Word2Vec {
         }
 
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {
-            SaveVocabulary writer = new SaveVocabulary();
             BufferedWriter outVocabularyFile;
 
             try {
                 outVocabularyFile = new BufferedWriter(new FileWriter(arguments.getOutVocabularyFilename()));
-                writer.save(vocabulary, outVocabularyFile);
+                SaveVocabulary.save(vocabulary, outVocabularyFile);
                 outVocabularyFile.close();
             } catch ( IOException err ) {
                 err.printStackTrace();
