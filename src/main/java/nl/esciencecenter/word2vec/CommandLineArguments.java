@@ -8,7 +8,7 @@ public class CommandLineArguments {
     @Parameter(names = {"-training_file", "-train"}, description = "Text file containing the data to train the model.",
             required = true)
     private String trainingFilename = "";
-    @Parameter(names = {"-output_file", "-output"}, description = "Output file.")
+    @Parameter(names = {"-output_file", "-output"}, description = "Output file.", required = true)
     private String outputFilename = "";
     @Parameter(names = {"-occurrence_threshold", "-min-count"},
             description = "Only consider words that occur more than the threshold; default is 5.")
