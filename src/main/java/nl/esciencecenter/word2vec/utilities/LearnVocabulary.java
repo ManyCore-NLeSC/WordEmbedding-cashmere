@@ -17,7 +17,7 @@ public class LearnVocabulary {
                 if ( word == null ) {
                     continue;
                 } else {
-                    line = line.substring(word.length());
+                    line = line.substring(word.length() + 1);
                 }
                 vocabulary.addWord(word);
                 if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
