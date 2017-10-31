@@ -354,7 +354,8 @@ public class NeuralNetwork {
                         exponential = 0.0f;
                         relatedWordIndexTwo = vocabulary.getWord(word).getPoints().get(symbolIndex) * vectorDimensions;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                            exponential += inputLayer.get(relatedWordIndexOne + neuronIndex) * outputLayer.get(relatedWordIndexTwo + neuronIndex);
+                            exponential += inputLayer.get(relatedWordIndexOne + neuronIndex)
+                                    * outputLayer.get(relatedWordIndexTwo + neuronIndex);
                         }
                         if ( exponential<= -MAX_EXP || exponential >= MAX_EXP ) {
                             continue;
