@@ -156,17 +156,30 @@ public class Vocabulary {
             binary.set(minimumTwo, 1);
         }
         for ( int item = 0; item < sortedWords.size(); item++ ) {
+            ArrayList<Integer> tempCode = new ArrayList<>();
             ArrayList<Integer> code = new ArrayList<>();
+            ArrayList<Integer> tempPoints = new ArrayList<>();
             ArrayList<Integer> points = new ArrayList<>();
             int source = item;
             int index = 0;
 
-            points.add(0, sortedWords.size() - 2);
+            tempPoints.add(sortedWords.size() - 2);
             while ( source < ((sortedWords.size() * 2) - 2) ) {
-                code.add(index, binary.get(source));
-                points.add(index + 1, source);
+                tempCode.add(binary.get(source));
+                tempPoints.add(source);
                 index++;
                 source = parent.get(source);
+            }
+            code.ensureCapacity(index);
+            points.ensureCapacity(index + 1);
+            for ( int allocationIndex = 0; allocationIndex < index; allocationIndex++ ) {
+                code.add(0);
+                points.add(0);
+            }
+            points.add(0);
+            for ( int symbolIndex = 0; symbolIndex < index; symbolIndex++ ) {
+                code.set(index - symbolIndex - 1, tempCode.get(symbolIndex));
+                points.set(index - symbolIndex, tempPoints.get(symbolIndex) - sortedWords.size());
             }
             words.get(sortedWords.get(item)).setCode(code);
             words.get(sortedWords.get(item)).setPoints(points);
