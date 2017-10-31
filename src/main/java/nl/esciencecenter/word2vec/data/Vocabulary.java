@@ -12,14 +12,12 @@ public class Vocabulary {
         maxSize = Integer.MAX_VALUE;
         occurrenceThreshold = 0;
         words = new HashMap<>();
-        sortedWords = new ArrayList<>();
     }
 
     public Vocabulary(Integer occurrenceThreshold) {
         maxSize = Integer.MAX_VALUE;
         this.occurrenceThreshold = occurrenceThreshold;
         words = new HashMap<>();
-        sortedWords = new ArrayList<>();
     }
 
     public void setMaxSize(Integer maxSize) {
@@ -43,7 +41,6 @@ public class Vocabulary {
             words.get(word.getWord()).incrementOccurrences();
         } else {
             words.put(word.getWord(), word);
-            sortedWords.add(word.getWord());
             word.incrementOccurrences();
         }
     }
@@ -91,6 +88,8 @@ public class Vocabulary {
     }
 
     public void sort() {
+        sortedWords = new ArrayList<>(words.keySet());
+
         sortedWords.sort((stringOne, stringTwo) -> {
             if ( stringOne.equals("</s>") ) {
                 return 1;
