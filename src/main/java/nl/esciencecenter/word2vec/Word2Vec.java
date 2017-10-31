@@ -25,6 +25,7 @@ public class Word2Vec {
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
 
+        // Read vocabulary
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
             BufferedReader inVocabularyFile;
 
@@ -52,7 +53,10 @@ public class Word2Vec {
                 System.err.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\"; the vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         }
+        // Sort vocabulary
+        vocabulary.sort();
 
+        // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {
             BufferedWriter outVocabularyFile;
 
