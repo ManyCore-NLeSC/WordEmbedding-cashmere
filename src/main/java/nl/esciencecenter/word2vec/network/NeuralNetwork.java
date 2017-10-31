@@ -183,6 +183,8 @@ public class NeuralNetwork {
                     String word = ReadWord.readWord(line, false);
                     if ( word == null ) {
                         continue;
+                    } else {
+                        line = line.substring(word.length());
                     }
                     if ( samplingFactor > 0 ) {
                         Float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences() / (samplingFactor * vocabulary.getNrWords())) + 1) * (samplingFactor * vocabulary.getNrWords()) / vocabulary.getWord(word).getOccurrences());

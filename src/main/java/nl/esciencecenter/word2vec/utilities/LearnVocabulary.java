@@ -16,6 +16,8 @@ public class LearnVocabulary {
                 String word = ReadWord.readWord(line, strict);
                 if ( word == null ) {
                     continue;
+                } else {
+                    line = line.substring(word.length());
                 }
                 vocabulary.addWord(word);
                 if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
