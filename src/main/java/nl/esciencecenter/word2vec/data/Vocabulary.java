@@ -111,6 +111,12 @@ public class Vocabulary {
         ArrayList<Integer> binary = new ArrayList<>((sortedWords.size() * 2) + 1);
         ArrayList<Integer> parent = new ArrayList<>((sortedWords.size() * 2) + 1);
 
+        // Initialize the arrays
+        for ( int index = 0; index < (sortedWords.size() * 2) + 1; index++ ) {
+            count.add(0);
+            binary.add(0);
+            parent.add(0);
+        }
         for ( int item = 0; item < sortedWords.size(); item++ ) {
             count.set(item, words.get(sortedWords.get(item)).getOccurrences());
         }
