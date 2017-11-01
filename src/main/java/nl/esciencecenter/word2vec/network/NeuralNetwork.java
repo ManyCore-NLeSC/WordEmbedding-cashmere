@@ -196,6 +196,7 @@ public class NeuralNetwork {
             if ( sentence.size() == 0 ) {
                 while ( !line.isEmpty() ) {
                     String word = ReadWord.readWord(line, false);
+
                     if ( word == null ) {
                         line = line.trim();
                         continue;
