@@ -222,6 +222,10 @@ public class NeuralNetwork {
                 }
                 sentencePosition = 0;
             }
+            if ( sentence.size() == 0 ) {
+                // If there are no words in the sentence, read another line.
+                continue;
+            }
             String word = sentence.get(sentencePosition);
             for ( int neuronIndex = 0; neuronIndex < hiddenLayer0.size(); neuronIndex++ ) {
                 hiddenLayer0.set(neuronIndex, 0.0f);
