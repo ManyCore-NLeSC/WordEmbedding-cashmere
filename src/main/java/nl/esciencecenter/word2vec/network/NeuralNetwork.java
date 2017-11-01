@@ -283,11 +283,11 @@ public class NeuralNetwork {
             }
         }
         if ( negativeSamples > 0 ) {
-            Integer target = 0;
-            Integer label = 0;
+            Integer target;
+            Integer label;
             Integer relatedWordIndex;
             Float exponential;
-            Float gradient = 0.0f;
+            Float gradient;
             Random randomNumberGenerator = new Random();
 
             for ( int sample = 0; sample < negativeSamples + 1; sample++ ) {
