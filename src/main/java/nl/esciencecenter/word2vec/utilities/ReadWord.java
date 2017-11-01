@@ -2,8 +2,14 @@ package nl.esciencecenter.word2vec.utilities;
 
 public class ReadWord {
     public static String readWord(String line, Boolean strict) {
-        String word = line.split("[ \t]")[0];
+        String [] words = line.split("[ \t]");
+        String word;
 
+        if ( words.length == 0 ) {
+            return null;
+        } else {
+            word = words[0];
+        }
         if ( strict ) {
             word = word.replaceAll("\\W", "");
         }
