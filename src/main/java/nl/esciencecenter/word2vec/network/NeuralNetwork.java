@@ -369,8 +369,8 @@ public class NeuralNetwork {
                     continue;
                 }
                 relatedWordIndexOne = lastWordIndex * vectorDimensions;
-                for ( Float neuron : hiddenError0 ) {
-                    neuron = 0.0f;
+                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
+                    hiddenError0.set(neuronIndex, 0.0f);
                 }
                 if ( hierarchicalSoftmax ) {
                     for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
