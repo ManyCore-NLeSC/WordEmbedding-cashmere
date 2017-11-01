@@ -163,7 +163,6 @@ public class Vocabulary {
             int source = item;
             int index = 0;
 
-            tempPoints.add(sortedWords.size() - 2);
             while ( source < ((sortedWords.size() * 2) - 2) ) {
                 tempCode.add(binary.get(source));
                 tempPoints.add(source);
@@ -177,6 +176,7 @@ public class Vocabulary {
                 points.add(0);
             }
             points.add(0);
+            points.set(0, sortedWords.size() - 2);
             for ( int symbolIndex = 0; symbolIndex < index; symbolIndex++ ) {
                 code.set(index - symbolIndex - 1, tempCode.get(symbolIndex));
                 points.set(index - symbolIndex, tempPoints.get(symbolIndex) - sortedWords.size());

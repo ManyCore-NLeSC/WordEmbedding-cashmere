@@ -233,7 +233,8 @@ public class NeuralNetwork {
 
     // The code of this method is a straightforward translation of Google's C code
     // TODO: check if it could be written in a better way
-    private void CBOW(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition, Integer randomStartingWord) {
+    private void CBOW(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition,
+                      Integer randomStartingWord) {
         for ( int wordIndex = randomStartingWord; wordIndex < ((windowSize * 2) + 1) - randomStartingWord; wordIndex++ ) {
             if ( wordIndex != windowSize ) {
                 Integer lastWordIndex = sentencePosition - windowSize + wordIndex;
@@ -328,7 +329,8 @@ public class NeuralNetwork {
 
     // The code of this method is a straightforward translation of Google's C code
     // TODO: check if it could be written in a better way
-    private void skipGram(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition, Integer randomStartingWord) {
+    private void skipGram(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition,
+                          Integer randomStartingWord) {
         Integer lastWordIndex;
         Integer relatedWordIndexOne;
         Integer relatedWordIndexTwo;
@@ -357,7 +359,7 @@ public class NeuralNetwork {
                             exponential += inputLayer.get(relatedWordIndexOne + neuronIndex)
                                     * outputLayer.get(relatedWordIndexTwo + neuronIndex);
                         }
-                        if ( exponential<= -MAX_EXP || exponential >= MAX_EXP ) {
+                        if ( exponential <= -MAX_EXP || exponential >= MAX_EXP ) {
                             continue;
                         }
                         exponential = exponentialTable.get((int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2)));
