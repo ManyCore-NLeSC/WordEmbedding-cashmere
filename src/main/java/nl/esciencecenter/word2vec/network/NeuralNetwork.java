@@ -128,9 +128,10 @@ public class NeuralNetwork {
     }
 
     public void initializeExponentialTable() {
-        for ( int x = 0; x < EXP_TABLE_SIZE + 1; x++ ) {
+        exponentialTable.ensureCapacity(EXP_TABLE_SIZE + 1);
+        for ( int x = 0; x < EXP_TABLE_SIZE; x++ ) {
             exponentialTable.add(0.0f);
-            exponentialTable.set(x, (float)(Math.exp(((x / (EXP_TABLE_SIZE * 2)) - 1) * MAX_EXP)));
+            exponentialTable.set(x, (float)(Math.exp((((x / (float)(EXP_TABLE_SIZE)) * 2) - 1) * MAX_EXP)));
             exponentialTable.set(x, exponentialTable.get(x) / (exponentialTable.get(x) + 1));
         }
     }
@@ -352,7 +353,7 @@ public class NeuralNetwork {
                     neuron = 0.0f;
                 }
                 if ( hierarchicalSoftmax ) {
-                    for (  int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
+                    for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
                         exponential = 0.0f;
                         relatedWordIndexTwo = vocabulary.getWord(word).getPoints().get(symbolIndex) * vectorDimensions;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
@@ -362,11 +363,16 @@ public class NeuralNetwork {
                         if ( exponential <= -MAX_EXP || exponential >= MAX_EXP ) {
                             continue;
                         }
-                        exponential = exponentialTable.get((int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2)));
-                        gradient = (1 - vocabulary.getWord(word).getCode().get(symbolIndex) - exponential) * currentAlpha;
+                        exponential = exponentialTable.get((int)((exponential + MAX_EXP)
+                                * (EXP_TABLE_SIZE / MAX_EXP / 2)));
+                        gradient = (1 - vocabulary.getWord(word).getCode().get(symbolIndex) - exponential)
+                                * currentAlpha;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                            hiddenError0.set(neuronIndex, hiddenError0.get(neuronIndex) + (gradient * outputLayer.get(relatedWordIndexTwo + neuronIndex)));
-                            outputLayer.set(relatedWordIndexTwo + neuronIndex, outputLayer.get(relatedWordIndexTwo + neuronIndex) + (gradient * inputLayer.get(relatedWordIndexOne + neuronIndex)));
+                            hiddenError0.set(neuronIndex, hiddenError0.get(neuronIndex)
+                                    + (gradient * outputLayer.get(relatedWordIndexTwo + neuronIndex)));
+                            outputLayer.set(relatedWordIndexTwo + neuronIndex,
+                                    outputLayer.get(relatedWordIndexTwo + neuronIndex)
+                                            + (gradient * inputLayer.get(relatedWordIndexOne + neuronIndex)));
                         }
                     }
                 }
