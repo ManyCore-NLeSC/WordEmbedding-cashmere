@@ -204,6 +204,9 @@ public class NeuralNetwork {
                         line = line.substring(word.length());
                         line = line.trim();
                     }
+                    if ( vocabulary.getWord(word) == null ) {
+                        continue;
+                    }
                     currentWordCount++;
                     if ( samplingFactor > 0 ) {
                         Float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences()
