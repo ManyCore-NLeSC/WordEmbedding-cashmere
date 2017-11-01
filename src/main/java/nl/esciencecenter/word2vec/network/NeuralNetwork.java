@@ -123,8 +123,7 @@ public class NeuralNetwork {
 
         Random randomNumberGenerator = new Random();
         for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-            inputLayer.add(0.0f);
-            inputLayer.set(index, ((randomNumberGenerator.nextInt() / 32768.0f) - 0.5f) / vectorDimensions);
+            inputLayer.add(((randomNumberGenerator.nextInt() / 32768.0f) - 0.5f) / vectorDimensions);
         }
         vocabulary.generateCodes();
     }
@@ -132,8 +131,7 @@ public class NeuralNetwork {
     public void initializeExponentialTable() {
         exponentialTable.ensureCapacity(EXP_TABLE_SIZE + 1);
         for ( int x = 0; x < EXP_TABLE_SIZE; x++ ) {
-            exponentialTable.add(0.0f);
-            exponentialTable.set(x, (float)(Math.exp((((x / (float)(EXP_TABLE_SIZE)) * 2) - 1) * MAX_EXP)));
+            exponentialTable.add((float)(Math.exp((((x / (float)(EXP_TABLE_SIZE)) * 2) - 1) * MAX_EXP)));
             exponentialTable.set(x, exponentialTable.get(x) / (exponentialTable.get(x) + 1));
         }
     }
@@ -490,14 +488,14 @@ public class NeuralNetwork {
         ArrayList<Float> classVector = new ArrayList<>(nrClasses * vectorDimensions);
 
         for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
-            classMapping.set(wordIndex, wordIndex % nrClasses);
+            classMapping.add(wordIndex % nrClasses);
         }
         for ( int iteration = 0; iteration < nrIterations; iteration++ ) {
-            for ( Float neuron : classVector ) {
-                neuron = 0.0f;
+            for ( int neuronIndex = 0; neuronIndex < nrClasses * vectorDimensions; neuronIndex++ ) {
+                classVector.add(0.0f);
             }
-            for ( Integer counter : classCounter ) {
-                counter = 1;
+            for ( int classIndex = 0; classIndex < nrClasses; classIndex++ ) {
+                classCounter.add(1);
             }
             for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
