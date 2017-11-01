@@ -91,7 +91,7 @@ public class Word2Vec {
         BufferedWriter outputFile;
         try {
             outputFile = new BufferedWriter(new FileWriter(arguments.getOutputFilename()));
-            if ( arguments.getClasses() > 0 ) {
+            if ( arguments.getClasses() == 0 ) {
                 neuralNetwork.saveWordVectors(vocabulary, outputFile);
             } else {
                 neuralNetwork.saveClasses(vocabulary, outputFile, arguments.getClasses());
