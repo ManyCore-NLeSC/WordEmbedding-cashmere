@@ -108,7 +108,8 @@ public class NeuralNetwork {
         }
         if ( negativeSamples > 0 ) {
             if (usePosition) {
-                outputLayerNegativeSamples.ensureCapacity(vocabulary.getNrWords() * vectorDimensions * windowSize * 2);
+                outputLayerNegativeSamples.ensureCapacity(vocabulary.getNrWords() * vectorDimensions
+                        * windowSize * 2);
                 for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions * windowSize * 2; index++ ) {
                     outputLayerNegativeSamples.add(0.0f);
                 }
@@ -121,8 +122,9 @@ public class NeuralNetwork {
         }
 
         Random randomNumberGenerator = new Random();
-        for ( Float item : inputLayer) {
-            item = (randomNumberGenerator.nextInt() / (Integer.MAX_VALUE - 0.5f)) / vectorDimensions;
+        for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
+            inputLayer.add(0.0f);
+            inputLayer.set(index, ((randomNumberGenerator.nextInt() / 32768.0f) - 0.5f) / vectorDimensions);
         }
         vocabulary.generateCodes();
     }
