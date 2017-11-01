@@ -14,7 +14,9 @@ public class LearnVocabulary {
             vocabulary.addWord("</s>");
             while ( !line.isEmpty() ) {
                 String word = ReadWord.readWord(line, strict);
+
                 if ( word == null ) {
+                    line = line.trim();
                     continue;
                 } else {
                     line = line.substring(word.length());
