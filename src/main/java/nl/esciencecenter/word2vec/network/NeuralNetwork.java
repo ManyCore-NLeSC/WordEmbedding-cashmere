@@ -96,9 +96,11 @@ public class NeuralNetwork {
     }
 
     public void initialize(Vocabulary vocabulary) {
+        Random randomNumberGenerator = new Random();
+
         inputLayer.ensureCapacity(vocabulary.getNrWords() * vectorDimensions);
         for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-            inputLayer.add(0.0f);
+            inputLayer.add(((randomNumberGenerator.nextInt() / (float)(Integer.MAX_VALUE)) - 0.5f) / vectorDimensions);
         }
         if ( hierarchicalSoftmax ) {
             outputLayer.ensureCapacity(vocabulary.getNrWords() * vectorDimensions);
@@ -119,11 +121,6 @@ public class NeuralNetwork {
                     outputLayerNegativeSamples.add(0.0f);
                 }
             }
-        }
-
-        Random randomNumberGenerator = new Random();
-        for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-            inputLayer.add(((randomNumberGenerator.nextInt() / 32768.0f) - 0.5f) / vectorDimensions);
         }
         vocabulary.generateCodes();
     }
