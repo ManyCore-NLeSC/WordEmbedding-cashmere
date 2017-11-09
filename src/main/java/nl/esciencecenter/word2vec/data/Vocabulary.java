@@ -6,7 +6,6 @@ public class Vocabulary {
     private Integer maxSize;
     private Integer occurrenceThreshold;
     private HashMap<String, Word> words;
-    private ArrayList<String> sortedWords;
 
     public Vocabulary() {
         maxSize = Integer.MAX_VALUE;
@@ -61,14 +60,6 @@ public class Vocabulary {
         return words.values();
     }
 
-    public ArrayList<String> getSortedWords() {
-        return sortedWords;
-    }
-
-    public Integer getSortedIndex(String word) {
-        return sortedWords.indexOf(word);
-    }
-
     public Integer getNrWords() {
         return words.size();
     }
@@ -87,8 +78,9 @@ public class Vocabulary {
         occurrenceThreshold++;
     }
 
+    // TODO: still pretty "hacky", think how it could be improved
     public void sort() {
-        sortedWords = new ArrayList<>(words.keySet());
+        ArrayList<String> sortedWords = new ArrayList<>(words.keySet());
 
         sortedWords.sort((stringOne, stringTwo) -> {
             if ( stringOne.equals("</s>") ) {
@@ -100,6 +92,9 @@ public class Vocabulary {
             }
         });
         Collections.reverse(sortedWords);
+        for ( int wordIndex = 0; wordIndex < getNrWords(); wordIndex++ ) {
+            words.get(sortedWords.get(wordIndex)).setSortedIndex(wordIndex);
+        }
     }
 
     // The code of this method is a straightforward translation of Google's C code
@@ -107,19 +102,19 @@ public class Vocabulary {
     public void generateCodes() {
         int positionOne, positionTwo;
         int minimumOne, minimumTwo;
-        int [] count = new int [(sortedWords.size() * 2) + 1];
-        int [] binary = new int [(sortedWords.size() * 2) + 1];
-        int [] parent = new int [(sortedWords.size() * 2) + 1];
+        int [] count = new int [(getNrWords() * 2) + 1];
+        int [] binary = new int [(getNrWords() * 2) + 1];
+        int [] parent = new int [(getNrWords() * 2) + 1];
 
-        for ( int item = 0; item < sortedWords.size(); item++ ) {
-            count[item] = words.get(sortedWords.get(item)).getOccurrences();
+        for ( Word word : words.values() ) {
+            count[word.getSortedIndex()] = word.getOccurrences();
         }
-        for ( int item = sortedWords.size(); item < sortedWords.size() * 2; item++ ) {
-            count[item] = Integer.MAX_VALUE;
+        for ( int wordIndex = getNrWords(); wordIndex < getNrWords() * 2; wordIndex++ ) {
+            count[wordIndex] = Integer.MAX_VALUE;
         }
-        positionOne = sortedWords.size() - 1;
-        positionTwo = sortedWords.size();
-        for ( int item = 0; item < sortedWords.size() - 1; item++ ) {
+        positionOne = getNrWords() - 1;
+        positionTwo = getNrWords();
+        for ( int item = 0; item < getNrWords() - 1; item++ ) {
             if ( positionOne >= 0 ) {
                 if ( count[positionOne] < count[positionTwo] ) {
                     minimumOne = positionOne;
@@ -144,20 +139,20 @@ public class Vocabulary {
                 minimumTwo = positionTwo;
                 positionTwo++;
             }
-            count[sortedWords.size() + item] = count[minimumOne] + count[minimumTwo];
-            parent[minimumOne] = sortedWords.size() + item;
-            parent[minimumTwo] = sortedWords.size() + item;
+            count[getNrWords() + item] = count[minimumOne] + count[minimumTwo];
+            parent[minimumOne] = getNrWords() + item;
+            parent[minimumTwo] = getNrWords() + item;
             binary[minimumTwo] = 1;
         }
-        for ( int item = 0; item < sortedWords.size(); item++ ) {
+        for ( Word word : words.values() ) {
             ArrayList<Integer> tempCode = new ArrayList<>();
             int [] code;
             ArrayList<Integer> tempPoints = new ArrayList<>();
             int [] points;
-            int source = item;
+            int source = word.getSortedIndex();
             int index = 0;
 
-            while ( source < ((sortedWords.size() * 2) - 2) ) {
+            while ( source < ((getNrWords() * 2) - 2) ) {
                 tempCode.add(binary[source]);
                 tempPoints.add(source);
                 index++;
@@ -165,13 +160,13 @@ public class Vocabulary {
             }
             code = new int [index];
             points = new int [index + 1];
-            points[0] = sortedWords.size() - 2;
+            points[0] = getNrWords() - 2;
             for ( int symbolIndex = 0; symbolIndex < index; symbolIndex++ ) {
                 code[index - symbolIndex - 1] = tempCode.get(symbolIndex);
-                points[index - symbolIndex] = tempPoints.get(symbolIndex) - sortedWords.size();
+                points[index - symbolIndex] = tempPoints.get(symbolIndex) - getNrWords();
             }
-            words.get(sortedWords.get(item)).setCodes(code);
-            words.get(sortedWords.get(item)).setPoints(points);
+            word.setCodes(code);
+            word.setPoints(points);
         }
     }
 }
