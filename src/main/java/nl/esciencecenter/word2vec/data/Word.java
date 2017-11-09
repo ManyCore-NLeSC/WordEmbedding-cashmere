@@ -1,12 +1,10 @@
 package nl.esciencecenter.word2vec.data;
 
-import java.util.ArrayList;
-
 public class Word {
     private Integer occurrences;
     private String word;
-    private ArrayList<Integer> code;
-    private ArrayList<Integer> points;
+    private int [] code;
+    private int [] points;
 
     public Word(String word) {
         occurrences = 0;
@@ -31,22 +29,30 @@ public class Word {
     }
 
     public Integer getCodeLength() {
-        return code.size();
+        return code.length;
     }
 
-    public void setCode(ArrayList<Integer> code) {
+    public int getCode(int index) {
+        return code[index];
+    }
+
+    public void setCodes(int [] code) {
         this.code = code;
     }
 
-    public ArrayList<Integer> getCode() {
+    public int [] getCodes() {
         return code;
     }
 
-    public void setPoints(ArrayList<Integer> points) {
+    public int getPoint(int index) {
+        return points[index];
+    }
+
+    public void setPoints(int [] points) {
         this.points = points;
     }
 
-    public ArrayList<Integer> getPoints() {
+    public int [] getPoints() {
         return points;
     }
 }

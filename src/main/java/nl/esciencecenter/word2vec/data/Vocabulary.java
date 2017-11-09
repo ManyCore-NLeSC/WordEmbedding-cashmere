@@ -107,27 +107,21 @@ public class Vocabulary {
     public void generateCodes() {
         int positionOne, positionTwo;
         int minimumOne, minimumTwo;
-        ArrayList<Integer> count = new ArrayList<>((sortedWords.size() * 2) + 1);
-        ArrayList<Integer> binary = new ArrayList<>((sortedWords.size() * 2) + 1);
-        ArrayList<Integer> parent = new ArrayList<>((sortedWords.size() * 2) + 1);
+        int [] count = new int [(sortedWords.size() * 2) + 1];
+        int [] binary = new int [(sortedWords.size() * 2) + 1];
+        int [] parent = new int [(sortedWords.size() * 2) + 1];
 
-        // Initialize the arrays
-        for ( int index = 0; index < (sortedWords.size() * 2) + 1; index++ ) {
-            count.add(0);
-            binary.add(0);
-            parent.add(0);
-        }
         for ( int item = 0; item < sortedWords.size(); item++ ) {
-            count.set(item, words.get(sortedWords.get(item)).getOccurrences());
+            count[item] = words.get(sortedWords.get(item)).getOccurrences();
         }
         for ( int item = sortedWords.size(); item < sortedWords.size() * 2; item++ ) {
-            count.set(item, Integer.MAX_VALUE);
+            count[item] = Integer.MAX_VALUE;
         }
         positionOne = sortedWords.size() - 1;
         positionTwo = sortedWords.size();
         for ( int item = 0; item < sortedWords.size() - 1; item++ ) {
             if ( positionOne >= 0 ) {
-                if ( count.get(positionOne) < count.get(positionTwo) ) {
+                if ( count[positionOne] < count[positionTwo] ) {
                     minimumOne = positionOne;
                     positionOne--;
                 } else {
@@ -139,7 +133,7 @@ public class Vocabulary {
                 positionTwo++;
             }
             if ( positionOne >= 0 ) {
-                if ( count.get(positionOne) < count.get(positionTwo) ) {
+                if ( count[positionOne] < count[positionTwo] ) {
                     minimumTwo = positionOne;
                     positionOne--;
                 } else {
@@ -150,38 +144,33 @@ public class Vocabulary {
                 minimumTwo = positionTwo;
                 positionTwo++;
             }
-            count.set(sortedWords.size() + item, count.get(minimumOne) + count.get(minimumTwo));
-            parent.set(minimumOne, sortedWords.size() + item);
-            parent.set(minimumTwo, sortedWords.size() + item);
-            binary.set(minimumTwo, 1);
+            count[sortedWords.size() + item] = count[minimumOne] + count[minimumTwo];
+            parent[minimumOne] = sortedWords.size() + item;
+            parent[minimumTwo] = sortedWords.size() + item;
+            binary[minimumTwo] = 1;
         }
         for ( int item = 0; item < sortedWords.size(); item++ ) {
             ArrayList<Integer> tempCode = new ArrayList<>();
-            ArrayList<Integer> code = new ArrayList<>();
+            int [] code;
             ArrayList<Integer> tempPoints = new ArrayList<>();
-            ArrayList<Integer> points = new ArrayList<>();
+            int [] points;
             int source = item;
             int index = 0;
 
             while ( source < ((sortedWords.size() * 2) - 2) ) {
-                tempCode.add(binary.get(source));
+                tempCode.add(binary[source]);
                 tempPoints.add(source);
                 index++;
-                source = parent.get(source);
+                source = parent[source];
             }
-            code.ensureCapacity(index);
-            points.ensureCapacity(index + 1);
-            for ( int allocationIndex = 0; allocationIndex < index; allocationIndex++ ) {
-                code.add(0);
-                points.add(0);
-            }
-            points.add(0);
-            points.set(0, sortedWords.size() - 2);
+            code = new int [index];
+            points = new int [index + 1];
+            points[0] = sortedWords.size() - 2;
             for ( int symbolIndex = 0; symbolIndex < index; symbolIndex++ ) {
-                code.set(index - symbolIndex - 1, tempCode.get(symbolIndex));
-                points.set(index - symbolIndex, tempPoints.get(symbolIndex) - sortedWords.size());
+                code[index - symbolIndex - 1] = tempCode.get(symbolIndex);
+                points[index - symbolIndex] = tempPoints.get(symbolIndex) - sortedWords.size();
             }
-            words.get(sortedWords.get(item)).setCode(code);
+            words.get(sortedWords.get(item)).setCodes(code);
             words.get(sortedWords.get(item)).setPoints(points);
         }
     }

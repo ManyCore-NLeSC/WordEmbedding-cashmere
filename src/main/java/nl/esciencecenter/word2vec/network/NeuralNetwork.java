@@ -269,7 +269,7 @@ public class NeuralNetwork {
             for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
                 Float exponential = 0.0f;
                 Float gradient;
-                Integer relatedWordIndex = vocabulary.getWord(word).getPoints().get(symbolIndex) * vectorDimensions;
+                Integer relatedWordIndex = vocabulary.getWord(word).getPoints()[symbolIndex] * vectorDimensions;
 
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     exponential += hiddenLayer0.get(neuronIndex) * outputLayer.get(relatedWordIndex + neuronIndex);
@@ -278,7 +278,7 @@ public class NeuralNetwork {
                     continue;
                 }
                 exponential = exponentialTable.get((int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2)));
-                gradient = (1 - vocabulary.getWord(word).getCode().get(symbolIndex) - exponential) * currentAlpha;
+                gradient = (1 - vocabulary.getWord(word).getCodes()[symbolIndex] - exponential) * currentAlpha;
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     hiddenError0.set(neuronIndex,
                             hiddenError0.get(neuronIndex)
@@ -382,7 +382,7 @@ public class NeuralNetwork {
                 if ( hierarchicalSoftmax ) {
                     for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
                         exponential = 0.0f;
-                        relatedWordIndexTwo = vocabulary.getWord(word).getPoints().get(symbolIndex) * vectorDimensions;
+                        relatedWordIndexTwo = vocabulary.getWord(word).getPoints()[symbolIndex] * vectorDimensions;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             exponential += inputLayer.get(relatedWordIndexOne + neuronIndex)
                                     * outputLayer.get(relatedWordIndexTwo + neuronIndex);
@@ -392,7 +392,7 @@ public class NeuralNetwork {
                         }
                         exponential = exponentialTable.get((int)((exponential + MAX_EXP)
                                 * (EXP_TABLE_SIZE / MAX_EXP / 2)));
-                        gradient = (1 - vocabulary.getWord(word).getCode().get(symbolIndex) - exponential)
+                        gradient = (1 - vocabulary.getWord(word).getCodes()[symbolIndex] - exponential)
                                 * currentAlpha;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             hiddenError0.set(neuronIndex, hiddenError0.get(neuronIndex)
