@@ -149,14 +149,12 @@ public class NeuralNetwork {
             wordsPower += ((int) Math.pow(word.getOccurrences(), exponent));
         }
         wordIndex = 0;
-        d1 = (float)(Math.pow(vocabulary.getWord(vocabulary.getSortedWords().get(wordIndex)).getOccurrences(), exponent)
-                / wordsPower);
+        d1 = (float)(Math.pow(vocabulary.getSortedWord(wordIndex).getOccurrences(), exponent) / wordsPower);
         for ( int tableIndex = 0; tableIndex < unigramTable.size(); tableIndex++ ) {
             unigramTable.set(tableIndex, wordIndex);
             if ( tableIndex / (float)(unigramTable.size()) > d1 ) {
                 wordIndex++;
-                d1 += (float)(Math.pow(vocabulary.getWord(vocabulary.getSortedWords().get(wordIndex)).getOccurrences(),
-                        exponent) / wordsPower);
+                d1 += (float)(Math.pow(vocabulary.getSortedWord(wordIndex).getOccurrences(), exponent) / wordsPower);
             }
             if ( wordIndex >= vocabulary.getNrWords() ) {
                 wordIndex = vocabulary.getNrWords() -1;
@@ -254,7 +252,7 @@ public class NeuralNetwork {
                 if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
                     continue;
                 }
-                lastWordIndex = vocabulary.getSortedIndex(sentence.get(lastWordIndex));
+                lastWordIndex = vocabulary.getWord(sentence.get(lastWordIndex)).getSortedIndex();
                 if ( lastWordIndex == -1 ) {
                     continue;
                 }
@@ -269,7 +267,7 @@ public class NeuralNetwork {
             for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
                 Float exponential = 0.0f;
                 Float gradient;
-                Integer relatedWordIndex = vocabulary.getWord(word).getPoints()[symbolIndex] * vectorDimensions;
+                Integer relatedWordIndex = vocabulary.getWord(word).getPoint(symbolIndex) * vectorDimensions;
 
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     exponential += hiddenLayer0.get(neuronIndex) * outputLayer.get(relatedWordIndex + neuronIndex);
@@ -278,7 +276,7 @@ public class NeuralNetwork {
                     continue;
                 }
                 exponential = exponentialTable.get((int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2)));
-                gradient = (1 - vocabulary.getWord(word).getCodes()[symbolIndex] - exponential) * currentAlpha;
+                gradient = (1 - vocabulary.getWord(word).getCode(symbolIndex) - exponential) * currentAlpha;
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     hiddenError0.set(neuronIndex,
                             hiddenError0.get(neuronIndex)
@@ -299,13 +297,13 @@ public class NeuralNetwork {
 
             for ( int sample = 0; sample < negativeSamples + 1; sample++ ) {
                 if ( sample == 0 ) {
-                    target = vocabulary.getSortedIndex(word);
+                    target = vocabulary.getWord(word).getSortedIndex();
                     label = 1;
                 } else {
                     target = randomNumberGenerator.nextInt(unigramTable.size());
                     if ( target == 0 ) {
                         target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                    } else if ( target.equals(vocabulary.getSortedIndex(word)) ) {
+                    } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
                         continue;
                     }
                     label = 0;
@@ -342,7 +340,7 @@ public class NeuralNetwork {
                 if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
                     continue;
                 }
-                lastWordIndex = vocabulary.getSortedIndex(sentence.get(lastWordIndex));
+                lastWordIndex = vocabulary.getWord(sentence.get(lastWordIndex)).getSortedIndex();
                 if ( lastWordIndex == -1 ) {
                     continue;
                 }
@@ -371,7 +369,7 @@ public class NeuralNetwork {
                 if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
                     continue;
                 }
-                lastWordIndex = vocabulary.getSortedIndex(sentence.get(lastWordIndex));
+                lastWordIndex = vocabulary.getWord(sentence.get(lastWordIndex)).getSortedIndex();
                 if ( lastWordIndex == -1 ) {
                     continue;
                 }
@@ -382,7 +380,7 @@ public class NeuralNetwork {
                 if ( hierarchicalSoftmax ) {
                     for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
                         exponential = 0.0f;
-                        relatedWordIndexTwo = vocabulary.getWord(word).getPoints()[symbolIndex] * vectorDimensions;
+                        relatedWordIndexTwo = vocabulary.getWord(word).getPoint(symbolIndex) * vectorDimensions;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             exponential += inputLayer.get(relatedWordIndexOne + neuronIndex)
                                     * outputLayer.get(relatedWordIndexTwo + neuronIndex);
@@ -392,7 +390,7 @@ public class NeuralNetwork {
                         }
                         exponential = exponentialTable.get((int)((exponential + MAX_EXP)
                                 * (EXP_TABLE_SIZE / MAX_EXP / 2)));
-                        gradient = (1 - vocabulary.getWord(word).getCodes()[symbolIndex] - exponential)
+                        gradient = (1 - vocabulary.getWord(word).getCode(symbolIndex) - exponential)
                                 * currentAlpha;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             hiddenError0.set(neuronIndex, hiddenError0.get(neuronIndex)
@@ -410,13 +408,13 @@ public class NeuralNetwork {
 
                     for ( int sample = 0; sample < negativeSamples + 1; sample++ ) {
                         if ( sample == 0 ) {
-                            target = vocabulary.getSortedIndex(word);
+                            target = vocabulary.getWord(word).getSortedIndex();
                             label = 1;
                         } else {
                             target = randomNumberGenerator.nextInt(unigramTable.size());
                             if ( target == 0 ) {
                                 target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                            } else if ( target.equals(vocabulary.getSortedIndex(word)) ) {
+                            } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
                                 continue;
                             }
                             label = 0;
@@ -467,10 +465,10 @@ public class NeuralNetwork {
     public void saveWordVectors(Vocabulary vocabulary, BufferedWriter fileWriter) throws IOException {
         fileWriter.write(vocabulary.getNrWords() + " " + vectorDimensions);
         fileWriter.newLine();
-        for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
-            fileWriter.write(vocabulary.getSortedWords().get(wordIndex) + " ");
+        for ( Word word : vocabulary.getWords() ) {
+            fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(inputLayer.get((wordIndex * vectorDimensions) + neuronIndex) + " ");
+                fileWriter.write(inputLayer.get((word.getSortedIndex() * vectorDimensions) + neuronIndex) + " ");
             }
             fileWriter.newLine();
         }
@@ -479,10 +477,11 @@ public class NeuralNetwork {
     public void saveContextVectors(Vocabulary vocabulary, BufferedWriter fileWriter) throws IOException {
         fileWriter.write(vocabulary.getNrWords() + " " + vectorDimensions);
         fileWriter.newLine();
-        for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
-            fileWriter.write(vocabulary.getSortedWords().get(wordIndex) + " ");
+        for ( Word word : vocabulary.getWords() ) {
+            fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(outputLayerNegativeSamples.get((wordIndex * vectorDimensions) + neuronIndex) + " ");
+                fileWriter.write(outputLayerNegativeSamples.get((word.getSortedIndex() * vectorDimensions)
+                        + neuronIndex) + " ");
             }
             fileWriter.newLine();
         }
@@ -547,8 +546,8 @@ public class NeuralNetwork {
                 classMapping.set(wordIndex, classID);
             }
         }
-        for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
-            fileWriter.write(vocabulary.getSortedWords().get(wordIndex) + " " + classMapping.get(wordIndex));
+        for ( Word word : vocabulary.getWords() ) {
+            fileWriter.write( word.getWord() + " " + classMapping.get(word.getSortedIndex()));
             fileWriter.newLine();
         }
     }
