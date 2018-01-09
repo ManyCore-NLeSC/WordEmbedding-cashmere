@@ -8,8 +8,7 @@ import java.io.IOException;
 
 public class SaveVocabulary {
     public static void save(Vocabulary vocabulary, BufferedWriter fileWriter) throws IOException {
-        for ( String wordString : vocabulary.getSortedWords() ) {
-            Word word = vocabulary.getWord(wordString);
+        for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " " + String.valueOf(word.getOccurrences()));
             fileWriter.newLine();
         }
