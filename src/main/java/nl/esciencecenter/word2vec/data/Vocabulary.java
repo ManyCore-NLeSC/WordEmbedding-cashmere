@@ -56,6 +56,18 @@ public class Vocabulary {
         return words.get(word);
     }
 
+    public Word getSortedWord(Integer index) {
+        if ( (index < 0) || (index >= getNrWords()) ) {
+            return null;
+        }
+        for ( Word word : words.values() ) {
+            if ( word.getSortedIndex().equals(index) ) {
+                return word;
+            }
+        }
+        return null;
+    }
+
     public Collection<Word> getWords() {
         return words.values();
     }
