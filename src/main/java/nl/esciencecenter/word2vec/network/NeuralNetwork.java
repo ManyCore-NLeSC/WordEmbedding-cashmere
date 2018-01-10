@@ -29,7 +29,7 @@ public class NeuralNetwork {
     private Float currentAlpha = 0.0f;
     private Float samplingFactor = 0.0f;
     private int [] unigramTable;
-    private ArrayList<Float> exponentialTable;
+    private float [] exponentialTable;
     private ArrayList<Float> inputLayer;
     private ArrayList<Float> hiddenLayer0;
     private ArrayList<Float> hiddenError0;
@@ -47,7 +47,7 @@ public class NeuralNetwork {
         this.alpha = alpha;
         currentAlpha = alpha;
         unigramTable = new int [unigramTableSize];
-        exponentialTable = new ArrayList<>(EXP_TABLE_SIZE + 1);
+        exponentialTable = new float [EXP_TABLE_SIZE + 1];
         inputLayer = new ArrayList<>();
         hiddenLayer0 = new ArrayList<>();
         hiddenError0 = new ArrayList<>();
@@ -126,10 +126,9 @@ public class NeuralNetwork {
     }
 
     public void initializeExponentialTable() {
-        exponentialTable.ensureCapacity(EXP_TABLE_SIZE + 1);
         for ( int x = 0; x < EXP_TABLE_SIZE; x++ ) {
-            exponentialTable.add((float)(Math.exp((((x / (float)(EXP_TABLE_SIZE)) * 2) - 1) * MAX_EXP)));
-            exponentialTable.set(x, exponentialTable.get(x) / (exponentialTable.get(x) + 1));
+            exponentialTable[x] = (float)(Math.exp((((x / (float)(EXP_TABLE_SIZE)) * 2) - 1) * MAX_EXP));
+            exponentialTable[x] = exponentialTable[x] / (exponentialTable[x] + 1);
         }
     }
 
@@ -271,7 +270,7 @@ public class NeuralNetwork {
                 if ( (exponential <= -MAX_EXP) || exponential >= MAX_EXP ) {
                     continue;
                 }
-                exponential = exponentialTable.get((int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2)));
+                exponential = exponentialTable[(int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))];
                 gradient = (1 - vocabulary.getWord(word).getCode(symbolIndex) - exponential) * currentAlpha;
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     hiddenError0.set(neuronIndex,
@@ -316,7 +315,7 @@ public class NeuralNetwork {
                     gradient = label * currentAlpha;
                 } else {
                     gradient = (label
-                            - exponentialTable.get((int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))))
+                            - exponentialTable[(int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))])
                             * currentAlpha;
                 }
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
@@ -384,8 +383,8 @@ public class NeuralNetwork {
                         if ( exponential <= -MAX_EXP || exponential >= MAX_EXP ) {
                             continue;
                         }
-                        exponential = exponentialTable.get((int)((exponential + MAX_EXP)
-                                * (EXP_TABLE_SIZE / MAX_EXP / 2)));
+                        exponential = exponentialTable[(int)((exponential + MAX_EXP)
+                                * (EXP_TABLE_SIZE / MAX_EXP / 2))];
                         gradient = (1 - vocabulary.getWord(word).getCode(symbolIndex) - exponential)
                                 * currentAlpha;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
@@ -436,8 +435,8 @@ public class NeuralNetwork {
                             gradient = label * currentAlpha;
                         } else {
                             gradient = (label
-                                    - exponentialTable.get((int)((exponential + MAX_EXP)
-                                    * (EXP_TABLE_SIZE / MAX_EXP / 2)))) * currentAlpha;
+                                    - exponentialTable[(int)((exponential + MAX_EXP)
+                                    * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * currentAlpha;
                         }
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             hiddenError0.set(neuronIndex,
