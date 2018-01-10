@@ -28,7 +28,7 @@ public class NeuralNetwork {
     private Float alpha = 0.025f;
     private Float currentAlpha = 0.0f;
     private Float samplingFactor = 0.0f;
-    private ArrayList<Integer> unigramTable;
+    private int [] unigramTable;
     private ArrayList<Float> exponentialTable;
     private ArrayList<Float> inputLayer;
     private ArrayList<Float> hiddenLayer0;
@@ -46,7 +46,7 @@ public class NeuralNetwork {
         this.windowSize = windowSize;
         this.alpha = alpha;
         currentAlpha = alpha;
-        unigramTable = new ArrayList<>();
+        unigramTable = new int [unigramTableSize];
         exponentialTable = new ArrayList<>(EXP_TABLE_SIZE + 1);
         inputLayer = new ArrayList<>();
         hiddenLayer0 = new ArrayList<>();
@@ -141,18 +141,14 @@ public class NeuralNetwork {
         Float exponent = 0.75f;
         Float d1;
 
-        unigramTable.ensureCapacity(unigramTableSize);
-        for ( int index = 0; index < unigramTableSize; index++ ) {
-            unigramTable.add(0);
-        }
         for ( Word word : vocabulary.getWords() ) {
             wordsPower += ((int) Math.pow(word.getOccurrences(), exponent));
         }
         wordIndex = 0;
         d1 = (float)(Math.pow(vocabulary.getSortedWord(wordIndex).getOccurrences(), exponent) / wordsPower);
-        for ( int tableIndex = 0; tableIndex < unigramTable.size(); tableIndex++ ) {
-            unigramTable.set(tableIndex, wordIndex);
-            if ( tableIndex / (float)(unigramTable.size()) > d1 ) {
+        for ( int tableIndex = 0; tableIndex < unigramTableSize; tableIndex++ ) {
+            unigramTable[tableIndex] = wordIndex;
+            if ( tableIndex / (float)(unigramTableSize) > d1 ) {
                 wordIndex++;
                 d1 += (float)(Math.pow(vocabulary.getSortedWord(wordIndex).getOccurrences(), exponent) / wordsPower);
             }
@@ -300,7 +296,7 @@ public class NeuralNetwork {
                     target = vocabulary.getWord(word).getSortedIndex();
                     label = 1;
                 } else {
-                    target = randomNumberGenerator.nextInt(unigramTable.size());
+                    target = randomNumberGenerator.nextInt(unigramTableSize);
                     if ( target == 0 ) {
                         target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
                     } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
@@ -411,7 +407,7 @@ public class NeuralNetwork {
                             target = vocabulary.getWord(word).getSortedIndex();
                             label = 1;
                         } else {
-                            target = randomNumberGenerator.nextInt(unigramTable.size());
+                            target = randomNumberGenerator.nextInt(unigramTableSize);
                             if ( target == 0 ) {
                                 target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
                             } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
