@@ -56,6 +56,7 @@ public class Vocabulary {
         return words.get(word);
     }
 
+    // TODO: I am aware that this method is expensive, think how it could be improved
     public Word getSortedWord(Integer index) {
         if ( (index < 0) || (index >= getNrWords()) ) {
             return null;
