@@ -34,7 +34,7 @@ public class NeuralNetwork {
     private float [] hiddenLayer0;
     private float [] hiddenError0;
     private float [] outputLayer;
-    private ArrayList<Float> outputLayerNegativeSamples;
+    private float [] outputLayerNegativeSamples;
 
     public NeuralNetwork(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
                          Integer vectorDimensions, Integer windowSize, Float alpha) {
@@ -46,7 +46,6 @@ public class NeuralNetwork {
         this.windowSize = windowSize;
         this.alpha = alpha;
         currentAlpha = alpha;
-        outputLayerNegativeSamples = new ArrayList<>();
     }
 
     public Boolean getSkipGram() {
@@ -102,16 +101,9 @@ public class NeuralNetwork {
         }
         if ( negativeSamples > 0 ) {
             if (usePosition) {
-                outputLayerNegativeSamples.ensureCapacity(vocabulary.getNrWords() * vectorDimensions
-                        * windowSize * 2);
-                for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions * windowSize * 2; index++ ) {
-                    outputLayerNegativeSamples.add(0.0f);
-                }
+                outputLayerNegativeSamples = new float [vocabulary.getNrWords() * vectorDimensions * windowSize * 2];
             } else {
-                outputLayerNegativeSamples.ensureCapacity(vocabulary.getNrWords() * vectorDimensions);
-                for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-                    outputLayerNegativeSamples.add(0.0f);
-                }
+                outputLayerNegativeSamples = new float [vocabulary.getNrWords() * vectorDimensions];
             }
         }
         vocabulary.generateCodes();
@@ -294,7 +286,7 @@ public class NeuralNetwork {
                 relatedWordIndex = target * vectorDimensions;
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     exponential += hiddenLayer0[neuronIndex]
-                            * outputLayerNegativeSamples.get(relatedWordIndex + neuronIndex);
+                            * outputLayerNegativeSamples[relatedWordIndex + neuronIndex];
                 }
                 if ( exponential > MAX_EXP ) {
                     gradient = (label - 1) * currentAlpha;
@@ -307,10 +299,10 @@ public class NeuralNetwork {
                 }
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                     hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
-                            + (gradient * outputLayerNegativeSamples.get(relatedWordIndex + neuronIndex));
-                    outputLayerNegativeSamples.set(relatedWordIndex + neuronIndex,
-                            outputLayerNegativeSamples.get(relatedWordIndex + neuronIndex)
-                                    + (gradient * hiddenLayer0[neuronIndex]));
+                            + (gradient * outputLayerNegativeSamples[relatedWordIndex + neuronIndex]);
+                    outputLayerNegativeSamples[relatedWordIndex + neuronIndex] =
+                            outputLayerNegativeSamples[relatedWordIndex + neuronIndex]
+                                    + (gradient * hiddenLayer0[neuronIndex]);
                 }
             }
         }
@@ -413,7 +405,7 @@ public class NeuralNetwork {
                         exponential = 0.0f;
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             exponential += inputLayer[relatedWordIndexOne + neuronIndex]
-                                    * outputLayerNegativeSamples.get(relatedWordIndexTwo + neuronIndex);
+                                    * outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex];
                         }
                         if ( exponential > MAX_EXP ) {
                             gradient = (label - 1) * currentAlpha;
@@ -426,10 +418,10 @@ public class NeuralNetwork {
                         }
                         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
-                                    * outputLayerNegativeSamples.get(relatedWordIndexTwo + neuronIndex));
-                            outputLayerNegativeSamples.set(relatedWordIndexTwo + neuronIndex,
-                                    outputLayerNegativeSamples.get(relatedWordIndexTwo + neuronIndex)
-                                            + (gradient * inputLayer[relatedWordIndexOne + neuronIndex]));
+                                    * outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex]);
+                            outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex] =
+                                    outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex]
+                                            + (gradient * inputLayer[relatedWordIndexOne + neuronIndex]);
                         }
                     }
                 }
@@ -459,8 +451,8 @@ public class NeuralNetwork {
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(outputLayerNegativeSamples.get((word.getSortedIndex() * vectorDimensions)
-                        + neuronIndex) + " ");
+                fileWriter.write(outputLayerNegativeSamples[(word.getSortedIndex() * vectorDimensions)
+                        + neuronIndex] + " ");
             }
             fileWriter.newLine();
         }
