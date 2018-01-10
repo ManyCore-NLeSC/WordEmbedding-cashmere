@@ -31,7 +31,7 @@ public class NeuralNetwork {
     private int [] unigramTable;
     private float [] exponentialTable;
     private float [] inputLayer;
-    private ArrayList<Float> hiddenLayer0;
+    private float [] hiddenLayer0;
     private ArrayList<Float> hiddenError0;
     private ArrayList<Float> outputLayer;
     private ArrayList<Float> outputLayerNegativeSamples;
@@ -46,7 +46,6 @@ public class NeuralNetwork {
         this.windowSize = windowSize;
         this.alpha = alpha;
         currentAlpha = alpha;
-        hiddenLayer0 = new ArrayList<>();
         hiddenError0 = new ArrayList<>();
         outputLayer = new ArrayList<>();
         outputLayerNegativeSamples = new ArrayList<>();
@@ -164,10 +163,9 @@ public class NeuralNetwork {
         String line;
         Random randomNumberGenerator = new Random();
 
-        hiddenLayer0.ensureCapacity(vectorDimensions);
+        hiddenLayer0 = new float [vectorDimensions];
         hiddenError0.ensureCapacity(vectorDimensions);
         for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-            hiddenLayer0.add(0.0f);
             hiddenError0.add(0.0f);
         }
         // Training loop
@@ -220,8 +218,8 @@ public class NeuralNetwork {
                 continue;
             }
             String word = sentence.get(sentencePosition);
-            for ( int neuronIndex = 0; neuronIndex < hiddenLayer0.size(); neuronIndex++ ) {
-                hiddenLayer0.set(neuronIndex, 0.0f);
+            for ( int neuronIndex = 0; neuronIndex < hiddenLayer0.length; neuronIndex++ ) {
+                hiddenLayer0[neuronIndex] = 0.0f;
                 hiddenError0.set(neuronIndex, 0.0f);
             }
             Integer randomStartingWord = randomNumberGenerator.nextInt() % windowSize;
@@ -252,9 +250,8 @@ public class NeuralNetwork {
                     continue;
                 }
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    hiddenLayer0.set(neuronIndex,
-                            hiddenLayer0.get(neuronIndex)
-                                    + inputLayer[(lastWordIndex * vectorDimensions) + neuronIndex]);
+                    hiddenLayer0[neuronIndex] = hiddenLayer0[neuronIndex]
+                            + inputLayer[(lastWordIndex * vectorDimensions) + neuronIndex];
                 }
             }
         }
@@ -265,7 +262,7 @@ public class NeuralNetwork {
                 Integer relatedWordIndex = vocabulary.getWord(word).getPoint(symbolIndex) * vectorDimensions;
 
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    exponential += hiddenLayer0.get(neuronIndex) * outputLayer.get(relatedWordIndex + neuronIndex);
+                    exponential += hiddenLayer0[neuronIndex] * outputLayer.get(relatedWordIndex + neuronIndex);
                 }
                 if ( (exponential <= -MAX_EXP) || exponential >= MAX_EXP ) {
                     continue;
@@ -278,7 +275,7 @@ public class NeuralNetwork {
                                     + (gradient * outputLayer.get(relatedWordIndex + neuronIndex)));
                     outputLayer.set(relatedWordIndex + neuronIndex,
                             outputLayer.get(relatedWordIndex + neuronIndex)
-                                    + (gradient * hiddenLayer0.get(neuronIndex)));
+                                    + (gradient * hiddenLayer0[neuronIndex]));
                 }
             }
         }
@@ -306,7 +303,7 @@ public class NeuralNetwork {
                 exponential = 0.0f;
                 relatedWordIndex = target * vectorDimensions;
                 for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    exponential += hiddenLayer0.get(neuronIndex)
+                    exponential += hiddenLayer0[neuronIndex]
                             * outputLayerNegativeSamples.get(relatedWordIndex + neuronIndex);
                 }
                 if ( exponential > MAX_EXP ) {
@@ -324,7 +321,7 @@ public class NeuralNetwork {
                                     + (gradient * outputLayerNegativeSamples.get(relatedWordIndex + neuronIndex)));
                     outputLayerNegativeSamples.set(relatedWordIndex + neuronIndex,
                             outputLayerNegativeSamples.get(relatedWordIndex + neuronIndex)
-                                    + (gradient * hiddenLayer0.get(neuronIndex)));
+                                    + (gradient * hiddenLayer0[neuronIndex]));
                 }
             }
         }
