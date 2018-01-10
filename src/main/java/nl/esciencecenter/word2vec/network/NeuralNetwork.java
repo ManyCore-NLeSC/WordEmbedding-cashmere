@@ -46,8 +46,6 @@ public class NeuralNetwork {
         this.windowSize = windowSize;
         this.alpha = alpha;
         currentAlpha = alpha;
-        unigramTable = new int [unigramTableSize];
-        exponentialTable = new float [EXP_TABLE_SIZE + 1];
         inputLayer = new ArrayList<>();
         hiddenLayer0 = new ArrayList<>();
         hiddenError0 = new ArrayList<>();
@@ -126,6 +124,7 @@ public class NeuralNetwork {
     }
 
     public void initializeExponentialTable() {
+        exponentialTable = new float [EXP_TABLE_SIZE + 1];
         for ( int x = 0; x < EXP_TABLE_SIZE; x++ ) {
             exponentialTable[x] = (float)(Math.exp((((x / (float)(EXP_TABLE_SIZE)) * 2) - 1) * MAX_EXP));
             exponentialTable[x] = exponentialTable[x] / (exponentialTable[x] + 1);
@@ -140,6 +139,7 @@ public class NeuralNetwork {
         Float exponent = 0.75f;
         Float d1;
 
+        unigramTable = new int [unigramTableSize];
         for ( Word word : vocabulary.getWords() ) {
             wordsPower += ((int) Math.pow(word.getOccurrences(), exponent));
         }
