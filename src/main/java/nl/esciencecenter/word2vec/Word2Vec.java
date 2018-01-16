@@ -62,9 +62,6 @@ public class Word2Vec {
                 arguments.getWindowSize(), arguments.getAlpha());
         neuralNetwork.initializeExponentialTable();
         neuralNetwork.initialize(vocabulary);
-        if ( arguments.getNegativeSamples() > 0 ) {
-            neuralNetwork.initializeUnigramTable(vocabulary);
-        }
         // Train network
         try {
             BufferedReader trainingFile;
