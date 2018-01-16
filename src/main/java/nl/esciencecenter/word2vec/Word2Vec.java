@@ -77,7 +77,7 @@ public class Word2Vec {
         neuralNetwork.initialize(vocabulary);
         // Train neural network
         try {
-            long timer = 0;
+            long timer;
             BufferedReader trainingFile;
 
             timer = System.nanoTime();
