@@ -56,6 +56,9 @@ public class Word2Vec {
         }
         // Sort vocabulary
         vocabulary.sort();
+        if ( arguments.getDebug() ) {
+            System.err.println("The training file contains " + vocabulary.getOccurrences() + " words.");
+        }
         // Initialize neural network
         NeuralNetwork neuralNetwork = new NeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
