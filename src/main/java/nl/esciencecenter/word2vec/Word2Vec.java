@@ -26,31 +26,39 @@ public class Word2Vec {
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
+            long timer = 0;
             BufferedReader inVocabularyFile;
 
             try {
+                timer = System.nanoTime();
                 inVocabularyFile = new BufferedReader(new FileReader(arguments.getInVocabularyFilename()));
                 ReadVocabulary.read(vocabulary, inVocabularyFile);
                 inVocabularyFile.close();
+                timer = System.nanoTime() - timer;
             }catch ( IOException err) {
                 err.printStackTrace();
             }
             if ( arguments.getDebug() ) {
-                System.out.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\".");
+                System.out.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\"" +
+                        " in " + (timer / 1.0e9) + " seconds.");
                 System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
+            long timer = 0;
             BufferedReader trainingFile;
 
             try {
+                timer = System.nanoTime();
                 trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
                 LearnVocabulary.learn(vocabulary, trainingFile, arguments.getStrict());
                 trainingFile.close();
+                timer = System.nanoTime() - timer;
             } catch ( IOException err ) {
                 err.printStackTrace();
             }
             if ( arguments.getDebug() ) {
-                System.out.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\".");
+                System.out.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\"" +
+                        " in " + (timer / 1.0e9) + " seconds.");
                 System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         }
