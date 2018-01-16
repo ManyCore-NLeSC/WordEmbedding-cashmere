@@ -18,6 +18,7 @@ public class Vocabulary {
     public Vocabulary(Integer occurrenceThreshold) {
         maxSize = Integer.MAX_VALUE;
         this.occurrenceThreshold = occurrenceThreshold;
+        occurrences = 0;
         words = new HashMap<>();
     }
 
