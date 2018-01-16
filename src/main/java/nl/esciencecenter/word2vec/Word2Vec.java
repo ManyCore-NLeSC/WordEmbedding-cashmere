@@ -36,8 +36,8 @@ public class Word2Vec {
                 err.printStackTrace();
             }
             if ( arguments.getDebug() ) {
-                System.out.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename()
-                        + "\"; the vocabulary contains " + vocabulary.getNrWords() + " words.");
+                System.out.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\".");
+                System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
             BufferedReader trainingFile;
@@ -50,14 +50,15 @@ public class Word2Vec {
                 err.printStackTrace();
             }
             if ( arguments.getDebug() ) {
-                System.out.println("Learned vocabulary from file \"" + arguments.getTrainingFilename()
-                        + "\"; the vocabulary contains " + vocabulary.getNrWords() + " words.");
+                System.out.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\".");
+                System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         }
         // Sort vocabulary
         vocabulary.sort();
         if ( arguments.getDebug() ) {
             System.out.println("The training file contains " + vocabulary.getOccurrences() + " words.");
+            System.out.println();
         }
         // Initialize neural network
         NeuralNetwork neuralNetwork = new NeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
