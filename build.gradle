@@ -20,7 +20,7 @@ task Word2Vec(type: Jar) {
         attributes "Implementation-Version" : version,
             "Main-Class" : "nl.esciencecenter.word2vec.Word2Vec"
     }
-    baseName = project.name + '-' + version
+    baseName = project.name + '-Word2Vec-'
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
