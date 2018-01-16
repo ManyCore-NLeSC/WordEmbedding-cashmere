@@ -60,6 +60,7 @@ public class Word2Vec {
         NeuralNetwork neuralNetwork = new NeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
                 arguments.getWindowSize(), arguments.getAlpha());
+        neuralNetwork.setDebug(arguments.getDebug());
         neuralNetwork.initializeExponentialTable();
         neuralNetwork.initialize(vocabulary);
         // Train network
