@@ -132,8 +132,8 @@ public class NeuralNetwork {
                 globalWordCount += currentWordCount - previousWordCount;
                 previousWordCount = currentWordCount;
                 if ( debug ) {
-                    System.out.println("Alpha: " + currentAlpha
-                            + " Progress: " + ((globalWordCount / (float)(vocabulary.getOccurrences() + 1)) * 100));
+                    System.out.format("Alpha: %.10f\t\tProgress: %.2f%n", currentAlpha,
+                            (globalWordCount / (float)(vocabulary.getOccurrences() + 1)) * 100);
                 }
                 currentAlpha = alpha * (1 - (globalWordCount / (float)(vocabulary.getOccurrences() + 1)));
                 if ( currentAlpha < alpha * 0.0001f ) {
