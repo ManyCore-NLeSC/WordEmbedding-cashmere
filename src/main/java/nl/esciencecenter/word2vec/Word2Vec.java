@@ -65,7 +65,7 @@ public class Word2Vec {
         // Sort vocabulary
         vocabulary.sort();
         if ( arguments.getDebug() ) {
-            System.out.println("The training file contains " + vocabulary.getOccurrences() + " words.");
+            System.out.println("The training file contains " + vocabulary.getOccurrences() + " useful words.");
             System.out.println();
         }
         // Initialize neural network
