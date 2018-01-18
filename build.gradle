@@ -18,7 +18,7 @@ dependencies {
 task Word2Vec(type: Jar) {
     manifest {
         attributes "Implementation-Version" : version,
-            "Main-Class" : "nl.esciencecenter.word2vec.Word2Vec"
+            "Main-Class" : "nl.esciencecenter.wordembedding.Word2Vec"
     }
     baseName = project.name + '-Word2Vec'
     from {
