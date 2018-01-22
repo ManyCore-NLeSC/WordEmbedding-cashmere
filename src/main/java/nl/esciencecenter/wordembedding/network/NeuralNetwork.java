@@ -411,7 +411,8 @@ public class NeuralNetwork {
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(inputLayer[(word.getSortedIndex() * vectorDimensions) + neuronIndex] + " ");
+                fileWriter.write(String.format("%.6f ",
+                        inputLayer[(word.getSortedIndex() * vectorDimensions) + neuronIndex]));
             }
             fileWriter.newLine();
         }
@@ -423,8 +424,8 @@ public class NeuralNetwork {
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(outputLayerNegativeSamples[(word.getSortedIndex() * vectorDimensions)
-                        + neuronIndex] + " ");
+                fileWriter.write(String.format("%.6f ", outputLayerNegativeSamples[(word.getSortedIndex() * vectorDimensions)
+                        + neuronIndex]));
             }
             fileWriter.newLine();
         }
