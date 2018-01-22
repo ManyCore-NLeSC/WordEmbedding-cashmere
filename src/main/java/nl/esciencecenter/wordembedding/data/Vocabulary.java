@@ -59,12 +59,12 @@ public class Vocabulary {
         words.remove(word);
     }
 
-    public Word getWord(String word) {
+    public synchronized Word getWord(String word) {
         return words.get(word);
     }
 
     // TODO: I am aware that this method is expensive, think how it could be improved
-    public Word getSortedWord(Integer index) {
+    public synchronized Word getSortedWord(Integer index) {
         if ( (index < 0) || (index >= getNrWords()) ) {
             return null;
         }
@@ -76,11 +76,11 @@ public class Vocabulary {
         return null;
     }
 
-    public Collection<Word> getWords() {
+    public synchronized Collection<Word> getWords() {
         return words.values();
     }
 
-    public Integer getNrWords() {
+    public synchronized Integer getNrWords() {
         return words.size();
     }
 
