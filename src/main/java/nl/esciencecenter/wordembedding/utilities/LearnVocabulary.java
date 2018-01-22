@@ -41,7 +41,7 @@ public class LearnVocabulary extends Thread {
                 }
             }
         } catch ( IOException err ) {
-            return;
+            err.printStackTrace();
         }
     }
 }
