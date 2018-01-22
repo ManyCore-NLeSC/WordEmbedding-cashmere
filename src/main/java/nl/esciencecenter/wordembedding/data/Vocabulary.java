@@ -42,7 +42,7 @@ public class Vocabulary {
         return occurrences;
     }
 
-    public void addWord(Word word) {
+    public synchronized void addWord(Word word) {
         if ( words.containsKey(word.getWord()) ) {
             words.get(word.getWord()).incrementOccurrences();
         } else {
@@ -55,7 +55,7 @@ public class Vocabulary {
         addWord(new Word(word));
     }
 
-    private void removeWord(String word) {
+    private synchronized void removeWord(String word) {
         words.remove(word);
     }
 
