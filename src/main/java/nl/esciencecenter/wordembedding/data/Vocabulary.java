@@ -84,7 +84,7 @@ public class Vocabulary {
         return words.size();
     }
 
-    public void reduce() {
+    public synchronized void reduce() {
         ArrayList<String> wordsToRemove = new ArrayList<>();
 
         for ( Word word : words.values() ) {
