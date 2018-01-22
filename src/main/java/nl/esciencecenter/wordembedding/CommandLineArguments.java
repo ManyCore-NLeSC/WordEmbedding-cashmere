@@ -47,6 +47,8 @@ public class CommandLineArguments {
     private Boolean binaryMode = false;
     @Parameter(names = {"-store_context_vectors", "-dumpcv"}, description = "File where to store the context vectors.")
     private String outContextVectorsFilename = "";
+    @Parameter(names = {"-threads"}, description = "Number of threads.")
+    private Integer threads = 1;
 
     public Boolean getHelp() {
         return help;
@@ -126,5 +128,9 @@ public class CommandLineArguments {
 
     public String getOutContextVectorsFilename() {
         return outContextVectorsFilename;
+    }
+
+    public Integer getNrThreads() {
+        return threads;
     }
 }
