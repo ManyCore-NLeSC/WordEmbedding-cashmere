@@ -12,7 +12,7 @@ import java.io.*;
 public class Word2Vec {
 
     public static void main(String [] argv) {
-        Vocabulary vocabulary;
+        final Vocabulary vocabulary;
 
         // Command line arguments parsing
         CommandLineArguments arguments = new CommandLineArguments();
@@ -45,13 +45,16 @@ public class Word2Vec {
             }
         } else {
             long timer = 0;
-            BufferedReader trainingFile;
+            final BufferedReader trainingFile;
 
             try {
                 timer = System.nanoTime();
                 trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-                LearnVocabulary.learn(vocabulary, trainingFile, arguments.getStrict());
+                for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
+                    new LearnVocabulary(vocabulary, trainingFile, arguments.getStrict()).run();
+                }
                 trainingFile.close();
+                vocabulary.reduce();
                 timer = System.nanoTime() - timer;
             } catch ( IOException err ) {
                 err.printStackTrace();
