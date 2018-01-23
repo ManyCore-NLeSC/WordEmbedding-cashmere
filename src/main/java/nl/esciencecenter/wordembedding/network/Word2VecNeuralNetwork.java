@@ -137,6 +137,7 @@ public class Word2VecNeuralNetwork {
             worker.setNegativeSamples(negativeSamples);
             worker.setAlpha(alpha);
             worker.setSamplingFactor(samplingFactor);
+            worker.run();
         }
     }
 
