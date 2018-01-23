@@ -6,10 +6,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class LearnVocabulary extends Thread {
-    private static double fillingThreshold = 0.7;
-    private final Vocabulary vocabulary;
-    private final BufferedReader fileReader;
-    private final Boolean strict;
+    private final double fillingThreshold = 0.7;
+    private Vocabulary vocabulary;
+    private BufferedReader fileReader;
+    private Boolean strict;
 
 
     public LearnVocabulary(Vocabulary vocabulary, BufferedReader fileReader, Boolean strict) {
