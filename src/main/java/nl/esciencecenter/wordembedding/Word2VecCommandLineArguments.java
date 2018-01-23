@@ -2,7 +2,7 @@ package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.Parameter;
 
-public class CommandLineArguments {
+public class Word2VecCommandLineArguments {
     @Parameter(names = {"-help", "-h"}, help = true)
     private Boolean help = false;
     @Parameter(names = {"-training_file", "-train"}, description = "Text file containing the data to train the model.",

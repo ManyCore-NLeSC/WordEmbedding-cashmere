@@ -15,7 +15,7 @@ public class Word2Vec {
         final Vocabulary vocabulary;
 
         // Command line arguments parsing
-        CommandLineArguments arguments = new CommandLineArguments();
+        Word2VecCommandLineArguments arguments = new Word2VecCommandLineArguments();
         JCommander commander = JCommander.newBuilder().addObject(arguments).build();
         commander.parse(argv);
         if ( arguments.getHelp() ) {
