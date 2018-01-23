@@ -2,7 +2,7 @@ package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.network.NeuralNetwork;
+import nl.esciencecenter.wordembedding.network.Word2VecNeuralNetwork;
 import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
 import nl.esciencecenter.wordembedding.utilities.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.SaveVocabulary;
@@ -72,12 +72,12 @@ public class Word2Vec {
             System.out.println();
         }
         // Initialize neural network
-        NeuralNetwork neuralNetwork = new NeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
+        Word2VecNeuralNetwork word2VecNeuralNetwork = new Word2VecNeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
                 arguments.getWindowSize(), arguments.getAlpha());
-        neuralNetwork.setDebug(arguments.getDebug());
-        neuralNetwork.initializeExponentialTable();
-        neuralNetwork.initialize(vocabulary);
+        word2VecNeuralNetwork.setDebug(arguments.getDebug());
+        word2VecNeuralNetwork.initializeExponentialTable();
+        word2VecNeuralNetwork.initialize(vocabulary);
         // Train neural network
         try {
             long timer;
@@ -85,7 +85,7 @@ public class Word2Vec {
 
             timer = System.nanoTime();
             trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-            neuralNetwork.trainModel(vocabulary, trainingFile);
+            word2VecNeuralNetwork.trainModel(vocabulary, trainingFile);
             trainingFile.close();
             timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
@@ -121,9 +121,9 @@ public class Word2Vec {
             long timer = System.nanoTime();
             outputFile = new BufferedWriter(new FileWriter(arguments.getOutputFilename()));
             if ( arguments.getClasses() == 0 ) {
-                neuralNetwork.saveWordVectors(vocabulary, outputFile);
+                word2VecNeuralNetwork.saveWordVectors(vocabulary, outputFile);
             } else {
-                neuralNetwork.saveClasses(vocabulary, outputFile, arguments.getClasses());
+                word2VecNeuralNetwork.saveClasses(vocabulary, outputFile, arguments.getClasses());
             }
             outputFile.close();
             timer = System.nanoTime() - timer;
@@ -133,7 +133,7 @@ public class Word2Vec {
             if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
                 timer = System.nanoTime();
                 outputFile = new BufferedWriter(new FileWriter(arguments.getOutContextVectorsFilename()));
-                neuralNetwork.saveContextVectors(vocabulary, outputFile);
+                word2VecNeuralNetwork.saveContextVectors(vocabulary, outputFile);
                 outputFile.close();
                 timer = System.nanoTime() - timer;
                 if ( arguments.getDebug() ) {

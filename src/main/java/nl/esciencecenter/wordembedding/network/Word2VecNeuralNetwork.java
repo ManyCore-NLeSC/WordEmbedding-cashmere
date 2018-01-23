@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class NeuralNetwork {
+public class Word2VecNeuralNetwork {
     private final Integer MAX_EXP = 6;
     private final Integer EXP_TABLE_SIZE = 1000;
     private Boolean CBOW;
@@ -34,8 +34,8 @@ public class NeuralNetwork {
     private float [] outputLayer;
     private float [] outputLayerNegativeSamples;
 
-    public NeuralNetwork(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
-                         Integer vectorDimensions, Integer windowSize, Float alpha) {
+    public Word2VecNeuralNetwork(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
+                                 Integer vectorDimensions, Integer windowSize, Float alpha) {
         this.CBOW = CBOW;
         this.hierarchicalSoftmax = hierarchicalSoftmax;
         this.usePosition = usePosition;
