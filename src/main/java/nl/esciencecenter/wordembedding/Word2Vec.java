@@ -46,12 +46,21 @@ public class Word2Vec {
         } else {
             long timer = 0;
             BufferedReader trainingFile;
+            LearnVocabulary [] workers = new LearnVocabulary [arguments.getNrThreads()];
 
             try {
                 timer = System.nanoTime();
                 trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
                 for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                    new LearnVocabulary(vocabulary, trainingFile, arguments.getStrict()).run();
+                    workers[thread] = new LearnVocabulary(vocabulary, trainingFile, arguments.getStrict());
+                    workers[thread].run();
+                }
+                for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
+                    try {
+                        workers[thread].join();
+                    } catch ( InterruptedException err ) {
+                        err.printStackTrace();
+                    }
                 }
                 trainingFile.close();
                 vocabulary.reduce();
@@ -76,6 +85,7 @@ public class Word2Vec {
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
                 arguments.getWindowSize(), arguments.getAlpha());
         word2VecNeuralNetwork.setDebug(arguments.getDebug());
+        word2VecNeuralNetwork.setThreads(arguments.getNrThreads());
         word2VecNeuralNetwork.initializeExponentialTable();
         word2VecNeuralNetwork.initialize(vocabulary);
         // Train neural network
