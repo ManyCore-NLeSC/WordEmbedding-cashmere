@@ -12,7 +12,7 @@ import java.io.*;
 public class Word2Vec {
 
     public static void main(String [] argv) {
-        final Vocabulary vocabulary;
+        Vocabulary vocabulary;
 
         // Command line arguments parsing
         Word2VecCommandLineArguments arguments = new Word2VecCommandLineArguments();
@@ -45,7 +45,7 @@ public class Word2Vec {
             }
         } else {
             long timer = 0;
-            final BufferedReader trainingFile;
+            BufferedReader trainingFile;
 
             try {
                 timer = System.nanoTime();
