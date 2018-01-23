@@ -160,8 +160,8 @@ public class Word2VecNeuralNetwork {
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(
-                        sixDecimalFloat.format(inputLayer[(word.getSortedIndex() * vectorDimensions) + neuronIndex])
+                fileWriter.write(sixDecimalFloat.format(
+                        inputLayer[(word.getSortedIndex() * vectorDimensions) + neuronIndex])
                 + " ");
             }
             fileWriter.newLine();
@@ -169,13 +169,17 @@ public class Word2VecNeuralNetwork {
     }
 
     public void saveContextVectors(Vocabulary vocabulary, BufferedWriter fileWriter) throws IOException {
+        DecimalFormat sixDecimalFloat = new DecimalFormat("0.000000");
+
+        sixDecimalFloat.setRoundingMode(RoundingMode.CEILING);
         fileWriter.write(vocabulary.getNrWords() + " " + vectorDimensions);
         fileWriter.newLine();
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(String.format("%.6f ", outputLayerNegativeSamples[(word.getSortedIndex() * vectorDimensions)
-                        + neuronIndex]));
+                fileWriter.write(sixDecimalFloat.format(
+                                outputLayerNegativeSamples[(word.getSortedIndex() * vectorDimensions) + neuronIndex])
+                 + " ");
             }
             fileWriter.newLine();
         }
