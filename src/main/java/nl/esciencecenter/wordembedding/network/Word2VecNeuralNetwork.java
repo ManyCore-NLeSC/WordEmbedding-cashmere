@@ -122,22 +122,30 @@ public class Word2VecNeuralNetwork {
     }
 
     public void trainModel(Vocabulary vocabulary, BufferedReader fileReader) {
+        Word2VecNeuralNetworkWorker [] workers = new Word2VecNeuralNetworkWorker [threads];
 
         for ( int thread = 0; thread < threads; thread++ ) {
-            Word2VecNeuralNetworkWorker worker = new Word2VecNeuralNetworkWorker(globalWordCount, currentAlpha,
+            workers[thread] = new Word2VecNeuralNetworkWorker(globalWordCount, currentAlpha,
                     exponentialTable, inputLayer, outputLayer, outputLayerNegativeSamples, vocabulary, fileReader);
-            worker.setCBOW(CBOW);
-            worker.setDebug(debug);
-            worker.setHierarchicalSoftmax(hierarchicalSoftmax);
-            worker.setUsePosition(usePosition);
-            worker.setMAX_EXP(MAX_EXP);
-            worker.setEXP_TABLE_SIZE(EXP_TABLE_SIZE);
-            worker.setVectorDimensions(vectorDimensions);
-            worker.setWindowSize(windowSize);
-            worker.setNegativeSamples(negativeSamples);
-            worker.setAlpha(alpha);
-            worker.setSamplingFactor(samplingFactor);
-            worker.run();
+            workers[thread].setCBOW(CBOW);
+            workers[thread].setDebug(debug);
+            workers[thread].setHierarchicalSoftmax(hierarchicalSoftmax);
+            workers[thread].setUsePosition(usePosition);
+            workers[thread].setMAX_EXP(MAX_EXP);
+            workers[thread].setEXP_TABLE_SIZE(EXP_TABLE_SIZE);
+            workers[thread].setVectorDimensions(vectorDimensions);
+            workers[thread].setWindowSize(windowSize);
+            workers[thread].setNegativeSamples(negativeSamples);
+            workers[thread].setAlpha(alpha);
+            workers[thread].setSamplingFactor(samplingFactor);
+            workers[thread].run();
+        }
+        for ( int thread = 0; thread < threads; thread++ ) {
+            try {
+                workers[thread].join();
+            } catch ( InterruptedException err ) {
+              err.printStackTrace();
+            }
         }
     }
 
