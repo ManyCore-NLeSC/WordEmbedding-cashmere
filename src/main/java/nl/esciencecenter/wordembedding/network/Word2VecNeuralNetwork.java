@@ -29,8 +29,6 @@ public class Word2VecNeuralNetwork {
     private Float samplingFactor = 0.0f;
     private volatile float [] exponentialTable;
     private volatile float [] inputLayer;
-    private volatile float [] hiddenLayer0;
-    private volatile float [] hiddenError0;
     private volatile float [] outputLayer;
     private volatile float [] outputLayerNegativeSamples;
 
