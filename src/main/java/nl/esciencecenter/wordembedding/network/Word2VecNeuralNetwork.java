@@ -13,26 +13,24 @@ import java.util.Random;
 public class Word2VecNeuralNetwork {
     private final Integer MAX_EXP = 6;
     private final Integer EXP_TABLE_SIZE = 1000;
-    private Boolean CBOW;
-    private Boolean hierarchicalSoftmax;
-    private Boolean usePosition;
+    private final Boolean CBOW;
+    private final Boolean hierarchicalSoftmax;
+    private final Boolean usePosition;
     private Boolean debug = false;
-    private Integer negativeSamples;
-    private Integer vectorDimensions;
-    private Integer windowSize;
-    private Integer updateInterval = 10000;
-    private Integer globalWordCount = 0;
-    private Integer currentWordCount = 0;
-    private Integer previousWordCount = 0;
-    private Float alpha;
-    private Float currentAlpha;
+    private final Integer negativeSamples;
+    private final Integer vectorDimensions;
+    private final Integer windowSize;
+    private Integer threads = 1;
+    private volatile Integer globalWordCount = 0;
+    private final Float alpha;
+    private volatile Float currentAlpha;
     private Float samplingFactor = 0.0f;
-    private float [] exponentialTable;
-    private float [] inputLayer;
-    private float [] hiddenLayer0;
-    private float [] hiddenError0;
-    private float [] outputLayer;
-    private float [] outputLayerNegativeSamples;
+    private volatile float [] exponentialTable;
+    private volatile float [] inputLayer;
+    private volatile float [] hiddenLayer0;
+    private volatile float [] hiddenError0;
+    private volatile float [] outputLayer;
+    private volatile float [] outputLayerNegativeSamples;
 
     public Word2VecNeuralNetwork(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
                                  Integer vectorDimensions, Integer windowSize, Float alpha) {
@@ -86,6 +84,14 @@ public class Word2VecNeuralNetwork {
         return samplingFactor;
     }
 
+    public void setThreads(Integer threads) {
+        this.threads = threads;
+    }
+
+    public Integer getThreads() {
+        return threads;
+    }
+
     public void initialize(Vocabulary vocabulary) {
         Random randomNumberGenerator = new Random();
 
@@ -115,293 +121,11 @@ public class Word2VecNeuralNetwork {
         }
     }
 
-    // The code of this method is a straightforward translation of Google's C code
-    // TODO: check if it could be written in a better way
-    public void trainModel(Vocabulary vocabulary, BufferedReader fileReader) throws IOException {
-        Integer sentencePosition = 0;
-        String line;
-        Random randomNumberGenerator = new Random();
+    public void trainModel(Vocabulary vocabulary, BufferedReader fileReader) {
 
-        hiddenLayer0 = new float [vectorDimensions];
-        hiddenError0 = new float [vectorDimensions];
-        // Training loop
-        while ( (line = fileReader.readLine()) != null ) {
-            ArrayList<String> sentence = new ArrayList<>();
-
-            if ( (currentWordCount - previousWordCount) > updateInterval ) {
-                globalWordCount += currentWordCount - previousWordCount;
-                previousWordCount = currentWordCount;
-                if ( debug ) {
-                    System.out.format("Alpha: %.10f\t\tProgress: %.2f%%%n", currentAlpha,
-                            (globalWordCount / (float)(vocabulary.getOccurrences() + 1)) * 100);
-                }
-                currentAlpha = alpha * (1 - (globalWordCount / (float)(vocabulary.getOccurrences() + 1)));
-                if ( currentAlpha < alpha * 0.0001f ) {
-                    currentAlpha = alpha * 0.0001f;
-                }
-            }
-            if ( sentence.size() == 0 ) {
-                while ( !line.isEmpty() ) {
-                    String word = ReadWord.readWord(line, false);
-
-                    if ( word == null ) {
-                        line = line.trim();
-                        continue;
-                    } else {
-                        line = line.substring(word.length());
-                        line = line.trim();
-                    }
-                    if ( vocabulary.getWord(word) == null ) {
-                        continue;
-                    }
-                    currentWordCount++;
-                    if ( samplingFactor > 0 ) {
-                        Float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences()
-                                / (samplingFactor * vocabulary.getNrWords())) + 1)
-                                * (samplingFactor * vocabulary.getNrWords())
-                                / vocabulary.getWord(word).getOccurrences());
-
-                        if ( sample < randomNumberGenerator.nextFloat() ) {
-                            continue;
-                        }
-                    }
-                    sentence.add(word);
-                }
-                sentencePosition = 0;
-            }
-            if ( sentence.size() == 0 ) {
-                // If there are no words in the sentence, read another line.
-                continue;
-            }
-            String word = sentence.get(sentencePosition);
-            for ( int neuronIndex = 0; neuronIndex < hiddenLayer0.length; neuronIndex++ ) {
-                hiddenLayer0[neuronIndex] = 0.0f;
-                hiddenError0[neuronIndex] = 0.0f;
-            }
-            Integer randomStartingWord = randomNumberGenerator.nextInt() % windowSize;
-            if ( CBOW ) {
-                CBOW(vocabulary, sentence, word, sentencePosition, randomStartingWord);
-            } else {
-                skipGram(vocabulary, sentence, word, sentencePosition, randomStartingWord);
-            }
-            sentencePosition++;
-            if ( sentencePosition >= sentence.size() ) {
-                sentence.clear();
-            }
-        }
-    }
-
-    // The code of this method is a straightforward translation of Google's C code
-    // TODO: check if it could be written in a better way
-    private void CBOW(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition,
-                      Integer randomStartingWord) {
-        for ( int wordIndex = randomStartingWord; wordIndex < (windowSize * 2 + 1) - randomStartingWord; wordIndex++ ) {
-            if ( wordIndex != windowSize ) {
-                Integer lastWordIndex = sentencePosition - windowSize + wordIndex;
-                if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
-                    continue;
-                }
-                lastWordIndex = vocabulary.getWord(sentence.get(lastWordIndex)).getSortedIndex();
-                if ( lastWordIndex == -1 ) {
-                    continue;
-                }
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    hiddenLayer0[neuronIndex] = hiddenLayer0[neuronIndex]
-                            + inputLayer[(lastWordIndex * vectorDimensions) + neuronIndex];
-                }
-            }
-        }
-        if ( hierarchicalSoftmax ) {
-            for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
-                Float exponential = 0.0f;
-                Float gradient;
-                Integer relatedWordIndex = vocabulary.getWord(word).getPoint(symbolIndex) * vectorDimensions;
-
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    exponential += hiddenLayer0[neuronIndex] * outputLayer[relatedWordIndex + neuronIndex];
-                }
-                if ( (exponential <= -MAX_EXP) || exponential >= MAX_EXP ) {
-                    continue;
-                }
-                exponential = exponentialTable[(int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))];
-                gradient = (1 - vocabulary.getWord(word).getCode(symbolIndex) - exponential) * currentAlpha;
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
-                            + (gradient * outputLayer[relatedWordIndex + neuronIndex]);
-                    outputLayer[relatedWordIndex + neuronIndex] = outputLayer[relatedWordIndex + neuronIndex]
-                            + (gradient * hiddenLayer0[neuronIndex]);
-                }
-            }
-        }
-        if ( negativeSamples > 0 ) {
-            Integer target;
-            Integer label;
-            Integer relatedWordIndex;
-            Float exponential;
-            Float gradient;
-            Random randomNumberGenerator = new Random();
-
-            for ( int sample = 0; sample < negativeSamples + 1; sample++ ) {
-                if ( sample == 0 ) {
-                    target = vocabulary.getWord(word).getSortedIndex();
-                    label = 1;
-                } else {
-                    target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
-                    if ( target == 0 ) {
-                        target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                    } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
-                        continue;
-                    }
-                    label = 0;
-                }
-                exponential = 0.0f;
-                relatedWordIndex = target * vectorDimensions;
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    exponential += hiddenLayer0[neuronIndex]
-                            * outputLayerNegativeSamples[relatedWordIndex + neuronIndex];
-                }
-                if ( exponential > MAX_EXP ) {
-                    gradient = (label - 1) * currentAlpha;
-                } else if ( exponential < -MAX_EXP ) {
-                    gradient = label * currentAlpha;
-                } else {
-                    gradient = (label
-                            - exponentialTable[(int)((exponential + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))])
-                            * currentAlpha;
-                }
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
-                            + (gradient * outputLayerNegativeSamples[relatedWordIndex + neuronIndex]);
-                    outputLayerNegativeSamples[relatedWordIndex + neuronIndex] =
-                            outputLayerNegativeSamples[relatedWordIndex + neuronIndex]
-                                    + (gradient * hiddenLayer0[neuronIndex]);
-                }
-            }
-        }
-        for ( int wordIndex = randomStartingWord; wordIndex < (windowSize * 2) + 1; wordIndex++ ) {
-            if ( wordIndex != windowSize ) {
-                Integer lastWordIndex = sentencePosition - windowSize + wordIndex;
-
-                if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
-                    continue;
-                }
-                lastWordIndex = vocabulary.getWord(sentence.get(lastWordIndex)).getSortedIndex();
-                if ( lastWordIndex == -1 ) {
-                    continue;
-                }
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    inputLayer[(lastWordIndex * vectorDimensions) + neuronIndex] =
-                            inputLayer[(lastWordIndex * vectorDimensions) + neuronIndex]
-                                    + hiddenError0[neuronIndex];
-                }
-            }
-        }
-    }
-
-    // The code of this method is a straightforward translation of Google's C code
-    // TODO: check if it could be written in a better way
-    private void skipGram(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition,
-                          Integer randomStartingWord) {
-        Integer lastWordIndex;
-        Integer relatedWordIndexOne;
-        Integer relatedWordIndexTwo;
-        Float exponential;
-        Float gradient;
-
-        for ( int wordIndex = randomStartingWord; wordIndex < (windowSize * 2) - 1; wordIndex++ ) {
-            if ( wordIndex != windowSize ) {
-                lastWordIndex = sentencePosition - windowSize + wordIndex;
-                if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
-                    continue;
-                }
-                lastWordIndex = vocabulary.getWord(sentence.get(lastWordIndex)).getSortedIndex();
-                if ( lastWordIndex == -1 ) {
-                    continue;
-                }
-                relatedWordIndexOne = lastWordIndex * vectorDimensions;
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    hiddenError0[neuronIndex] = 0.0f;
-                }
-                if ( hierarchicalSoftmax ) {
-                    for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
-                        exponential = 0.0f;
-                        relatedWordIndexTwo = vocabulary.getWord(word).getPoint(symbolIndex) * vectorDimensions;
-                        for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                            exponential += inputLayer[relatedWordIndexOne + neuronIndex]
-                                    * outputLayer[relatedWordIndexTwo + neuronIndex];
-                        }
-                        if ( exponential <= -MAX_EXP || exponential >= MAX_EXP ) {
-                            continue;
-                        }
-                        exponential = exponentialTable[(int)((exponential + MAX_EXP)
-                                * (EXP_TABLE_SIZE / MAX_EXP / 2))];
-                        gradient = (1 - vocabulary.getWord(word).getCode(symbolIndex) - exponential)
-                                * currentAlpha;
-                        for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                            hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
-                                    + (gradient * outputLayer[relatedWordIndexTwo + neuronIndex]);
-                            outputLayer[relatedWordIndexTwo + neuronIndex] =
-                                    outputLayer[relatedWordIndexTwo + neuronIndex]
-                                            + (gradient * inputLayer[relatedWordIndexOne + neuronIndex]);
-                        }
-                    }
-                }
-                if ( negativeSamples > 0 ) {
-                    Integer target;
-                    Integer label;
-                    Random randomNumberGenerator = new Random();
-
-                    for ( int sample = 0; sample < negativeSamples + 1; sample++ ) {
-                        if ( sample == 0 ) {
-                            target = vocabulary.getWord(word).getSortedIndex();
-                            label = 1;
-                        } else {
-                            target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
-                            if ( target == 0 ) {
-                                target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                            } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
-                                continue;
-                            }
-                            label = 0;
-                        }
-                        if ( usePosition ) {
-                            relatedWordIndexTwo = (windowSize * 2 * target) * vectorDimensions;
-                            if ( wordIndex > windowSize ) {
-                                relatedWordIndexTwo += wordIndex - 1;
-                            } else {
-                                relatedWordIndexTwo += wordIndex;
-                            }
-                        } else {
-                            relatedWordIndexTwo = target * vectorDimensions;
-                        }
-                        exponential = 0.0f;
-                        for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                            exponential += inputLayer[relatedWordIndexOne + neuronIndex]
-                                    * outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex];
-                        }
-                        if ( exponential > MAX_EXP ) {
-                            gradient = (label - 1) * currentAlpha;
-                        } else if ( exponential < -MAX_EXP ) {
-                            gradient = label * currentAlpha;
-                        } else {
-                            gradient = (label
-                                    - exponentialTable[(int)((exponential + MAX_EXP)
-                                    * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * currentAlpha;
-                        }
-                        for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                            hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
-                                    * outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex]);
-                            outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex] =
-                                    outputLayerNegativeSamples[relatedWordIndexTwo + neuronIndex]
-                                            + (gradient * inputLayer[relatedWordIndexOne + neuronIndex]);
-                        }
-                    }
-                }
-                for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                    inputLayer[relatedWordIndexOne + neuronIndex] =
-                            inputLayer[relatedWordIndexOne + neuronIndex] + hiddenError0[neuronIndex];
-                }
-            }
+        for ( int thread = 0; thread < threads; thread++ ) {
+            new Word2VecNeuralNetworkWorker(globalWordCount, currentAlpha, exponentialTable, inputLayer, outputLayer,
+                    outputLayerNegativeSamples, vocabulary, fileReader).run();
         }
     }
 
