@@ -7,6 +7,8 @@ import nl.esciencecenter.wordembedding.utilities.ReadWord;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -150,13 +152,17 @@ public class Word2VecNeuralNetwork {
     }
 
     public void saveWordVectors(Vocabulary vocabulary, BufferedWriter fileWriter) throws IOException {
+        DecimalFormat sixDecimalFloat = new DecimalFormat("0.000000");
+
+        sixDecimalFloat.setRoundingMode(RoundingMode.CEILING);
         fileWriter.write(vocabulary.getNrWords() + " " + vectorDimensions);
         fileWriter.newLine();
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < vectorDimensions; neuronIndex++ ) {
-                fileWriter.write(String.format("%.6f ",
-                        inputLayer[(word.getSortedIndex() * vectorDimensions) + neuronIndex]));
+                fileWriter.write(
+                        sixDecimalFloat.format(inputLayer[(word.getSortedIndex() * vectorDimensions) + neuronIndex])
+                + " ");
             }
             fileWriter.newLine();
         }
