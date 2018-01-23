@@ -43,7 +43,7 @@ public class NeuralNetwork {
         this.vectorDimensions = vectorDimensions;
         this.windowSize = windowSize;
         this.alpha = alpha;
-        currentAlpha = alpha;
+        this.currentAlpha = alpha;
     }
 
     public Boolean getSkipGram() {
