@@ -103,9 +103,9 @@ public class Word2VecNeuralNetworkWorker extends Thread {
         Integer sentencePosition = 0;
         String line;
         Random randomNumberGenerator = new Random();
+
         hiddenLayer0 = new float [vectorDimensions];
         hiddenError0 = new float [vectorDimensions];
-
         // Training loop
         try {
             while ( (line = fileReader.readLine()) != null ) {

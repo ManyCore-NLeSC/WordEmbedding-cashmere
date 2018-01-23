@@ -124,8 +124,19 @@ public class Word2VecNeuralNetwork {
     public void trainModel(Vocabulary vocabulary, BufferedReader fileReader) {
 
         for ( int thread = 0; thread < threads; thread++ ) {
-            new Word2VecNeuralNetworkWorker(globalWordCount, currentAlpha, exponentialTable, inputLayer, outputLayer,
-                    outputLayerNegativeSamples, vocabulary, fileReader).run();
+            Word2VecNeuralNetworkWorker worker = new Word2VecNeuralNetworkWorker(globalWordCount, currentAlpha,
+                    exponentialTable, inputLayer, outputLayer, outputLayerNegativeSamples, vocabulary, fileReader);
+            worker.setCBOW(CBOW);
+            worker.setDebug(debug);
+            worker.setHierarchicalSoftmax(hierarchicalSoftmax);
+            worker.setUsePosition(usePosition);
+            worker.setMAX_EXP(MAX_EXP);
+            worker.setEXP_TABLE_SIZE(EXP_TABLE_SIZE);
+            worker.setVectorDimensions(vectorDimensions);
+            worker.setWindowSize(windowSize);
+            worker.setNegativeSamples(negativeSamples);
+            worker.setAlpha(alpha);
+            worker.setSamplingFactor(samplingFactor);
         }
     }
 
