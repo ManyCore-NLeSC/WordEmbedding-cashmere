@@ -12,6 +12,7 @@ import java.io.*;
 public class Word2Vec {
 
     public static void main(String [] argv) {
+        long globalTimer = System.nanoTime();
         Vocabulary vocabulary;
 
         // Command line arguments parsing
@@ -152,6 +153,10 @@ public class Word2Vec {
             }
         } catch ( IOException err ) {
             err.printStackTrace();
+        }
+        globalTimer = System.nanoTime() - globalTimer;
+        if ( arguments.getDebug() ) {
+            System.out.println("Word2Vec execution took " + (globalTimer / 1.0e9) + " seconds.");
         }
     }
 }
