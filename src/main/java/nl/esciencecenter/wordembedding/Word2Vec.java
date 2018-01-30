@@ -53,7 +53,7 @@ public class Word2Vec {
                 trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
                 for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
                     workers[thread] = new LearnVocabulary(vocabulary, trainingFile, arguments.getStrict());
-                    workers[thread].run();
+                    workers[thread].start();
                 }
                 for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
                     try {
