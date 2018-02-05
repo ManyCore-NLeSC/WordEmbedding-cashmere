@@ -42,62 +42,6 @@ public class Vocabulary {
         return occurrences;
     }
 
-    public synchronized void addWord(Word word) {
-        if ( words.containsKey(word.getWord()) ) {
-            words.get(word.getWord()).incrementOccurrences();
-        } else {
-            words.put(word.getWord(), word);
-            word.incrementOccurrences();
-        }
-    }
-
-    public void addWord(String word) {
-        addWord(new Word(word));
-    }
-
-    private synchronized void removeWord(String word) {
-        words.remove(word);
-    }
-
-    public synchronized Word getWord(String word) {
-        return words.get(word);
-    }
-
-    // TODO: I am aware that this method is expensive, think how it could be improved
-    public synchronized Word getSortedWord(Integer index) {
-        if ( (index < 0) || (index >= getNrWords()) ) {
-            return null;
-        }
-        for ( Word word : words.values() ) {
-            if ( word.getSortedIndex().equals(index) ) {
-                return word;
-            }
-        }
-        return null;
-    }
-
-    public synchronized Collection<Word> getWords() {
-        return words.values();
-    }
-
-    public synchronized Integer getNrWords() {
-        return words.size();
-    }
-
-    public synchronized void reduce() {
-        ArrayList<String> wordsToRemove = new ArrayList<>();
-
-        for ( Word word : words.values() ) {
-            if ( word.getOccurrences() < occurrenceThreshold ) {
-                wordsToRemove.add(word.getWord());
-            }
-        }
-        for ( String word : wordsToRemove ) {
-            removeWord(word);
-        }
-        occurrenceThreshold++;
-    }
-
     // TODO: still pretty "hacky", think how it could be improved
     public void sort() {
         ArrayList<String> sortedWords = new ArrayList<>(words.keySet());
@@ -189,5 +133,54 @@ public class Vocabulary {
             word.setCodes(code);
             word.setPoints(points);
         }
+    }
+
+    //
+    // Synchronized methods
+    //
+    public synchronized void incrementOccurrenceThreshold(Integer increment) {
+        this.occurrenceThreshold += increment;
+    }
+
+    public synchronized void addWord(Word word) {
+        if ( words.containsKey(word.getWord()) ) {
+            words.get(word.getWord()).incrementOccurrences();
+        } else {
+            words.put(word.getWord(), word);
+            word.incrementOccurrences();
+        }
+    }
+
+    public synchronized void addWord(String word) {
+        addWord(new Word(word));
+    }
+
+    public synchronized void removeWord(String word) {
+        words.remove(word);
+    }
+
+    public synchronized Word getWord(String word) {
+        return words.get(word);
+    }
+
+    // TODO: I am aware that this method is expensive, think how it could be improved
+    public synchronized Word getSortedWord(Integer index) {
+        if ( (index < 0) || (index >= getNrWords()) ) {
+            return null;
+        }
+        for ( Word word : words.values() ) {
+            if ( word.getSortedIndex().equals(index) ) {
+                return word;
+            }
+        }
+        return null;
+    }
+
+    public synchronized Collection<Word> getWords() {
+        return words.values();
+    }
+
+    public synchronized Integer getNrWords() {
+        return words.size();
     }
 }
