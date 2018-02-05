@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SaveWord2VecClasses {
-    public static void save(Vocabulary vocabulary,
-                            Word2VecNeuralNetwork neuralNetwork,
-                            BufferedWriter fileWriter,
-                            Integer nrClasses)
-            throws IOException {
+    public static void save(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, BufferedWriter fileWriter,
+                            Integer nrClasses) throws IOException {
         Integer nrIterations = 10;
         ArrayList<Integer> classMapping = new ArrayList<>(vocabulary.getNrWords());
         ArrayList<Integer> classCounter = new ArrayList<>(nrClasses);
