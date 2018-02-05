@@ -35,7 +35,7 @@ public class LearnVocabulary extends Thread {
                     }
                     vocabulary.addWord(word);
                     if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
-                        vocabulary.reduce();
+                        ReduceVocabulary.reduce(vocabulary);
                     }
                 }
             }
