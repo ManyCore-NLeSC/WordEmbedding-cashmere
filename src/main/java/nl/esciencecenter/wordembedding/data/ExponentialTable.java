@@ -5,6 +5,8 @@ public class ExponentialTable {
     private final Integer EXP_TABLE_SIZE = 1000;
     private float [] exponentialTable;
 
+    public ExponentialTable() {}
+
     public void initialize() {
         exponentialTable = new float [EXP_TABLE_SIZE + 1];
         for ( int x = 0; x < EXP_TABLE_SIZE; x++ ) {
@@ -15,5 +17,13 @@ public class ExponentialTable {
 
     public float get(Integer item) {
         return exponentialTable[item];
+    }
+
+    public Integer getMaximumExponential() {
+        return MAX_EXP;
+    }
+
+    public Integer getTableSize() {
+        return EXP_TABLE_SIZE;
     }
 }
