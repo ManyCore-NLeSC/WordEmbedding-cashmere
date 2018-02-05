@@ -1,5 +1,6 @@
 package nl.esciencecenter.wordembedding.data;
 
+import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -40,7 +41,7 @@ public class VocabularyTest {
         assertEquals(stringOne, vocabularyOne.getWord(stringOne).getWord());
         assertEquals(stringTwo, vocabularyOne.getWord(stringTwo).getWord());
         assertEquals(2, vocabularyOne.getWords().size());
-        vocabularyOne.reduce();
+        ReduceVocabulary.reduce(vocabularyOne);
         assertEquals(3, vocabularyOne.getOccurrenceThreshold().intValue());
         assertEquals(stringOne, vocabularyOne.getWord(stringOne).getWord());
         assertEquals(null, vocabularyOne.getWord(stringTwo));
