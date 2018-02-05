@@ -5,6 +5,7 @@ import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.network.Word2VecNeuralNetwork;
 import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
 import nl.esciencecenter.wordembedding.utilities.ReadVocabulary;
+import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.SaveVocabulary;
 
 import java.io.*;
@@ -64,7 +65,7 @@ public class Word2Vec {
                     }
                 }
                 trainingFile.close();
-                vocabulary.reduce();
+                ReduceVocabulary.reduce(vocabulary);
                 timer = System.nanoTime() - timer;
             } catch ( IOException err ) {
                 err.printStackTrace();
