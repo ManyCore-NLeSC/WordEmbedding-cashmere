@@ -1,6 +1,7 @@
 package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.JCommander;
+import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.Word2VecNeuralNetwork;
