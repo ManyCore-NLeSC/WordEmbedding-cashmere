@@ -1,12 +1,10 @@
 package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.JCommander;
+import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.network.Word2VecNeuralNetwork;
-import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
-import nl.esciencecenter.wordembedding.utilities.ReadVocabulary;
-import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
-import nl.esciencecenter.wordembedding.utilities.SaveVocabulary;
+import nl.esciencecenter.wordembedding.data.Word2VecNeuralNetwork;
+import nl.esciencecenter.wordembedding.utilities.*;
 
 import java.io.*;
 
@@ -83,21 +81,33 @@ public class Word2Vec {
             System.out.println();
         }
         // Initialize neural network
-        Word2VecNeuralNetwork word2VecNeuralNetwork = new Word2VecNeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
+        Word2VecNeuralNetwork neuralNetwork = new Word2VecNeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
                 arguments.getWindowSize(), arguments.getAlpha());
-        word2VecNeuralNetwork.setDebug(arguments.getDebug());
-        word2VecNeuralNetwork.setThreads(arguments.getNrThreads());
-        word2VecNeuralNetwork.initializeExponentialTable();
-        word2VecNeuralNetwork.initialize(vocabulary);
+        ExponentialTable exponentialTable = new ExponentialTable();
+        exponentialTable.initialize();
+        neuralNetwork.initialize(vocabulary);
         // Train neural network
         try {
             long timer;
             BufferedReader trainingFile;
+            TrainWord2VecModel [] workers = new TrainWord2VecModel [arguments.getNrThreads()];
 
             timer = System.nanoTime();
             trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-            word2VecNeuralNetwork.trainModel(vocabulary, trainingFile);
+            for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
+                workers[thread] = new TrainWord2VecModel(vocabulary, neuralNetwork, trainingFile);
+                workers[thread].setDebug(arguments.getDebug());
+                workers[thread].setExponentialTable(exponentialTable);
+                workers[thread].start();
+            }
+            for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
+                try {
+                    workers[thread].join();
+                } catch ( InterruptedException err ) {
+                    err.printStackTrace();
+                }
+            }
             trainingFile.close();
             timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
@@ -134,9 +144,9 @@ public class Word2Vec {
             long timer = System.nanoTime();
             outputFile = new BufferedWriter(new FileWriter(arguments.getOutputFilename()));
             if ( arguments.getClasses() == 0 ) {
-                word2VecNeuralNetwork.saveWordVectors(vocabulary, outputFile);
+                SaveWord2VecWordVector.save(vocabulary, neuralNetwork, outputFile);
             } else {
-                word2VecNeuralNetwork.saveClasses(vocabulary, outputFile, arguments.getClasses());
+                SaveWord2VecClasses.save(vocabulary, neuralNetwork, outputFile, arguments.getClasses());
             }
             outputFile.close();
             timer = System.nanoTime() - timer;
@@ -146,7 +156,7 @@ public class Word2Vec {
             if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
                 timer = System.nanoTime();
                 outputFile = new BufferedWriter(new FileWriter(arguments.getOutContextVectorsFilename()));
-                word2VecNeuralNetwork.saveContextVectors(vocabulary, outputFile);
+                SaveWord2VecContextVector.save(vocabulary, neuralNetwork, outputFile);
                 outputFile.close();
                 timer = System.nanoTime() - timer;
                 if ( arguments.getDebug() ) {
