@@ -1,8 +1,8 @@
-package nl.esciencecenter.wordembedding;
+package nl.esciencecenter.wordembedding.commandline;
 
 import com.beust.jcommander.Parameter;
 
-class Word2VecCommandLineArguments {
+public class Word2VecCommandLineArguments {
     @Parameter(names = {"-help", "-h"}, help = true)
     private Boolean help = false;
     @Parameter(names = {"-training_file", "-train"}, description = "Text file containing the data to train the model.",
