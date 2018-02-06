@@ -9,7 +9,7 @@ public class Vocabulary {
     private Integer maxSize;
     private Integer occurrenceThreshold;
     private Integer occurrences;
-    private HashMap<String, Word> words;
+    private final HashMap<String, Word> words;
 
     public Vocabulary() {
         maxSize = Integer.MAX_VALUE;

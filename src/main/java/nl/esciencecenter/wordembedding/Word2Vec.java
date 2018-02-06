@@ -8,7 +8,7 @@ import nl.esciencecenter.wordembedding.utilities.*;
 
 import java.io.*;
 
-public class Word2Vec {
+class Word2Vec {
 
     public static void main(String [] argv) {
         long globalTimer = System.nanoTime();

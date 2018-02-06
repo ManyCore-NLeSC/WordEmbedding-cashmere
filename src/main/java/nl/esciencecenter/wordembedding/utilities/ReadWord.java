@@ -1,6 +1,6 @@
 package nl.esciencecenter.wordembedding.utilities;
 
-public class ReadWord {
+class ReadWord {
     public static String readWord(String line, Boolean strict) {
         String [] words = line.split("[ \t]");
         String word;

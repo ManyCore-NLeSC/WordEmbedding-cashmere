@@ -3,7 +3,7 @@ package nl.esciencecenter.wordembedding.data;
 public class Word {
     private Integer occurrences;
     private Integer sortedIndex;
-    private String word;
+    private final String word;
     private int [] code;
     private int [] points;
 

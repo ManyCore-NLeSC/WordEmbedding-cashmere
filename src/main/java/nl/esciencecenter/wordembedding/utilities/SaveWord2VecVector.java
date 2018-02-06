@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class SaveWord2VecVector {
-    protected static void save(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, float [] layer,
-                               BufferedWriter fileWriter) throws IOException {
+class SaveWord2VecVector {
+    static void save(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, float[] layer,
+                     BufferedWriter fileWriter) throws IOException {
         DecimalFormat sixDecimalFloat = new DecimalFormat("0.000000");
 
         sixDecimalFloat.setRoundingMode(RoundingMode.CEILING);
