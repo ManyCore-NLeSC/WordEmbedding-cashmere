@@ -166,19 +166,6 @@ public class Vocabulary {
         return words.get(word);
     }
 
-    // TODO: I am aware that this method is expensive, think how it could be improved
-    public synchronized Word getSortedWord(Integer index) {
-        if ( (index < 0) || (index >= getNrWords()) ) {
-            return null;
-        }
-        for ( Word word : words.values() ) {
-            if ( word.getSortedIndex().equals(index) ) {
-                return word;
-            }
-        }
-        return null;
-    }
-
     public synchronized Collection<Word> getWords() {
         return words.values();
     }
