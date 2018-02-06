@@ -1,6 +1,9 @@
 package nl.esciencecenter.wordembedding.data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Vocabulary {
     private Integer maxSize;
