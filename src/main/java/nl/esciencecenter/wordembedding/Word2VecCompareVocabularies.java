@@ -13,7 +13,7 @@ public class Word2VecCompareVocabularies {
         BufferedReader vocabularyFile;
         Vocabulary [] vocabularies;
         if ( args.length < 2 ) {
-            System.err.println("Usage: " + args[0] + " <vocabulary_file> ... <vocabulary_file>");
+            System.err.println("Usage: Word2VecCompareVocabularies <vocabulary_file> ... <vocabulary_file>");
             return;
         }
         // Load vocabularies from file
