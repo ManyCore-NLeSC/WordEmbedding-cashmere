@@ -10,6 +10,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class SaveWord2VecVector {
+    // Avoid instantiating the object
+    private SaveWord2VecVector() {}
+
     protected static void save(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, float [] layer,
                                BufferedWriter fileWriter) throws IOException {
         DecimalFormat sixDecimalFloat = new DecimalFormat("0.000000");
