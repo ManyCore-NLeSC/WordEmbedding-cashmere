@@ -17,12 +17,12 @@ public class Word2VecCompareVocabularies {
             return;
         }
         // Load vocabularies from file
-        vocabularies = new Vocabulary [args.length - 2];
-        for ( int argument = 1; argument < args.length; argument++ ) {
+        vocabularies = new Vocabulary [args.length];
+        for ( int argument = 0; argument < args.length; argument++ ) {
             try {
-                vocabularies[argument - 1] = new Vocabulary();
+                vocabularies[argument] = new Vocabulary();
                 vocabularyFile = new BufferedReader(new FileReader(args[argument]));
-                ReadVocabulary.read(vocabularies[argument - 1], vocabularyFile);
+                ReadVocabulary.read(vocabularies[argument], vocabularyFile);
                 vocabularyFile.close();
             } catch ( IOException err ) {
                 System.err.println("Impossible to open \"" + args[argument] + "\".");
