@@ -86,7 +86,7 @@ public class NeuralNetworkWord2Vec {
     // Synchronized methods
     //
     public synchronized void initialize(Vocabulary vocabulary) {
-        Random randomNumberGenerator = new Random();
+        Random randomNumberGenerator = new Random(1);
 
         inputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
         for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
