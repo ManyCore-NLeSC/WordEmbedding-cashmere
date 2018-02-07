@@ -39,3 +39,16 @@ task Word2VecCompareVocabularies(type: Jar) {
     }
     with jar
 }
+
+// Word2VecCompareWordEmbeddings JAR with dependencies
+task Word2VecCompareWordEmbeddings(type: Jar) {
+    manifest {
+        attributes "Implementation-Version" : version,
+                "Main-Class" : "nl.esciencecenter.wordembedding.Word2VecCompareWordEmbeddings"
+    }
+    baseName = project.name + '-Word2VecCompareWordEmbeddings'
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
