@@ -2,14 +2,14 @@ package nl.esciencecenter.wordembedding.utilities;
 
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.Word;
-import nl.esciencecenter.wordembedding.data.Word2VecNeuralNetwork;
+import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class SaveWord2VecClasses {
-    public static void save(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, BufferedWriter fileWriter,
+    public static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, BufferedWriter fileWriter,
                             Integer nrClasses) throws IOException {
         Integer nrIterations = 10;
         ArrayList<Integer> classMapping = new ArrayList<>(vocabulary.getNrWords());

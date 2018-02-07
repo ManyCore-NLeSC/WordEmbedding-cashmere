@@ -2,7 +2,7 @@ package nl.esciencecenter.wordembedding.utilities;
 
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.data.Word2VecNeuralNetwork;
+import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,13 +13,13 @@ public class TrainWord2VecModel extends Thread {
     private Boolean debug;
     private final Integer updateInterval = 10000;
     private final Vocabulary vocabulary;
-    private final Word2VecNeuralNetwork neuralNetwork;
+    private final NeuralNetworkWord2Vec neuralNetwork;
     private final BufferedReader fileReader;
     private ExponentialTable exponentialTable;
     private float [] hiddenLayer0;
     private float [] hiddenError0;
 
-    public TrainWord2VecModel(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, BufferedReader fileReader) {
+    public TrainWord2VecModel(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, BufferedReader fileReader) {
         this.vocabulary = vocabulary;
         this.neuralNetwork = neuralNetwork;
         this.fileReader = fileReader;

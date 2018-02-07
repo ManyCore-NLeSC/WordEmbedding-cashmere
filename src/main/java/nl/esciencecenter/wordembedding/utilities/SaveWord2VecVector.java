@@ -2,7 +2,7 @@ package nl.esciencecenter.wordembedding.utilities;
 
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.Word;
-import nl.esciencecenter.wordembedding.data.Word2VecNeuralNetwork;
+import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 class SaveWord2VecVector {
-    static void save(Vocabulary vocabulary, Word2VecNeuralNetwork neuralNetwork, float[] layer,
+    static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, float[] layer,
                      BufferedWriter fileWriter) throws IOException {
         DecimalFormat sixDecimalFloat = new DecimalFormat("0.000000");
 

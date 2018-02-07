@@ -4,7 +4,7 @@ import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.data.Word2VecNeuralNetwork;
+import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.utilities.*;
 
 import java.io.*;
@@ -82,7 +82,7 @@ class Word2Vec {
             System.out.println();
         }
         // Initialize neural network
-        Word2VecNeuralNetwork neuralNetwork = new Word2VecNeuralNetwork(arguments.getUseCBOW(), arguments.getSoftmax(),
+        NeuralNetworkWord2Vec neuralNetwork = new NeuralNetworkWord2Vec(arguments.getUseCBOW(), arguments.getSoftmax(),
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
                 arguments.getWindowSize(), arguments.getAlpha());
         ExponentialTable exponentialTable = new ExponentialTable();
