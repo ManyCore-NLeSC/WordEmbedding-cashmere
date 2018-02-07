@@ -1,6 +1,8 @@
 package nl.esciencecenter.wordembedding.data;
 
-public class Word {
+import java.util.Comparator;
+
+public class Word implements Comparator<Word> {
     private Integer occurrences;
     private Integer sortedIndex;
     private final String word;
@@ -57,5 +59,10 @@ public class Word {
 
     public void setPoints(int [] points) {
         this.points = points;
+    }
+
+    @Override
+    public int compare(Word wordOne, Word wordTwo) {
+        return wordOne.getWord().compareTo(wordTwo.getWord());
     }
 }
