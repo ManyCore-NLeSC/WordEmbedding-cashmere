@@ -145,7 +145,7 @@ class Word2Vec {
             long timer = System.nanoTime();
             outputFile = new BufferedWriter(new FileWriter(arguments.getOutputFilename()));
             if ( arguments.getClasses() == 0 ) {
-                SaveWord2VecWordVector.save(vocabulary, neuralNetwork, outputFile);
+                SaveWord2VecWordVectors.save(vocabulary, neuralNetwork, outputFile);
             } else {
                 SaveWord2VecClasses.save(vocabulary, neuralNetwork, outputFile, arguments.getClasses());
             }
@@ -157,7 +157,7 @@ class Word2Vec {
             if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
                 timer = System.nanoTime();
                 outputFile = new BufferedWriter(new FileWriter(arguments.getOutContextVectorsFilename()));
-                SaveWord2VecContextVector.save(vocabulary, neuralNetwork, outputFile);
+                SaveWord2VecContextVectors.save(vocabulary, neuralNetwork, outputFile);
                 outputFile.close();
                 timer = System.nanoTime() - timer;
                 if ( arguments.getDebug() ) {

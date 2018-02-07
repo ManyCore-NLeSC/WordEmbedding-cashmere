@@ -6,9 +6,9 @@ import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class SaveWord2VecWordVector extends SaveWord2VecVector {
+public class SaveWord2VecContextVectors {
     public static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, BufferedWriter fileWriter)
             throws IOException {
-        SaveWord2VecVector.save(vocabulary, neuralNetwork, neuralNetwork.getInputLayer(), fileWriter);
+        SaveWord2VecVectors.save(vocabulary, neuralNetwork, neuralNetwork.getOutputLayerNegativeSamples(), fileWriter);
     }
 }
