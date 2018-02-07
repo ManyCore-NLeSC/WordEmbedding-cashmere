@@ -1,6 +1,5 @@
 package nl.esciencecenter.wordembedding.validation;
 
-import nl.esciencecenter.wordembedding.data.Word;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 
 public class CompareWordEmbeddings {
@@ -15,7 +14,7 @@ public class CompareWordEmbeddings {
             // If all embeddings have the same dimensions, check that they all contain the same words
             // and that words are at the same coordinates
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
-                for ( Word referenceWord : embeddings[0].getWords() ) {
+                for ( String referenceWord : embeddings[0].getWords() ) {
                     Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
                     Float [] coordinates = embeddings[embeddingID].getWordCoordinates(referenceWord);
                     if ( coordinates == null ) {

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class WordEmbedding {
     private final Integer vectorDimensions;
-    private final HashMap<Word, Float []> embedding;
+    private final HashMap<String, Float []> embedding;
 
     public WordEmbedding(Integer vectorDimensions) {
         this.vectorDimensions = vectorDimensions;
@@ -16,17 +16,17 @@ public class WordEmbedding {
         return vectorDimensions;
     }
 
-    public void addWord(Word word, Float [] coordinates) {
+    public void addWord(String word, Float [] coordinates) {
         if ( coordinates.length == vectorDimensions ) {
             embedding.put(word, coordinates);
         }
     }
 
-    public Collection<Word> getWords() {
+    public Collection<String> getWords() {
         return embedding.keySet();
     }
 
-    public Float [] getWordCoordinates(Word word) {
+    public Float [] getWordCoordinates(String word) {
         return embedding.get(word);
     }
 }
