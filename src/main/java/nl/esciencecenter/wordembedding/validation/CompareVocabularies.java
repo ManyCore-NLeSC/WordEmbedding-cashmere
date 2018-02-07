@@ -14,9 +14,9 @@ public class CompareVocabularies {
             }
             // If all vocabularies have the same size, check that they all contain the same words
             for ( int vocabularyID = 1; vocabularyID < vocabularies.length; vocabularyID++ ) {
-                for ( Word word : vocabularies[vocabularyID].getWords() ) {
-                    Word referenceWord = vocabularies[0].getWord(word.getWord());
-                    if ( referenceWord == null ) {
+                for ( Word referenceWord : vocabularies[0].getWords() ) {
+                    Word word = vocabularies[vocabularyID].getWord(referenceWord.getWord());
+                    if ( word == null ) {
                         return false;
                     }
                     if ( !word.getOccurrences().equals(referenceWord.getOccurrences()) ) {
