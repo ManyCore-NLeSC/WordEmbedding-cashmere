@@ -84,7 +84,7 @@ class Word2Vec {
         // Initialize neural network
         NeuralNetworkWord2Vec neuralNetwork = new NeuralNetworkWord2Vec(arguments.getUseCBOW(), arguments.getSoftmax(),
                 arguments.getUsePosition(), arguments.getNegativeSamples(), arguments.getVectorDimensions(),
-                arguments.getWindowSize(), arguments.getAlpha());
+                arguments.getWindowSize(), arguments.getAlpha(), arguments.getSeed());
         ExponentialTable exponentialTable = new ExponentialTable();
         exponentialTable.initialize();
         neuralNetwork.initialize(vocabulary);
