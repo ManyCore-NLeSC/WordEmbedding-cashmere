@@ -49,6 +49,8 @@ public class Word2VecCommandLineArguments {
     private String outContextVectorsFilename = "";
     @Parameter(names = {"-threads"}, description = "Number of threads.")
     private Integer threads = 1;
+    @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
+    private Integer seed = 1;
 
     public Boolean getHelp() {
         return help;
@@ -132,5 +134,9 @@ public class Word2VecCommandLineArguments {
 
     public Integer getNrThreads() {
         return threads;
+    }
+
+    public Integer getSeed() {
+        return seed;
     }
 }
