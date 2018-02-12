@@ -9,6 +9,7 @@ public class NeuralNetworkWord2Vec {
     private final Integer negativeSamples;
     private final Integer vectorDimensions;
     private final Integer windowSize;
+    private final Integer seed;
     private final Float alpha;
     private Float samplingFactor = 0.0f;
     // Members that can be modified concurrently
@@ -19,7 +20,7 @@ public class NeuralNetworkWord2Vec {
     private float [] outputLayerNegativeSamples;
 
     public NeuralNetworkWord2Vec(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
-                                 Integer vectorDimensions, Integer windowSize, Float alpha) {
+                                 Integer vectorDimensions, Integer windowSize, Float alpha, Integer seed) {
         this.CBOW = CBOW;
         this.hierarchicalSoftmax = hierarchicalSoftmax;
         this.usePosition = usePosition;
@@ -28,6 +29,7 @@ public class NeuralNetworkWord2Vec {
         this.windowSize = windowSize;
         this.alpha = alpha;
         this.currentAlpha = alpha;
+        this.seed = seed;
     }
 
     public Boolean getSkipGram() {
@@ -86,7 +88,7 @@ public class NeuralNetworkWord2Vec {
     // Synchronized methods
     //
     public synchronized void initialize(Vocabulary vocabulary) {
-        Random randomNumberGenerator = new Random(1);
+        Random randomNumberGenerator = new Random(seed);
 
         inputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
         for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
