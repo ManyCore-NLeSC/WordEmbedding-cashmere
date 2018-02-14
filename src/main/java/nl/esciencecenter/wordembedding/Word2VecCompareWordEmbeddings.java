@@ -29,6 +29,10 @@ public class Word2VecCompareWordEmbeddings {
             }
         }
         // Compare
+        if ( !CompareWordEmbeddings.testDimensionality(embeddings) ) {
+            System.out.println("The embeddings have different dimensionality.");
+            return;
+        }
         if ( CompareWordEmbeddings.compareIdentity(embeddings) ) {
             System.out.println("The embeddings are identical.");
         } else  {
