@@ -9,9 +9,6 @@ public class CompareWordEmbeddings {
 
     public static Boolean compareIdentity(WordEmbedding [] embeddings, Boolean allowError) {
         if ( embeddings.length > 1 ) {
-            if ( !testDimensionality(embeddings) ) {
-                return false;
-            }
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
                 for ( String referenceWord : embeddings[0].getWords() ) {
                     Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
@@ -38,9 +35,6 @@ public class CompareWordEmbeddings {
 
     public static Boolean compareSimilarity(WordEmbedding []  embeddings) {
         if ( embeddings.length > 1 ) {
-            if ( !testDimensionality(embeddings) ) {
-                return false;
-            }
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
                 for ( String referenceWord : embeddings[0].getWords() ) {
                     Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
@@ -57,7 +51,7 @@ public class CompareWordEmbeddings {
         return true;
     }
 
-    private static Boolean testDimensionality(WordEmbedding [] embeddings) {
+    public static Boolean testDimensionality(WordEmbedding [] embeddings) {
         for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
             if ( !embeddings[embeddingID].getVectorDimensions().equals(embeddings[0].getVectorDimensions()) ) {
                 return false;
