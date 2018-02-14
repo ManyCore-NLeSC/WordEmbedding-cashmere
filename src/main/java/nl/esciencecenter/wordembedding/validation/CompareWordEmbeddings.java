@@ -35,15 +35,17 @@ public class CompareWordEmbeddings {
 
     public static Boolean compareSimilarity(WordEmbedding []  embeddings) {
         if ( embeddings.length > 1 ) {
-            for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
-                for ( String referenceWord : embeddings[0].getWords() ) {
-                    Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
-                    Float [] coordinates = embeddings[embeddingID].getWordCoordinates(referenceWord);
-                    if ( coordinates == null ) {
-                        return false;
-                    }
-                    if ( !same(cosine(referenceCoordinates, coordinates), 1.0f, 0.1f) ) {
-                        return false;
+            for ( String wordOne : embeddings[0].getWords() ) {
+                for ( String wordTwo : embeddings[0].getWords() ) {
+                    Float referenceCosine = cosine(embeddings[0].getWordCoordinates(wordOne),
+                            embeddings[0].getWordCoordinates(wordTwo));
+
+                    for ( int embedding = 1; embedding < embeddings.length; embedding++ ) {
+                        Float testedCosine = cosine(embeddings[embedding].getWordCoordinates(wordOne),
+                                embeddings[embedding].getWordCoordinates(wordTwo));
+                        if ( !same(referenceCosine, testedCosine, 0.1f) ) {
+                            return false;
+                        }
                     }
                 }
             }
