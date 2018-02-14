@@ -32,7 +32,11 @@ public class Word2VecCompareWordEmbeddings {
         if ( CompareWordEmbeddings.compareIdentity(embeddings) ) {
             System.out.println("The embeddings are identical.");
         } else  {
-            System.out.println("The embeddings are different.");
+            if ( CompareWordEmbeddings.compareSimilarity(embeddings) ) {
+                System.out.println("The embeddings are similar.");
+            } else {
+                System.out.println("The embeddings are different.");
+            }
         }
     }
 }
