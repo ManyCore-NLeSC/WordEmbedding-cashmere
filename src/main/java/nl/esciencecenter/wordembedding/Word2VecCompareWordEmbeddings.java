@@ -29,7 +29,7 @@ public class Word2VecCompareWordEmbeddings {
             }
         }
         // Compare
-        if ( CompareWordEmbeddings.compare(embeddings) ) {
+        if ( CompareWordEmbeddings.compareIdentity(embeddings) ) {
             System.out.println("The embeddings are identical.");
         } else  {
             System.out.println("The embeddings are different.");

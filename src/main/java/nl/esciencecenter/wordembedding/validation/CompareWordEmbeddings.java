@@ -3,7 +3,7 @@ package nl.esciencecenter.wordembedding.validation;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 
 public class CompareWordEmbeddings {
-    public static Boolean compare(WordEmbedding [] embeddings) {
+    public static Boolean compareIdentity(WordEmbedding [] embeddings) {
         if ( embeddings.length > 1 ) {
             // First check dimensionality
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
