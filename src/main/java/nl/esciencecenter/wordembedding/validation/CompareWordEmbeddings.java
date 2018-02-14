@@ -4,12 +4,14 @@ import nl.esciencecenter.wordembedding.data.WordEmbedding;
 
 public class CompareWordEmbeddings {
     public static Boolean compareIdentity(WordEmbedding [] embeddings) {
+        return compareIdentity(embeddings, false);
+    }
+
+    public static Boolean compareIdentity(WordEmbedding [] embeddings, Boolean allowError) {
         if ( embeddings.length > 1 ) {
-            if ( !checkDimension(embeddings) ) {
+            if ( !testDimensionality(embeddings) ) {
                 return false;
             }
-            // If all embeddings have the same dimensions, check that they all contain the same words
-            // and that words are at the same coordinates
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
                 for ( String referenceWord : embeddings[0].getWords() ) {
                     Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
@@ -17,10 +19,15 @@ public class CompareWordEmbeddings {
                     if ( coordinates == null ) {
                         return false;
                     }
-                    // TODO: change the comparison to allow for precision error
                     for ( int dimension = 0; dimension < embeddings[0].getVectorDimensions(); dimension++ ) {
-                        if ( referenceCoordinates[dimension].compareTo(coordinates[dimension]) != 0 ) {
-                            return false;
+                        if ( allowError ) {
+                            if ( !same(referenceCoordinates[dimension], coordinates[dimension], 1.0e-06f) ) {
+                                return false;
+                            }
+                        } else {
+                            if ( !identical(referenceCoordinates[dimension], coordinates[dimension]) ) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -29,12 +36,58 @@ public class CompareWordEmbeddings {
         return true;
     }
 
-    private static Boolean checkDimension(WordEmbedding [] embeddings) {
+    public static Boolean compareSimilarity(WordEmbedding []  embeddings) {
+        if ( embeddings.length > 1 ) {
+            if ( !testDimensionality(embeddings) ) {
+                return false;
+            }
+            for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
+                for ( String referenceWord : embeddings[0].getWords() ) {
+                    Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
+                    Float [] coordinates = embeddings[embeddingID].getWordCoordinates(referenceWord);
+                    if ( coordinates == null ) {
+                        return false;
+                    }
+                    if ( !same(cosine(referenceCoordinates, coordinates), 1.0f, 0.1f) ) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private static Boolean testDimensionality(WordEmbedding [] embeddings) {
         for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
             if ( !embeddings[embeddingID].getVectorDimensions().equals(embeddings[0].getVectorDimensions()) ) {
                 return false;
             }
         }
         return true;
+    }
+
+    private static Boolean identical(Float x, Float y) {
+        return x.compareTo(y) == 0;
+    }
+
+    private static Boolean same(Float x, Float y, Float error) {
+        return Math.abs(x - y) < error;
+    }
+
+    private static Float cosine(Float [] vectorOne, Float [] vectorTwo) {
+        return dotProduct(vectorOne, vectorTwo) / (norm(vectorOne) * norm(vectorTwo));
+    }
+
+    private static Float dotProduct(Float [] vectorOne, Float [] vectorTwo) {
+        Float accumulator = 0.0f;
+
+        for ( int dimension = 0; dimension < vectorOne.length; dimension++ ) {
+            accumulator += vectorOne[dimension] * vectorTwo[dimension];
+        }
+        return accumulator;
+    }
+
+    private static Float norm(Float [] vector) {
+        return (float)(Math.sqrt(dotProduct(vector, vector)));
     }
 }
