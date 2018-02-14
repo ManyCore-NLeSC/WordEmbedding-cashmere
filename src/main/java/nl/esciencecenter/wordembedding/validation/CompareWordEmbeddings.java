@@ -5,11 +5,8 @@ import nl.esciencecenter.wordembedding.data.WordEmbedding;
 public class CompareWordEmbeddings {
     public static Boolean compareIdentity(WordEmbedding [] embeddings) {
         if ( embeddings.length > 1 ) {
-            // First check dimensionality
-            for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
-                if ( !embeddings[embeddingID].getVectorDimensions().equals(embeddings[0].getVectorDimensions()) ) {
-                    return false;
-                }
+            if ( !checkDimension(embeddings) ) {
+                return false;
             }
             // If all embeddings have the same dimensions, check that they all contain the same words
             // and that words are at the same coordinates
@@ -27,6 +24,15 @@ public class CompareWordEmbeddings {
                         }
                     }
                 }
+            }
+        }
+        return true;
+    }
+
+    private static Boolean checkDimension(WordEmbedding [] embeddings) {
+        for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
+            if ( !embeddings[embeddingID].getVectorDimensions().equals(embeddings[0].getVectorDimensions()) ) {
+                return false;
             }
         }
         return true;
