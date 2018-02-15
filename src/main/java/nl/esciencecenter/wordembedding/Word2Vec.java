@@ -6,6 +6,7 @@ import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.utilities.*;
+import nl.esciencecenter.wordembedding.utilities.io.*;
 
 import java.io.*;
 

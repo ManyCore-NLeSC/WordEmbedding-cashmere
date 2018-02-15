@@ -1,7 +1,7 @@
 package nl.esciencecenter.wordembedding;
 
 import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.utilities.ReadVocabulary;
+import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.validation.CompareVocabularies;
 
 import java.io.BufferedReader;
