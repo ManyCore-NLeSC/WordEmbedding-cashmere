@@ -1,6 +1,7 @@
 package nl.esciencecenter.wordembedding.validation;
 
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
+import nl.esciencecenter.wordembedding.math.Cosine;
 
 public class CompareWordEmbeddings {
     public static Boolean compareIdentity(WordEmbedding [] embeddings) {
@@ -37,11 +38,11 @@ public class CompareWordEmbeddings {
         if ( embeddings.length > 1 ) {
             for ( String wordOne : embeddings[0].getWords() ) {
                 for ( String wordTwo : embeddings[0].getWords() ) {
-                    Float referenceCosine = cosine(embeddings[0].getWordCoordinates(wordOne),
+                    Float referenceCosine = Cosine.cosine(embeddings[0].getWordCoordinates(wordOne),
                             embeddings[0].getWordCoordinates(wordTwo));
 
                     for ( int embedding = 1; embedding < embeddings.length; embedding++ ) {
-                        Float testedCosine = cosine(embeddings[embedding].getWordCoordinates(wordOne),
+                        Float testedCosine = Cosine.cosine(embeddings[embedding].getWordCoordinates(wordOne),
                                 embeddings[embedding].getWordCoordinates(wordTwo));
                         if ( !same(referenceCosine, testedCosine, 0.1f) ) {
                             return false;
@@ -68,22 +69,5 @@ public class CompareWordEmbeddings {
 
     private static Boolean same(Float x, Float y, Float error) {
         return Math.abs(x - y) < error;
-    }
-
-    private static Float cosine(Float [] vectorOne, Float [] vectorTwo) {
-        return dotProduct(vectorOne, vectorTwo) / (norm(vectorOne) * norm(vectorTwo));
-    }
-
-    private static Float dotProduct(Float [] vectorOne, Float [] vectorTwo) {
-        Float accumulator = 0.0f;
-
-        for ( int dimension = 0; dimension < vectorOne.length; dimension++ ) {
-            accumulator += vectorOne[dimension] * vectorTwo[dimension];
-        }
-        return accumulator;
-    }
-
-    private static Float norm(Float [] vector) {
-        return (float)(Math.sqrt(dotProduct(vector, vector)));
     }
 }
