@@ -79,6 +79,9 @@ public class CompareWordEmbeddings {
         for ( String referenceWord : embeddings[0].getWords() ) {
             HashSet<String> neighborhoodIntersection = new HashSet<>();
 
+            if ( !neighbors.containsKey(referenceWord) ) {
+                continue;
+            }
             for ( int embedding = 0; embedding < embeddings.length; embedding++ ) {
                 HashSet<String> neighborhood = new HashSet<>();
 
