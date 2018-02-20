@@ -10,8 +10,11 @@ import java.io.IOException;
 
 public class Word2VecCompareWordEmbeddings {
     public static void main(String [] args) {
+        Float averageNeighborhoodIntersection;
+        Integer neighborhoodFraction = 5;
         BufferedReader embeddingFile;
         WordEmbedding [] embeddings;
+
         if ( args.length < 2 ) {
             System.err.println("Usage: Word2VecCompareWordEmbeddings <embedding_file> ... <embedding_file>");
             return;
@@ -29,18 +32,24 @@ public class Word2VecCompareWordEmbeddings {
             }
         }
         // Compare
-        if ( !CompareWordEmbeddings.testDimensionality(embeddings) ) {
+        if ( !CompareWordEmbeddings.compareDimensionality(embeddings) ) {
             System.out.println("The embeddings have different dimensionality.");
             return;
         }
-        if ( CompareWordEmbeddings.compareIdentity(embeddings) ) {
+        if ( CompareWordEmbeddings.compareNumericalIdentity(embeddings) ) {
             System.out.println("The embeddings are identical.");
-        } else  {
-            if ( CompareWordEmbeddings.compareSimilarity(embeddings) ) {
-                System.out.println("The embeddings are similar.");
-            } else {
-                System.out.println("The embeddings are different.");
-            }
+            return;
         }
+        if ( CompareWordEmbeddings.compareNumericalSimilarity(embeddings) ) {
+            System.out.println("The embeddings are similar.");
+            return;
+        }
+
+        averageNeighborhoodIntersection = CompareWordEmbeddings.compareNearestNeighbors(embeddings,
+                neighborhoodFraction);
+        System.out.format("Average Neighborhood Intersection: %.2f/%d (%.2f%%)", averageNeighborhoodIntersection,
+                ((embeddings[0].getNrWords() - 1) * neighborhoodFraction) / 100,
+                (averageNeighborhoodIntersection * 100)
+                        / (((embeddings[0].getNrWords() - 1) * neighborhoodFraction) / 100));
     }
 }
