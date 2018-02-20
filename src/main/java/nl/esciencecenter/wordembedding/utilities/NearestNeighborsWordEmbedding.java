@@ -16,6 +16,10 @@ public class NearestNeighborsWordEmbedding {
             for ( int embedding = 0; embedding < embeddings.length; embedding++ ) {
                 final int finalEmbedding = embedding;
 
+                if ( !embeddings[embedding].getWords().contains(referenceWord) ) {
+                    neighbors.remove(referenceWord);
+                    break;
+                }
                 neighbors.get(referenceWord).put(embedding, new ArrayList<>(embeddings[embedding].getWords()));
                 neighbors.get(referenceWord).get(embedding).remove(referenceWord);
                 neighbors.get(referenceWord).get(embedding).sort((stringOne, stringTwo)
