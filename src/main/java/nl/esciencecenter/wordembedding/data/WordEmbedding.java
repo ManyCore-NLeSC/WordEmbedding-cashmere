@@ -16,6 +16,10 @@ public class WordEmbedding {
         return vectorDimensions;
     }
 
+    public Integer getNrWords() {
+        return embedding.size();
+    }
+
     public void addWord(String word, Float [] coordinates) {
         if ( coordinates.length == vectorDimensions ) {
             embedding.put(word, coordinates);
