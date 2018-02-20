@@ -18,12 +18,11 @@ public class NearestNeighborsWordEmbedding {
 
                 neighbors.get(referenceWord).put(embedding, new ArrayList<>(embeddings[embedding].getWords()));
                 neighbors.get(referenceWord).get(embedding).remove(referenceWord);
-                neighbors.get(referenceWord).get(embedding).sort((stringOne, stringTwo) -> {
-                    return Float.compare(Cosine.cosine(embeddings[finalEmbedding].getWordCoordinates(referenceWord),
-                            embeddings[finalEmbedding].getWordCoordinates(stringOne)),
-                            Cosine.cosine(embeddings[finalEmbedding].getWordCoordinates(referenceWord),
-                                    embeddings[finalEmbedding].getWordCoordinates(stringTwo)));
-                });
+                neighbors.get(referenceWord).get(embedding).sort((stringOne, stringTwo)
+                        -> Float.compare(Cosine.cosine(embeddings[finalEmbedding].getWordCoordinates(referenceWord),
+                        embeddings[finalEmbedding].getWordCoordinates(stringOne)),
+                        Cosine.cosine(embeddings[finalEmbedding].getWordCoordinates(referenceWord),
+                                embeddings[finalEmbedding].getWordCoordinates(stringTwo))));
                 Collections.reverse(neighbors.get(referenceWord).get(embedding));
             }
         }
