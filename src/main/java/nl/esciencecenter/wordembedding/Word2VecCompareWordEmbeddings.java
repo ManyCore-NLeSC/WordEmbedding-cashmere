@@ -19,7 +19,7 @@ public class Word2VecCompareWordEmbeddings {
             System.err.println("Usage: Word2VecCompareWordEmbeddings <embedding_file> ... <embedding_file>");
             return;
         }
-        // Load vocabularies from file
+        // Load word embeddings from file
         embeddings = new WordEmbedding [args.length];
         for ( int argument = 0; argument < args.length; argument++ ) {
             try {
