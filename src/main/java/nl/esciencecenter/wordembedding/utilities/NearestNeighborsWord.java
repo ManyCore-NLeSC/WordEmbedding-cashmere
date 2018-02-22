@@ -12,8 +12,8 @@ public class NearestNeighborsWord {
 
         neighborsList.remove(word);
         neighborsList.sort((String wordOne, String wordTwo) -> Float.compare(
-                Cosine.compute(embedding.getWordCoordinates(wordOne), embedding.getWordCoordinates(word)),
-                Cosine.compute(embedding.getWordCoordinates(wordTwo), embedding.getWordCoordinates(word))));
+                Cosine.compute(embedding.getWordCoordinates(word), embedding.getWordCoordinates(wordTwo)),
+                Cosine.compute(embedding.getWordCoordinates(word), embedding.getWordCoordinates(wordOne))));
         return neighborsList.toArray(neighborsArray);
     }
 }
