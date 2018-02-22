@@ -37,9 +37,9 @@ public class Word2VecCompareWordEmbeddings {
             return;
         }
         if ( CompareWordEmbeddings.compareNumericalIdentity(embeddings) ) {
-            System.out.println("The embeddings are identical.");
+            System.out.println("The embeddings are numerically identical.");
         } else {
-            System.out.println("The embeddings are similar.");
+            System.out.println("The embeddings are numerically similar.");
         }
 
         averageNeighborhoodIntersection = CompareWordEmbeddings.compareNearestNeighbors(embeddings,
