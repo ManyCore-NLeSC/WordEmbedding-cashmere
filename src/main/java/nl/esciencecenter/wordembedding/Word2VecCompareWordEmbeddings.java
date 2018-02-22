@@ -38,7 +38,7 @@ public class Word2VecCompareWordEmbeddings {
         }
         if ( CompareWordEmbeddings.compareNumericalIdentity(embeddings) ) {
             System.out.println("The embeddings are numerically identical.");
-        } else {
+        } else if ( CompareWordEmbeddings.compareNumericalIdentity(embeddings, true) ) {
             System.out.println("The embeddings are numerically similar.");
         }
 
