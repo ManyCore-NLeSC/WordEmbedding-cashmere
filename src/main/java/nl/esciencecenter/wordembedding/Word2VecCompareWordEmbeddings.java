@@ -38,16 +38,14 @@ public class Word2VecCompareWordEmbeddings {
         }
         if ( CompareWordEmbeddings.compareNumericalIdentity(embeddings) ) {
             System.out.println("The embeddings are identical.");
-            return;
-        }
-        if ( CompareWordEmbeddings.compareNumericalSimilarity(embeddings) ) {
+        } else {
             System.out.println("The embeddings are similar.");
-            return;
         }
 
         averageNeighborhoodIntersection = CompareWordEmbeddings.compareNearestNeighbors(embeddings,
                 neighborhoodFraction);
-        System.out.format("Average Neighborhood Intersection: %.2f/%d (%.2f%%)", averageNeighborhoodIntersection,
+        System.out.format("Average Neighborhood Intersection: %d/%d (%.2f%%)",
+                averageNeighborhoodIntersection.intValue(),
                 ((embeddings[0].getNrWords() - 1) * neighborhoodFraction) / 100,
                 (averageNeighborhoodIntersection * 100)
                         / (((embeddings[0].getNrWords() - 1) * neighborhoodFraction) / 100));
