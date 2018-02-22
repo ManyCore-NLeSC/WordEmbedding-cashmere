@@ -1,11 +1,9 @@
 package nl.esciencecenter.wordembedding.validation;
 
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
-import nl.esciencecenter.wordembedding.math.Cosine;
 import nl.esciencecenter.wordembedding.math.FloatComparison;
 import nl.esciencecenter.wordembedding.utilities.NearestNeighborsWordEmbedding;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -43,26 +41,6 @@ public class CompareWordEmbeddings {
                                     coordinates[dimension]) ) {
                                 return false;
                             }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    public static Boolean compareNumericalSimilarity(WordEmbedding []  embeddings) {
-        if ( embeddings.length > 1 ) {
-            for ( String wordOne : embeddings[0].getWords() ) {
-                for ( String wordTwo : embeddings[0].getWords() ) {
-                    Float referenceCosine = Cosine.compute(embeddings[0].getWordCoordinates(wordOne),
-                            embeddings[0].getWordCoordinates(wordTwo));
-
-                    for ( int embedding = 1; embedding < embeddings.length; embedding++ ) {
-                        Float testedCosine = Cosine.compute(embeddings[embedding].getWordCoordinates(wordOne),
-                                embeddings[embedding].getWordCoordinates(wordTwo));
-                        if ( !FloatComparison.areSimilar(referenceCosine, testedCosine, 0.1f) ) {
-                            return false;
                         }
                     }
                 }
