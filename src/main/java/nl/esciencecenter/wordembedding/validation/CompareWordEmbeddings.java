@@ -50,6 +50,7 @@ public class CompareWordEmbeddings {
     }
 
     public static Float compareNearestNeighbors(WordEmbedding [] embeddings, Integer percentage) {
+        Integer nrSkippedWords = 0;
         Float averageNeighborhoodIntersection = 0.0f;
         HashMap<String, HashMap<Integer, String []>> neighbors
                 = NearestNeighborsWordEmbedding.compute(embeddings);
@@ -58,6 +59,7 @@ public class CompareWordEmbeddings {
             HashSet<String> neighborhoodIntersection = new HashSet<>();
 
             if ( !neighbors.containsKey(referenceWord) ) {
+                nrSkippedWords++;
                 continue;
             }
             for ( int embedding = 0; embedding < embeddings.length; embedding++ ) {
@@ -76,6 +78,6 @@ public class CompareWordEmbeddings {
             }
             averageNeighborhoodIntersection += neighborhoodIntersection.size();
         }
-        return averageNeighborhoodIntersection / embeddings[0].getNrWords();
+        return averageNeighborhoodIntersection / (embeddings[0].getNrWords() - nrSkippedWords);
     }
 }
