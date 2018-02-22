@@ -55,11 +55,11 @@ public class CompareWordEmbeddings {
         if ( embeddings.length > 1 ) {
             for ( String wordOne : embeddings[0].getWords() ) {
                 for ( String wordTwo : embeddings[0].getWords() ) {
-                    Float referenceCosine = Cosine.cosine(embeddings[0].getWordCoordinates(wordOne),
+                    Float referenceCosine = Cosine.compute(embeddings[0].getWordCoordinates(wordOne),
                             embeddings[0].getWordCoordinates(wordTwo));
 
                     for ( int embedding = 1; embedding < embeddings.length; embedding++ ) {
-                        Float testedCosine = Cosine.cosine(embeddings[embedding].getWordCoordinates(wordOne),
+                        Float testedCosine = Cosine.compute(embeddings[embedding].getWordCoordinates(wordOne),
                                 embeddings[embedding].getWordCoordinates(wordTwo));
                         if ( !FloatComparison.areSimilar(referenceCosine, testedCosine, 0.1f) ) {
                             return false;
