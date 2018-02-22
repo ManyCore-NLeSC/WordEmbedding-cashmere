@@ -73,7 +73,7 @@ public class CompareWordEmbeddings {
 
     public static Float compareNearestNeighbors(WordEmbedding [] embeddings, Integer percentage) {
         Float averageNeighborhoodIntersection = 0.0f;
-        HashMap<String, HashMap<Integer, ArrayList<String>>> neighbors
+        HashMap<String, HashMap<Integer, String []>> neighbors
                 = NearestNeighborsWordEmbedding.compute(embeddings);
 
         for ( String referenceWord : embeddings[0].getWords() ) {
@@ -88,7 +88,7 @@ public class CompareWordEmbeddings {
                 for ( int neighborID = 0;
                       neighborID < ((embeddings[0].getNrWords() - 1) * percentage) / 100;
                       neighborID++ ) {
-                    neighborhood.add(neighbors.get(referenceWord).get(embedding).get(neighborID));
+                    neighborhood.add(neighbors.get(referenceWord).get(embedding)[neighborID]);
                 }
                 if ( embedding == 0 ) {
                     neighborhoodIntersection.addAll(neighborhood);
