@@ -33,4 +33,8 @@ public class WordEmbedding {
     public Float [] getWordCoordinates(String word) {
         return embedding.get(word);
     }
+
+    public void setWordCoordinates(String word, Float [] coordinates) {
+        embedding.put(word, coordinates);
+    }
 }
