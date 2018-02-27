@@ -12,14 +12,14 @@ import java.io.*;
 
 class Word2Vec {
 
-    public static void main(String [] argv) {
+    public static void main(String [] args) {
         long globalTimer = System.nanoTime();
         Vocabulary vocabulary;
 
         // Command line arguments parsing
         Word2VecCommandLineArguments arguments = new Word2VecCommandLineArguments();
         JCommander commander = JCommander.newBuilder().addObject(arguments).build();
-        commander.parse(argv);
+        commander.parse(args);
         if ( arguments.getHelp() ) {
             commander.usage();
             return;
