@@ -1,6 +1,7 @@
 package nl.esciencecenter.wordembedding;
 
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
+import nl.esciencecenter.wordembedding.utilities.NormalizeWordEmbedding;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVector;
 import nl.esciencecenter.wordembedding.validation.CompareWordEmbeddings;
 
@@ -40,6 +41,9 @@ public class Word2VecCompareWordEmbeddings {
             System.out.println("The embeddings are numerically identical.");
         } else if ( CompareWordEmbeddings.compareNumericalIdentity(embeddings, true) ) {
             System.out.println("The embeddings are numerically similar.");
+        }
+        for ( WordEmbedding embedding : embeddings ) {
+            NormalizeWordEmbedding.compute(embedding);
         }
         averageNeighborhoodIntersection = CompareWordEmbeddings.compareNearestNeighbors(embeddings,
                 neighborhoodFraction);
