@@ -3,7 +3,7 @@ package nl.esciencecenter.wordembedding.validation;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordSimilarity;
 import nl.esciencecenter.wordembedding.math.Cosine;
-import nl.esciencecenter.wordembedding.math.PearsonCorrelationCoefficient;
+import nl.esciencecenter.wordembedding.math.SpearmanRankCorrelation;
 
 import java.util.ArrayList;
 
@@ -25,6 +25,6 @@ public class EvaluateWordSimilarity {
             }
         }
 
-        return PearsonCorrelationCoefficient.compute(results);
+        return SpearmanRankCorrelation.compute(results);
     }
 }
