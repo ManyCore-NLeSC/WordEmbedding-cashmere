@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertEquals;
 
 public class RankTest {
-    private ArrayList<Float []> vectors;
-    private ArrayList<Float []> ranks;
-
     @Test
     public void compute() {
-        vectors = new ArrayList<>();
+        ArrayList<Float []> vectors = new ArrayList<>();
+        ArrayList<Float []> ranks;
         for ( int item = 0; item < 5; item++ ) {
             vectors.add(new Float [2]);
         }
