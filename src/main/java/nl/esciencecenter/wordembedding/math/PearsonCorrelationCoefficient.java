@@ -10,7 +10,7 @@ public class PearsonCorrelationCoefficient {
         Float sumY = 0.0f;
         Float sumY2 = 0.0f;
 
-        for (Float[] vector : vectors) {
+        for (Float [] vector : vectors) {
             sumXY += vector[0] * vector[1];
             sumX += vector[0];
             sumX2 += vector[0] * vector[0];
