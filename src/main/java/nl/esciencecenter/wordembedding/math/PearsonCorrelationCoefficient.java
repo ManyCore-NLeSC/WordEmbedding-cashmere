@@ -10,12 +10,12 @@ public class PearsonCorrelationCoefficient {
         Float sumY = 0.0f;
         Float sumY2 = 0.0f;
 
-        for ( int item = 0; item < vectors.size(); item++ ) {
-            sumXY += vectors.get(item)[0] * vectors.get(item)[1];
-            sumX += vectors.get(item)[0];
-            sumX2 += vectors.get(item)[0] * vectors.get(item)[0];
-            sumY += vectors.get(item)[1];
-            sumY2 += vectors.get(item)[1] * vectors.get(item)[1];
+        for (Float[] vector : vectors) {
+            sumXY += vector[0] * vector[1];
+            sumX += vector[0];
+            sumX2 += vector[0] * vector[0];
+            sumY += vector[1];
+            sumY2 += vector[1] * vector[1];
         }
         return (float)(((vectors.size() * sumXY) - (sumX * sumY))
                 / Math.sqrt(((vectors.size() * sumX2) - (sumX * sumX)) * ((vectors.size() * sumY2) - (sumY * sumY))));
