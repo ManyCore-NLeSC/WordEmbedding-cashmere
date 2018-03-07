@@ -20,11 +20,13 @@ public class EvaluateWordSimilarity {
                     pair[0] = similarity.getSimilarityScore(wordOne, wordTwo);
                     pair[1] = Cosine.compute(embedding.getWordCoordinates(wordOne),
                             embedding.getWordCoordinates(wordTwo));
-                    results.add(pair);
+                } else {
+                    pair[0] = similarity.getSimilarityScore(wordOne, wordTwo);
+                    pair[1] = 0.0f;
                 }
+                results.add(pair);
             }
         }
-
         return SpearmanRankCorrelation.compute(results);
     }
 }
