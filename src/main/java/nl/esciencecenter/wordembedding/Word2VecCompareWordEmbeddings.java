@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Word2VecCompareWordEmbeddings {
     public static void main(String [] args) {
         float averageNeighborhoodIntersection;
-        Integer neighborhoodFraction = 5;
+        int neighborhoodFraction = 5;
         BufferedReader embeddingFile;
         WordEmbedding [] embeddings;
 

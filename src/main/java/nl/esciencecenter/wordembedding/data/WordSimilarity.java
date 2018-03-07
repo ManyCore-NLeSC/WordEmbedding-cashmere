@@ -27,7 +27,7 @@ public class WordSimilarity {
         }
     }
 
-    public Integer getNrWords() {
+    public int getNrWords() {
         return similarities.size();
     }
 
@@ -35,7 +35,7 @@ public class WordSimilarity {
         return similarities.keySet();
     }
 
-    public Integer getNrWords(String word) {
+    public int getNrWords(String word) {
         return similarities.get(word).size();
     }
 

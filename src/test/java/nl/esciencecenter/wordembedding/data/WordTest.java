@@ -13,12 +13,12 @@ public class WordTest {
         Word wordOne = new Word(stringOne);
         Word wordTwo = new Word(stringTwo, 4);
 
-        assertEquals(0, wordOne.getOccurrences().intValue());
-        assertEquals(4, wordTwo.getOccurrences().intValue());
+        assertEquals(0, wordOne.getOccurrences());
+        assertEquals(4, wordTwo.getOccurrences());
         wordOne.incrementOccurrences();
         wordTwo.incrementOccurrences();
-        assertEquals(1, wordOne.getOccurrences().intValue());
-        assertEquals(5, wordTwo.getOccurrences().intValue());
+        assertEquals(1, wordOne.getOccurrences());
+        assertEquals(5, wordTwo.getOccurrences());
     }
 
     @Test

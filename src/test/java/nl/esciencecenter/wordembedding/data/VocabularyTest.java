@@ -14,7 +14,7 @@ public class VocabularyTest {
         Vocabulary vocabularyOne = new Vocabulary();
 
         vocabularyOne.setMaxSize(13);
-        assertEquals(13, vocabularyOne.getMaxSize().intValue());
+        assertEquals(13, vocabularyOne.getMaxSize());
     }
 
     @Test
@@ -22,10 +22,10 @@ public class VocabularyTest {
         Vocabulary vocabularyOne = new Vocabulary();
         Vocabulary vocabularyTwo = new Vocabulary(7);
 
-        assertEquals(0, vocabularyOne.getOccurrenceThreshold().intValue());
-        assertEquals(7, vocabularyTwo.getOccurrenceThreshold().intValue());
+        assertEquals(0, vocabularyOne.getOccurrenceThreshold());
+        assertEquals(7, vocabularyTwo.getOccurrenceThreshold());
         vocabularyOne.setOccurrenceThreshold(14);
-        assertEquals(14, vocabularyOne.getOccurrenceThreshold().intValue());
+        assertEquals(14, vocabularyOne.getOccurrenceThreshold());
     }
 
     @Test
@@ -37,12 +37,12 @@ public class VocabularyTest {
         vocabularyOne.setOccurrenceThreshold(2);
         vocabularyOne.addWord(wordOne);
         vocabularyOne.addWord(wordTwo);
-        assertEquals(2, vocabularyOne.getNrWords().intValue());
+        assertEquals(2, vocabularyOne.getNrWords());
         assertEquals(stringOne, vocabularyOne.getWord(stringOne).getWord());
         assertEquals(stringTwo, vocabularyOne.getWord(stringTwo).getWord());
         assertEquals(2, vocabularyOne.getWords().size());
         ReduceVocabulary.reduce(vocabularyOne);
-        assertEquals(3, vocabularyOne.getOccurrenceThreshold().intValue());
+        assertEquals(3, vocabularyOne.getOccurrenceThreshold());
         assertEquals(stringOne, vocabularyOne.getWord(stringOne).getWord());
         assertEquals(null, vocabularyOne.getWord(stringTwo));
         assertEquals(1, vocabularyOne.getWords().size());

@@ -4,19 +4,19 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class WordEmbedding {
-    private final Integer vectorDimensions;
+    private final int vectorDimensions;
     private final HashMap<String, float []> embedding;
 
-    public WordEmbedding(Integer vectorDimensions) {
+    public WordEmbedding(int vectorDimensions) {
         this.vectorDimensions = vectorDimensions;
         embedding = new HashMap<>();
     }
 
-    public Integer getVectorDimensions() {
+    public int getVectorDimensions() {
         return vectorDimensions;
     }
 
-    public Integer getNrWords() {
+    public int getNrWords() {
         return embedding.size();
     }
 

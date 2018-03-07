@@ -8,7 +8,7 @@ public class CompareVocabularies {
         if ( vocabularies.length > 1 ) {
             // First check size
             for ( int vocabularyID = 1; vocabularyID < vocabularies.length; vocabularyID++ ) {
-                if ( !vocabularies[vocabularyID].getNrWords().equals(vocabularies[0].getNrWords()) ) {
+                if ( vocabularies[vocabularyID].getNrWords() != vocabularies[0].getNrWords() ) {
                     return false;
                 }
             }
@@ -19,7 +19,7 @@ public class CompareVocabularies {
                     if ( word == null ) {
                         return false;
                     }
-                    if ( !word.getOccurrences().equals(referenceWord.getOccurrences()) ) {
+                    if ( word.getOccurrences() != referenceWord.getOccurrences() ) {
                         return false;
                     }
                 }

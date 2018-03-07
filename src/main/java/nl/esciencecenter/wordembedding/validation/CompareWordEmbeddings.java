@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class CompareWordEmbeddings {
     public static Boolean compareDimensionality(WordEmbedding [] embeddings) {
         for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
-            if ( !embeddings[embeddingID].getVectorDimensions().equals(embeddings[0].getVectorDimensions()) ) {
+            if ( embeddings[embeddingID].getVectorDimensions() != embeddings[0].getVectorDimensions() ) {
                 return false;
             }
         }
@@ -49,8 +49,8 @@ public class CompareWordEmbeddings {
         return true;
     }
 
-    public static float compareNearestNeighbors(WordEmbedding [] embeddings, Integer percentage) {
-        Integer nrSkippedWords = 0;
+    public static float compareNearestNeighbors(WordEmbedding [] embeddings, int percentage) {
+        int nrSkippedWords = 0;
         float averageNeighborhoodIntersection = 0.0f;
         HashMap<String, HashMap<Integer, String []>> neighbors
                 = NearestNeighborsWordEmbedding.compute(embeddings);

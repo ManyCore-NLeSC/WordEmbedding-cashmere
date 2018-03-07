@@ -7,8 +7,8 @@ public class Rank {
         ArrayList<float []> ranks = new ArrayList<>();
 
         for ( int item = 0; item < vectors.size(); item++ ) {
-            Integer [] rank = {1, 1};
-            Integer [] equals = {1 ,1};
+            int [] rank = {1, 1};
+            int [] equals = {1 ,1};
 
             for ( int predecessor = 0; predecessor < item; predecessor++ ) {
                 if ( vectors.get(predecessor)[0] < vectors.get(item)[0] ) {

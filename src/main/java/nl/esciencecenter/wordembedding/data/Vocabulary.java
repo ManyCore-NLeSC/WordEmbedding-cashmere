@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class Vocabulary {
-    private Integer maxSize;
-    private Integer occurrenceThreshold;
-    private Integer occurrences;
+    private int maxSize;
+    private int occurrenceThreshold;
+    private int occurrences;
     private final HashMap<String, Word> words;
 
     public Vocabulary() {
@@ -18,30 +18,30 @@ public class Vocabulary {
         words = new HashMap<>();
     }
 
-    public Vocabulary(Integer occurrenceThreshold) {
+    public Vocabulary(int occurrenceThreshold) {
         maxSize = Integer.MAX_VALUE;
         this.occurrenceThreshold = occurrenceThreshold;
         occurrences = 0;
         words = new HashMap<>();
     }
 
-    public void setMaxSize(Integer maxSize) {
+    public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
     }
 
-    public Integer getMaxSize() {
+    public int getMaxSize() {
         return maxSize;
     }
 
-    public void setOccurrenceThreshold(Integer occurrenceThreshold) {
+    public void setOccurrenceThreshold(int occurrenceThreshold) {
         this.occurrenceThreshold = occurrenceThreshold;
     }
 
-    public Integer getOccurrenceThreshold() {
+    public int getOccurrenceThreshold() {
         return occurrenceThreshold;
     }
 
-    public Integer getOccurrences() {
+    public int getOccurrences() {
         return occurrences;
     }
 
@@ -141,7 +141,7 @@ public class Vocabulary {
     //
     // Synchronized methods
     //
-    public synchronized void incrementOccurrenceThreshold(Integer increment) {
+    public synchronized void incrementOccurrenceThreshold(int increment) {
         this.occurrenceThreshold += increment;
     }
 
@@ -170,7 +170,7 @@ public class Vocabulary {
         return words.values();
     }
 
-    public synchronized Integer getNrWords() {
+    public synchronized int getNrWords() {
         return words.size();
     }
 }

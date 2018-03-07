@@ -1,8 +1,8 @@
 package nl.esciencecenter.wordembedding.data;
 
 public class ExponentialTable {
-    private final Integer MAX_EXP = 6;
-    private final Integer EXP_TABLE_SIZE = 1000;
+    private final int MAX_EXP = 6;
+    private final int EXP_TABLE_SIZE = 1000;
     private float [] exponentialTable;
 
     public ExponentialTable() {}
@@ -15,15 +15,15 @@ public class ExponentialTable {
         }
     }
 
-    public float get(Integer item) {
+    public float get(int item) {
         return exponentialTable[item];
     }
 
-    public Integer getMaximumExponential() {
+    public int getMaximumExponential() {
         return MAX_EXP;
     }
 
-    public Integer getTableSize() {
+    public int getTableSize() {
         return EXP_TABLE_SIZE;
     }
 }

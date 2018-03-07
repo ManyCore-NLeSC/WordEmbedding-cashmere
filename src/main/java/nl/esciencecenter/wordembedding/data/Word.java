@@ -3,8 +3,8 @@ package nl.esciencecenter.wordembedding.data;
 import java.util.Comparator;
 
 public class Word implements Comparator<Word> {
-    private Integer occurrences;
-    private Integer sortedIndex;
+    private int occurrences;
+    private int sortedIndex;
     private final String word;
     private int [] code;
     private int [] points;
@@ -15,13 +15,13 @@ public class Word implements Comparator<Word> {
         this.word = word;
     }
 
-    public Word(String word, Integer occurrences) {
+    public Word(String word, int occurrences) {
         this.occurrences = occurrences;
         sortedIndex = -1;
         this.word = word;
     }
 
-    public Integer getOccurrences() {
+    public int getOccurrences() {
         return occurrences;
     }
 
@@ -29,11 +29,11 @@ public class Word implements Comparator<Word> {
         occurrences++;
     }
 
-    public Integer getSortedIndex() {
+    public int getSortedIndex() {
         return sortedIndex;
     }
 
-    public void setSortedIndex(Integer index) {
+    public void setSortedIndex(int index) {
         sortedIndex = index;
     }
 
@@ -41,7 +41,7 @@ public class Word implements Comparator<Word> {
         return word;
     }
 
-    public Integer getCodeLength() {
+    public int getCodeLength() {
         return code.length;
     }
 

@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ReadWord2VecWordVector {
     public static WordEmbedding read(BufferedReader fileReader) throws IOException {
-        Integer dimensions;
+        int dimensions;
         String line;
         String [] values;
         WordEmbedding embedding;

@@ -10,37 +10,37 @@ import java.util.ArrayList;
 
 public class SaveWord2VecClasses {
     public static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, BufferedWriter fileWriter,
-                            Integer nrClasses) throws IOException {
-        Integer nrIterations = 10;
-        ArrayList<Integer> classMapping = new ArrayList<>(vocabulary.getNrWords());
-        ArrayList<Integer> classCounter = new ArrayList<>(nrClasses);
+                            int nrClasses) throws IOException {
+        int nrIterations = 10;
+        int [] classMapping = new  int [vocabulary.getNrWords()];
+        int [] classCounter = new int [nrClasses];
         float [] classVector = new float [nrClasses * neuralNetwork.getVectorDimensions()];
 
         for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
-            classMapping.add(wordIndex % nrClasses);
+            classMapping[wordIndex] = wordIndex % nrClasses;
         }
         for ( int iteration = 0; iteration < nrIterations; iteration++ ) {
             for ( int neuronIndex = 0; neuronIndex < nrClasses * neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                 classVector[neuronIndex] = 0.0f;
             }
             for ( int classIndex = 0; classIndex < nrClasses; classIndex++ ) {
-                classCounter.add(1);
+                classCounter[classIndex] = 1;
             }
             for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-                    classVector[(classMapping.get(wordIndex) * neuralNetwork.getVectorDimensions()) + neuronIndex] +=
+                    classVector[(classMapping[wordIndex] * neuralNetwork.getVectorDimensions()) + neuronIndex] +=
                             neuralNetwork.getValueInputLayer(
                                     (wordIndex * neuralNetwork.getVectorDimensions()) + neuronIndex
                             );
                 }
-                classCounter.set(classMapping.get(wordIndex), classCounter.get(classMapping.get(wordIndex)) + 1);
+                classCounter[classMapping[wordIndex]] += 1;
             }
             for ( int classIndex = 0; classIndex < nrClasses; classIndex++ ) {
                 float distance = 0.0f;
 
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     classVector[(classIndex * neuralNetwork.getVectorDimensions()) + neuronIndex] /=
-                            classCounter.get(classIndex);
+                            classCounter[classIndex];
                     distance += classVector[(classIndex * neuralNetwork.getVectorDimensions()) + neuronIndex]
                             * classVector[(classIndex * neuralNetwork.getVectorDimensions()) + neuronIndex];
                 }
@@ -50,7 +50,7 @@ public class SaveWord2VecClasses {
                 }
             }
             for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
-                Integer classID = 0;
+                int classID = 0;
                 float distance = -10.0f;
 
                 for ( int classIndex = 0; classIndex < nrClasses; classIndex++ ) {
@@ -67,11 +67,11 @@ public class SaveWord2VecClasses {
                         classID = classIndex;
                     }
                 }
-                classMapping.set(wordIndex, classID);
+                classMapping[wordIndex] = classID;
             }
         }
         for ( Word word : vocabulary.getWords() ) {
-            fileWriter.write( word.getWord() + " " + classMapping.get(word.getSortedIndex()));
+            fileWriter.write( word.getWord() + " " + classMapping[word.getSortedIndex()]);
             fileWriter.newLine();
         }
     }

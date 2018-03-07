@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class TrainWord2VecModel extends Thread {
     private Boolean debug;
-    private final Integer updateInterval = 10000;
+    private final int updateInterval = 10000;
     private final Vocabulary vocabulary;
     private final NeuralNetworkWord2Vec neuralNetwork;
     private final BufferedReader fileReader;
@@ -35,9 +35,9 @@ public class TrainWord2VecModel extends Thread {
     }
 
     public void run() {
-        Integer currentWordCount = 0;
-        Integer previousWordCount = 0;
-        Integer sentencePosition = 0;
+        int currentWordCount = 0;
+        int previousWordCount = 0;
+        int sentencePosition = 0;
         String line;
         Random randomNumberGenerator = new Random();
         hiddenLayer0 = new float [neuralNetwork.getVectorDimensions()];
@@ -101,7 +101,7 @@ public class TrainWord2VecModel extends Thread {
                     hiddenLayer0[neuronIndex] = 0.0f;
                     hiddenError0[neuronIndex] = 0.0f;
                 }
-                Integer randomStartingWord = randomNumberGenerator.nextInt() % neuralNetwork.getWindowSize();
+                int randomStartingWord = randomNumberGenerator.nextInt() % neuralNetwork.getWindowSize();
                 if ( neuralNetwork.getCBOW() ) {
                     CBOW(vocabulary, sentence, word, sentencePosition, randomStartingWord);
                 } else {
@@ -119,13 +119,13 @@ public class TrainWord2VecModel extends Thread {
 
     // The code of this method is a straightforward translation of Google's C code
     // TODO: check if it could be written in a better way
-    private void CBOW(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition,
-                      Integer randomStartingWord) {
+    private void CBOW(Vocabulary vocabulary, ArrayList<String> sentence, String word, int sentencePosition,
+                      int randomStartingWord) {
         for ( int wordIndex = randomStartingWord;
               wordIndex < (neuralNetwork.getWindowSize() * 2 + 1) - randomStartingWord;
               wordIndex++ ) {
             if ( wordIndex != neuralNetwork.getWindowSize() ) {
-                Integer lastWordIndex = sentencePosition - neuralNetwork.getWindowSize() + wordIndex;
+                int lastWordIndex = sentencePosition - neuralNetwork.getWindowSize() + wordIndex;
                 if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
                     continue;
                 }
@@ -144,7 +144,7 @@ public class TrainWord2VecModel extends Thread {
             for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
                 float exponential = 0.0f;
                 float gradient;
-                Integer relatedWordIndex = vocabulary.getWord(word).getPoint(symbolIndex)
+                int relatedWordIndex = vocabulary.getWord(word).getPoint(symbolIndex)
                         * neuralNetwork.getVectorDimensions();
 
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
@@ -168,9 +168,9 @@ public class TrainWord2VecModel extends Thread {
             }
         }
         if ( neuralNetwork.getNegativeSamples() > 0 ) {
-            Integer target;
-            Integer label;
-            Integer relatedWordIndex;
+            int target;
+            int label;
+            int relatedWordIndex;
             float exponential;
             float gradient;
             Random randomNumberGenerator = new Random();
@@ -183,7 +183,7 @@ public class TrainWord2VecModel extends Thread {
                     target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
                     if ( target == 0 ) {
                         target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                    } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
+                    } else if ( target == vocabulary.getWord(word).getSortedIndex() ) {
                         continue;
                     }
                     label = 0;
@@ -206,7 +206,7 @@ public class TrainWord2VecModel extends Thread {
         }
         for ( int wordIndex = randomStartingWord; wordIndex < (neuralNetwork.getWindowSize() * 2) + 1; wordIndex++ ) {
             if ( wordIndex != neuralNetwork.getWindowSize() ) {
-                Integer lastWordIndex = sentencePosition - neuralNetwork.getWindowSize() + wordIndex;
+                int lastWordIndex = sentencePosition - neuralNetwork.getWindowSize() + wordIndex;
 
                 if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
                     continue;
@@ -226,11 +226,11 @@ public class TrainWord2VecModel extends Thread {
 
     // The code of this method is a straightforward translation of Google's C code
     // TODO: check if it could be written in a better way
-    private void skipGram(Vocabulary vocabulary, ArrayList<String> sentence, String word, Integer sentencePosition,
-                          Integer randomStartingWord) {
-        Integer lastWordIndex;
-        Integer relatedWordIndexOne;
-        Integer relatedWordIndexTwo;
+    private void skipGram(Vocabulary vocabulary, ArrayList<String> sentence, String word, int sentencePosition,
+                          int randomStartingWord) {
+        int lastWordIndex;
+        int relatedWordIndexOne;
+        int relatedWordIndexTwo;
         float exponential;
         float gradient;
 
@@ -277,8 +277,8 @@ public class TrainWord2VecModel extends Thread {
                     }
                 }
                 if ( neuralNetwork.getNegativeSamples() > 0 ) {
-                    Integer target;
-                    Integer label;
+                    int target;
+                    int label;
                     Random randomNumberGenerator = new Random();
 
                     for ( int sample = 0; sample < neuralNetwork.getNegativeSamples() + 1; sample++ ) {
@@ -289,7 +289,7 @@ public class TrainWord2VecModel extends Thread {
                             target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
                             if ( target == 0 ) {
                                 target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                            } else if ( target.equals(vocabulary.getWord(word).getSortedIndex()) ) {
+                            } else if ( target == vocabulary.getWord(word).getSortedIndex() ) {
                                 continue;
                             }
                             label = 0;
@@ -330,7 +330,7 @@ public class TrainWord2VecModel extends Thread {
         }
     }
 
-    private float computeGradient(float exponential, Integer label) {
+    private float computeGradient(float exponential, int label) {
         float gradient;
         if ( exponential > exponentialTable.getMaximumExponential() ) {
             gradient = (label - 1) * neuralNetwork.getCurrentAlpha();

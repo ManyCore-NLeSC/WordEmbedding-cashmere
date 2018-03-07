@@ -12,7 +12,7 @@ public class Word2VecCommandLineArguments {
     private String outputFilename = "";
     @Parameter(names = {"-occurrence_threshold", "-min-count"},
             description = "Only consider words that occur more than the threshold; default is 5.")
-    private Integer minCount = 5;
+    private int minCount = 5;
     @Parameter(names = {"-store_vocabulary", "-save-vocab"},
             description = "File where to store the learned vocabulary.")
     private String outVocabularyFilename = "";
@@ -20,37 +20,37 @@ public class Word2VecCommandLineArguments {
             description = "File to load a previously learned vocabulary from.")
     private String inVocabularyFilename = "";
     @Parameter(names = {"-vocabulary_max_size"}, description = "Maximum number of words in the vocabulary.")
-    private Integer vocabularyMaxSize = 30000000;
+    private int vocabularyMaxSize = 30000000;
     @Parameter(names = {"-strict"}, description = "Only consider alphanumeric words, and remove punctuation.")
     private Boolean strict = false;
     @Parameter(names = {"-debug"}, description = "Enable debug mode.")
     private Boolean debug = false;
     @Parameter(names = {"-windowSize"}, description = "Window size.")
-    private Integer windowSize = 5;
+    private int windowSize = 5;
     @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
     private Boolean softmax = true;
     @Parameter(names = {"-learning_rate", "-alpha"}, description = "Starting learning rate.")
     private float alpha = 0.025f;
     @Parameter(names = {"-negative_samples", "-negative"}, description = "Number of negative samples.")
-    private Integer negativeSamples = 0;
+    private int negativeSamples = 0;
     @Parameter(names = {"-cbow"}, description = "Use the continuous bag of words (CBOW) model.")
     private Boolean useCBOW = false;
     @Parameter(names = {"-use_position", "-pos"}, description = "Use position for model training.")
     private Boolean usePosition = false;
     @Parameter(names = {"-vector_dimensions", "-size"}, description = "Dimensions of the word vectors.")
-    private Integer vectorDimensions = 100;
+    private int vectorDimensions = 100;
     @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words.")
     private float samplingFactor = 0.0f;
     @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
-    private Integer classes = 0;
+    private int classes = 0;
     @Parameter(names = {"-binary_output", "-binary"}, description = "Use binary mode for output vectors.")
     private Boolean binaryMode = false;
     @Parameter(names = {"-store_context_vectors", "-dumpcv"}, description = "File where to store the context vectors.")
     private String outContextVectorsFilename = "";
     @Parameter(names = {"-threads"}, description = "Number of threads.")
-    private Integer threads = 1;
+    private int threads = 1;
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
-    private Integer seed = 1;
+    private int seed = 1;
 
     public Boolean getHelp() {
         return help;
@@ -64,7 +64,7 @@ public class Word2VecCommandLineArguments {
         return outputFilename;
     }
 
-    public Integer getMinCount() {
+    public int getMinCount() {
         return minCount;
     }
 
@@ -76,7 +76,7 @@ public class Word2VecCommandLineArguments {
         return inVocabularyFilename;
     }
 
-    public Integer getVocabularyMaxSize() {
+    public int getVocabularyMaxSize() {
         return vocabularyMaxSize;
     }
 
@@ -88,7 +88,7 @@ public class Word2VecCommandLineArguments {
         return debug;
     }
 
-    public Integer getWindowSize() {
+    public int getWindowSize() {
         return windowSize;
     }
 
@@ -100,7 +100,7 @@ public class Word2VecCommandLineArguments {
         return alpha;
     }
 
-    public Integer getNegativeSamples() {
+    public int getNegativeSamples() {
         return negativeSamples;
     }
 
@@ -112,7 +112,7 @@ public class Word2VecCommandLineArguments {
         return usePosition;
     }
 
-    public Integer getVectorDimensions() {
+    public int getVectorDimensions() {
         return vectorDimensions;
     }
 
@@ -120,7 +120,7 @@ public class Word2VecCommandLineArguments {
         return samplingFactor;
     }
 
-    public Integer getClasses() {
+    public int getClasses() {
         return classes;
     }
 
@@ -132,11 +132,11 @@ public class Word2VecCommandLineArguments {
         return outContextVectorsFilename;
     }
 
-    public Integer getNrThreads() {
+    public int getNrThreads() {
         return threads;
     }
 
-    public Integer getSeed() {
+    public int getSeed() {
         return seed;
     }
 }

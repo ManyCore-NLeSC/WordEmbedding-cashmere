@@ -6,20 +6,20 @@ public class NeuralNetworkWord2Vec {
     private final Boolean CBOW;
     private final Boolean hierarchicalSoftmax;
     private final Boolean usePosition;
-    private final Integer negativeSamples;
-    private final Integer vectorDimensions;
-    private final Integer windowSize;
+    private final int negativeSamples;
+    private final int vectorDimensions;
+    private final int windowSize;
     private final float alpha;
     private float samplingFactor = 0.0f;
     // Members that can be modified concurrently
-    private Integer globalWordCount = 0;
+    private int globalWordCount = 0;
     private float currentAlpha;
     private float [] inputLayer;
     private float [] outputLayer;
     private float [] outputLayerNegativeSamples;
 
-    public NeuralNetworkWord2Vec(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
-                                 Integer vectorDimensions, Integer windowSize, float alpha) {
+    public NeuralNetworkWord2Vec(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, int negativeSamples,
+                                 int vectorDimensions, int windowSize, float alpha) {
         this.CBOW = CBOW;
         this.hierarchicalSoftmax = hierarchicalSoftmax;
         this.usePosition = usePosition;
@@ -46,11 +46,11 @@ public class NeuralNetworkWord2Vec {
         return usePosition;
     }
 
-    public Integer getNegativeSamples() {
+    public int getNegativeSamples() {
         return negativeSamples;
     }
 
-    public Integer getVectorDimensions() {
+    public int getVectorDimensions() {
         return vectorDimensions;
     }
 
@@ -78,14 +78,14 @@ public class NeuralNetworkWord2Vec {
         return alpha;
     }
 
-    public Integer getWindowSize() {
+    public int getWindowSize() {
         return windowSize;
     }
 
     //
     // Synchronized methods
     //
-    public synchronized void initialize(Vocabulary vocabulary, Integer seed) {
+    public synchronized void initialize(Vocabulary vocabulary, int seed) {
         Random randomNumberGenerator = new Random(seed);
 
         inputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
@@ -106,47 +106,47 @@ public class NeuralNetworkWord2Vec {
         vocabulary.generateCodes();
     }
 
-    public synchronized float getValueInputLayer(Integer item) {
+    public synchronized float getValueInputLayer(int item) {
         return inputLayer[item];
     }
 
-    public synchronized void setValueInputLayer(Integer item, float value) {
+    public synchronized void setValueInputLayer(int item, float value) {
         inputLayer[item] = value;
     }
 
-    public synchronized void incrementValueInputLayer(Integer item, float increment) {
+    public synchronized void incrementValueInputLayer(int item, float increment) {
         inputLayer[item] += increment;
     }
 
-    public synchronized float getValueOutputLayer(Integer item) {
+    public synchronized float getValueOutputLayer(int item) {
         return outputLayer[item];
     }
 
-    public synchronized  void setValueOutputLayer(Integer item, float value) {
+    public synchronized  void setValueOutputLayer(int item, float value) {
         outputLayer[item] = value;
     }
 
-    public synchronized void incrementValueOutputLayer(Integer item, float increment) {
+    public synchronized void incrementValueOutputLayer(int item, float increment) {
         outputLayer[item] += increment;
     }
 
-    public synchronized float getValueOutputLayerNegativeSamples(Integer item) {
+    public synchronized float getValueOutputLayerNegativeSamples(int item) {
         return outputLayerNegativeSamples[item];
     }
 
-    public synchronized void setValueOutputNegativeSamples(Integer item, float value) {
+    public synchronized void setValueOutputNegativeSamples(int item, float value) {
         outputLayerNegativeSamples[item] = value;
     }
 
-    public synchronized void incrementValueOutputNegativeSamples(Integer item, float increment) {
+    public synchronized void incrementValueOutputNegativeSamples(int item, float increment) {
         outputLayerNegativeSamples[item] += increment;
     }
 
-    public synchronized Integer getGlobalWordCount() {
+    public synchronized int getGlobalWordCount() {
         return globalWordCount;
     }
 
-    public synchronized void incrementGlobalWordCount(Integer increment) {
+    public synchronized void incrementGlobalWordCount(int increment) {
         globalWordCount += increment;
     }
 
