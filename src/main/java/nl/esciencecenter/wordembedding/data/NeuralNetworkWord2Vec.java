@@ -12,7 +12,7 @@ public class NeuralNetworkWord2Vec {
     private final float alpha;
     private float samplingFactor = 0.0f;
     // Members that can be modified concurrently
-    private int globalWordCount = 0;
+    private long globalWordCount = 0;
     private float currentAlpha;
     private float [] inputLayer;
     private float [] outputLayer;
@@ -142,11 +142,11 @@ public class NeuralNetworkWord2Vec {
         outputLayerNegativeSamples[item] += increment;
     }
 
-    public synchronized int getGlobalWordCount() {
+    public synchronized long getGlobalWordCount() {
         return globalWordCount;
     }
 
-    public synchronized void incrementGlobalWordCount(int increment) {
+    public synchronized void incrementGlobalWordCount(long increment) {
         globalWordCount += increment;
     }
 
