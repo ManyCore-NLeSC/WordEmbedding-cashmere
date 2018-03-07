@@ -41,7 +41,7 @@ public class Word2VecEvaluateWordSimilarity {
         }
         for ( WordEmbedding embedding : embeddings ) {
             NormalizeWordEmbedding.compute(embedding);
-            System.out.println("Correlation: " + EvaluateWordSimilarity.correlation(similarity, embedding));
+            System.out.format("Correlation: %.3f\n", EvaluateWordSimilarity.correlation(similarity, embedding));
         }
     }
 }
