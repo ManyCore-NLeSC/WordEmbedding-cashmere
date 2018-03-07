@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Vocabulary {
     private int maxSize;
     private int occurrenceThreshold;
-    private int occurrences;
+    private long occurrences;
     private final HashMap<String, Word> words;
 
     public Vocabulary() {
@@ -41,7 +41,7 @@ public class Vocabulary {
         return occurrenceThreshold;
     }
 
-    public int getOccurrences() {
+    public long getOccurrences() {
         return occurrences;
     }
 
