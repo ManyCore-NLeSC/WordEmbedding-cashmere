@@ -5,20 +5,21 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SumTest {
+    private static final int length = 42;
 
     @Test
     public void compute() {
-        Float [] vectorOne = new Float [5];
-        Float [] vectorTwo = new Float [5];
+        Float [] vectorOne = new Float [length];
+        Float [] vectorTwo = new Float [length];
         Float [] results;
 
-        for ( int item = 0; item < 5; item++ ) {
+        for ( int item = 0; item < length; item++ ) {
             vectorOne[item] = item * 1.0f;
-            vectorTwo[item] = (5 - item) * 1.0f;
+            vectorTwo[item] = (length - item) * 1.0f;
         }
         results = Sum.compute(vectorOne, vectorTwo);
-        for ( int item = 0; item < 5; item++ ) {
-            assertTrue(FloatComparison.areSimilar(5.0f, results[item], 1.0e-06f));
+        for ( int item = 0; item < length; item++ ) {
+            assertTrue(FloatComparison.areSimilar((float)(length), results[item], 1.0e-06f));
         }
 
     }
