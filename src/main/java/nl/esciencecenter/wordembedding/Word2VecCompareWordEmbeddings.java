@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Word2VecCompareWordEmbeddings {
     public static void main(String [] args) {
-        Float averageNeighborhoodIntersection;
+        float averageNeighborhoodIntersection;
         Integer neighborhoodFraction = 5;
         BufferedReader embeddingFile;
         WordEmbedding [] embeddings;
@@ -48,7 +48,7 @@ public class Word2VecCompareWordEmbeddings {
         averageNeighborhoodIntersection = CompareWordEmbeddings.compareNearestNeighbors(embeddings,
                 neighborhoodFraction);
         System.out.format("Average Neighborhood Intersection: %d/%d (%.2f%%)",
-                averageNeighborhoodIntersection.intValue(),
+                (int)(averageNeighborhoodIntersection),
                 ((embeddings[0].getNrWords() - 1) * neighborhoodFraction) / 100,
                 (averageNeighborhoodIntersection * 100)
                         / (((embeddings[0].getNrWords() - 1) * neighborhoodFraction) / 100));

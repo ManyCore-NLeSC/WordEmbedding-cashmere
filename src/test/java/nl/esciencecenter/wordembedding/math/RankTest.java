@@ -9,10 +9,10 @@ import static junit.framework.TestCase.assertEquals;
 public class RankTest {
     @Test
     public void compute() {
-        ArrayList<Float []> vectors = new ArrayList<>();
-        ArrayList<Float []> ranks;
+        ArrayList<float []> vectors = new ArrayList<>();
+        ArrayList<float []> ranks;
         for ( int item = 0; item < 5; item++ ) {
-            vectors.add(new Float [2]);
+            vectors.add(new float [2]);
         }
         // {15, 18, 19, 20, 21} {25, 26, 28, 27, 29}
         vectors.get(0)[0] = 15.0f;

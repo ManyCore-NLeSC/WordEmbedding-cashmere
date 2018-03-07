@@ -16,7 +16,7 @@ public class NearestNeighborsWord {
                 Cosine.compute(embedding.getWordCoordinates(word), embedding.getWordCoordinates(wordOne))));
         return neighborsList.toArray(neighborsArray);
     }
-    public static String [] compute(Float [] word, WordEmbedding embedding) {
+    public static String [] compute(float [] word, WordEmbedding embedding) {
         ArrayList<String> neighborsList = new ArrayList<>(embedding.getWords());
         String [] neighborsArray = new String [embedding.getNrWords() - 1];
 

@@ -30,7 +30,7 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
     private Boolean softmax = true;
     @Parameter(names = {"-learning_rate", "-alpha"}, description = "Starting learning rate.")
-    private Float alpha = 0.025f;
+    private float alpha = 0.025f;
     @Parameter(names = {"-negative_samples", "-negative"}, description = "Number of negative samples.")
     private Integer negativeSamples = 0;
     @Parameter(names = {"-cbow"}, description = "Use the continuous bag of words (CBOW) model.")
@@ -40,7 +40,7 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-vector_dimensions", "-size"}, description = "Dimensions of the word vectors.")
     private Integer vectorDimensions = 100;
     @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words.")
-    private Float samplingFactor = 0.0f;
+    private float samplingFactor = 0.0f;
     @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
     private Integer classes = 0;
     @Parameter(names = {"-binary_output", "-binary"}, description = "Use binary mode for output vectors.")
@@ -96,7 +96,7 @@ public class Word2VecCommandLineArguments {
         return softmax;
     }
 
-    public Float getAlpha() {
+    public float getAlpha() {
         return alpha;
     }
 
@@ -116,7 +116,7 @@ public class Word2VecCommandLineArguments {
         return vectorDimensions;
     }
 
-    public Float getSamplingFactor() {
+    public float getSamplingFactor() {
         return samplingFactor;
     }
 

@@ -1,8 +1,8 @@
 package nl.esciencecenter.wordembedding.math;
 
 public class Division {
-    public static Float [] compute(Float [] vectorOne, Float [] vectorTwo) {
-        Float [] result = new Float [vectorOne.length];
+    public static float [] compute(float [] vectorOne, float [] vectorTwo) {
+        float [] result = new float [vectorOne.length];
 
         for ( int item = 0; item < result.length; item++ ) {
             result[item] = vectorOne[item] / vectorTwo[item];
@@ -10,8 +10,8 @@ public class Division {
         return result;
     }
 
-    public static Float [] compute(Float [] vectorOne, Float scalar) {
-        Float [] result = new Float [vectorOne.length];
+    public static float [] compute(float [] vectorOne, float scalar) {
+        float [] result = new float [vectorOne.length];
 
         for ( int item = 0; item < result.length; item++ ) {
             result[item] = vectorOne[item] / scalar;

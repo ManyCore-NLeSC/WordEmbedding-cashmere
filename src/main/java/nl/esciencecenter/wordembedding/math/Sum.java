@@ -1,8 +1,8 @@
 package nl.esciencecenter.wordembedding.math;
 
 public class Sum {
-    public static Float [] compute(Float [] vectorOne, Float [] vectorTwo) {
-        Float [] resultingVector = new Float [vectorOne.length];
+    public static float [] compute(float [] vectorOne, float [] vectorTwo) {
+        float [] resultingVector = new float [vectorOne.length];
 
         for ( int dimension = 0; dimension < vectorOne.length; dimension++ ) {
             resultingVector[dimension] = vectorOne[dimension] + vectorTwo[dimension];

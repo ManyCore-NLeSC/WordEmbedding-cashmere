@@ -9,9 +9,9 @@ import static junit.framework.TestCase.assertTrue;
 public class PearsonCorrelationCoefficientTest {
     @Test
     public void compute() {
-        ArrayList<Float []> vectors = new ArrayList<>();
+        ArrayList<float []> vectors = new ArrayList<>();
         for ( int item = 0; item < 6; item++ ) {
-            vectors.add(new Float [2]);
+            vectors.add(new float [2]);
         }
         // {43, 21, 25, 42, 57, 59} {99, 65, 79, 75, 87, 81}
         vectors.get(0)[0] = 43.0f;
@@ -30,7 +30,7 @@ public class PearsonCorrelationCoefficientTest {
                 1.0e-06f));
         vectors = new ArrayList<>();
         for ( int item = 0; item < 5; item++ ) {
-            vectors.add(new Float [2]);
+            vectors.add(new float [2]);
         }
         // {15, 18, 21, 24, 27} {25, 25, 27, 31, 32}
         vectors.get(0)[0] = 15.0f;

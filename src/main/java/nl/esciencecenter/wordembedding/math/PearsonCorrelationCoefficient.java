@@ -3,14 +3,14 @@ package nl.esciencecenter.wordembedding.math;
 import java.util.ArrayList;
 
 public class PearsonCorrelationCoefficient {
-    public static Float compute(ArrayList<Float []> vectors) {
-        Float sumXY = 0.0f;
-        Float sumX = 0.0f;
-        Float sumX2 = 0.0f;
-        Float sumY = 0.0f;
-        Float sumY2 = 0.0f;
+    public static float compute(ArrayList<float []> vectors) {
+        float sumXY = 0.0f;
+        float sumX = 0.0f;
+        float sumX2 = 0.0f;
+        float sumY = 0.0f;
+        float sumY2 = 0.0f;
 
-        for (Float [] vector : vectors) {
+        for (float [] vector : vectors) {
             sumXY += vector[0] * vector[1];
             sumX += vector[0];
             sumX2 += vector[0] * vector[0];

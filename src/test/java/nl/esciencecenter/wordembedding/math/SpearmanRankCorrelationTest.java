@@ -9,9 +9,9 @@ import static junit.framework.TestCase.assertTrue;
 public class SpearmanRankCorrelationTest {
     @Test
     public void compute() {
-        ArrayList<Float []> vectors = new ArrayList<>();
+        ArrayList<float []> vectors = new ArrayList<>();
         for ( int item = 0; item < 5; item++ ) {
-            vectors.add(new Float [2]);
+            vectors.add(new float [2]);
         }
         // {15, 18, 19, 20, 21} {25, 26, 28, 27, 29}
         vectors.get(0)[0] = 15.0f;
@@ -28,7 +28,7 @@ public class SpearmanRankCorrelationTest {
                 1.0e-06f));
         vectors = new ArrayList<>();
         for ( int item = 0; item < 5; item++ ) {
-            vectors.add(new Float [2]);
+            vectors.add(new float [2]);
         }
         // {15, 18, 21, 15, 21} {25, 25, 27, 27, 27}
         vectors.get(0)[0] = 15.0f;

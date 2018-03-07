@@ -25,8 +25,8 @@ public class CompareWordEmbeddings {
         if ( embeddings.length > 1 ) {
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
                 for ( String referenceWord : embeddings[0].getWords() ) {
-                    Float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
-                    Float [] coordinates = embeddings[embeddingID].getWordCoordinates(referenceWord);
+                    float [] referenceCoordinates = embeddings[0].getWordCoordinates(referenceWord);
+                    float [] coordinates = embeddings[embeddingID].getWordCoordinates(referenceWord);
                     if ( coordinates == null ) {
                         return false;
                     }
@@ -49,9 +49,9 @@ public class CompareWordEmbeddings {
         return true;
     }
 
-    public static Float compareNearestNeighbors(WordEmbedding [] embeddings, Integer percentage) {
+    public static float compareNearestNeighbors(WordEmbedding [] embeddings, Integer percentage) {
         Integer nrSkippedWords = 0;
-        Float averageNeighborhoodIntersection = 0.0f;
+        float averageNeighborhoodIntersection = 0.0f;
         HashMap<String, HashMap<Integer, String []>> neighbors
                 = NearestNeighborsWordEmbedding.compute(embeddings);
 

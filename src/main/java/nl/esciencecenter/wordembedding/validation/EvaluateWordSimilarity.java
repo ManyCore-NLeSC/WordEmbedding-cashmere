@@ -8,12 +8,12 @@ import nl.esciencecenter.wordembedding.math.SpearmanRankCorrelation;
 import java.util.ArrayList;
 
 public class EvaluateWordSimilarity {
-    public static Float correlation(WordSimilarity similarity, WordEmbedding embedding) {
-        ArrayList<Float []> results = new ArrayList<>();
+    public static float correlation(WordSimilarity similarity, WordEmbedding embedding) {
+        ArrayList<float []> results = new ArrayList<>();
 
         for ( String wordOne : similarity.getWords() ) {
             for ( String wordTwo : similarity.getWords(wordOne) ) {
-                Float [] pair = new Float [2];
+                float [] pair = new float [2];
 
                 if ( (embedding.getWordCoordinates(wordOne) != null)
                         && (embedding.getWordCoordinates(wordTwo) != null) ) {

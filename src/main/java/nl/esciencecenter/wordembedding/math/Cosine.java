@@ -1,7 +1,7 @@
 package nl.esciencecenter.wordembedding.math;
 
 public class Cosine {
-    public static Float compute(Float [] vectorOne, Float [] vectorTwo) {
+    public static float compute(float [] vectorOne, float [] vectorTwo) {
         return DotProduct.compute(vectorOne, vectorTwo) / (Norm.compute(vectorOne) * Norm.compute(vectorTwo));
     }
 }

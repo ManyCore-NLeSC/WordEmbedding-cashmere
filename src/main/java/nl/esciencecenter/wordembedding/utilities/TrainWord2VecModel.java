@@ -79,7 +79,7 @@ public class TrainWord2VecModel extends Thread {
                         }
                         currentWordCount++;
                         if ( neuralNetwork.getSamplingFactor() > 0 ) {
-                            Float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences()
+                            float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences()
                                     / (neuralNetwork.getSamplingFactor() * vocabulary.getNrWords())) + 1)
                                     * (neuralNetwork.getSamplingFactor() * vocabulary.getNrWords())
                                     / vocabulary.getWord(word).getOccurrences());
@@ -142,8 +142,8 @@ public class TrainWord2VecModel extends Thread {
         }
         if ( neuralNetwork.getHierarchicalSoftmax() ) {
             for ( int symbolIndex = 0; symbolIndex < vocabulary.getWord(word).getCodeLength(); symbolIndex++ ) {
-                Float exponential = 0.0f;
-                Float gradient;
+                float exponential = 0.0f;
+                float gradient;
                 Integer relatedWordIndex = vocabulary.getWord(word).getPoint(symbolIndex)
                         * neuralNetwork.getVectorDimensions();
 
@@ -171,8 +171,8 @@ public class TrainWord2VecModel extends Thread {
             Integer target;
             Integer label;
             Integer relatedWordIndex;
-            Float exponential;
-            Float gradient;
+            float exponential;
+            float gradient;
             Random randomNumberGenerator = new Random();
 
             for ( int sample = 0; sample < neuralNetwork.getNegativeSamples() + 1; sample++ ) {
@@ -231,8 +231,8 @@ public class TrainWord2VecModel extends Thread {
         Integer lastWordIndex;
         Integer relatedWordIndexOne;
         Integer relatedWordIndexTwo;
-        Float exponential;
-        Float gradient;
+        float exponential;
+        float gradient;
 
         for ( int wordIndex = randomStartingWord; wordIndex < (neuralNetwork.getWindowSize() * 2) - 1; wordIndex++ ) {
             if ( wordIndex != neuralNetwork.getWindowSize() ) {
@@ -330,8 +330,8 @@ public class TrainWord2VecModel extends Thread {
         }
     }
 
-    private Float computeGradient(Float exponential, Integer label) {
-        Float gradient;
+    private float computeGradient(float exponential, Integer label) {
+        float gradient;
         if ( exponential > exponentialTable.getMaximumExponential() ) {
             gradient = (label - 1) * neuralNetwork.getCurrentAlpha();
         } else if ( exponential < -exponentialTable.getMaximumExponential() ) {

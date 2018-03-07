@@ -12,15 +12,15 @@ import java.text.DecimalFormat;
 class SaveWord2VecVectors {
     static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, float[] layer,
                      BufferedWriter fileWriter) throws IOException {
-        DecimalFormat sixDecimalFloat = new DecimalFormat("0.000000");
+        DecimalFormat sixDecimalfloat = new DecimalFormat("0.000000");
 
-        sixDecimalFloat.setRoundingMode(RoundingMode.CEILING);
+        sixDecimalfloat.setRoundingMode(RoundingMode.CEILING);
         fileWriter.write(vocabulary.getNrWords() + " " + neuralNetwork.getVectorDimensions());
         fileWriter.newLine();
         for ( Word word : vocabulary.getWords() ) {
             fileWriter.write(word.getWord() + " ");
             for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-                fileWriter.write(sixDecimalFloat.format(
+                fileWriter.write(sixDecimalfloat.format(
                         layer[(word.getSortedIndex() * neuralNetwork.getVectorDimensions()) + neuronIndex])
                         + " ");
             }

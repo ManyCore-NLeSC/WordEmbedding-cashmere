@@ -20,7 +20,7 @@ public class ReadWord2VecWordVector {
         embedding = new WordEmbedding(dimensions);
         // Read the vectors
         while ( (line = fileReader.readLine()) != null ) {
-            Float [] coordinates = new Float [dimensions];
+            float [] coordinates = new float [dimensions];
             values = line.split(" ");
             for ( int dimension = 0; dimension < dimensions; dimension++ ) {
                 coordinates[dimension] = Float.parseFloat(values[dimension + 1]);

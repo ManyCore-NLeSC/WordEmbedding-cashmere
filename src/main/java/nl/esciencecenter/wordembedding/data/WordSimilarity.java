@@ -14,11 +14,11 @@ public class WordSimilarity {
         this.similarities = similarities;
     }
 
-    public Float getSimilarityScore(String wordOne, String wordTwo) {
+    public float getSimilarityScore(String wordOne, String wordTwo) {
         return similarities.get(wordOne).get(wordTwo);
     }
 
-    public void addSimilarityScore(String wordOne, String wordTwo, Float similarity) {
+    public void addSimilarityScore(String wordOne, String wordTwo, float similarity) {
         if ( similarities.get(wordOne) == null ) {
             similarities.put(wordOne, new HashMap<>());
             similarities.get(wordOne).put(wordTwo, similarity);

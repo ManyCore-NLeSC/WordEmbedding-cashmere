@@ -9,17 +9,17 @@ public class NeuralNetworkWord2Vec {
     private final Integer negativeSamples;
     private final Integer vectorDimensions;
     private final Integer windowSize;
-    private final Float alpha;
-    private Float samplingFactor = 0.0f;
+    private final float alpha;
+    private float samplingFactor = 0.0f;
     // Members that can be modified concurrently
     private Integer globalWordCount = 0;
-    private Float currentAlpha;
+    private float currentAlpha;
     private float [] inputLayer;
     private float [] outputLayer;
     private float [] outputLayerNegativeSamples;
 
     public NeuralNetworkWord2Vec(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, Integer negativeSamples,
-                                 Integer vectorDimensions, Integer windowSize, Float alpha) {
+                                 Integer vectorDimensions, Integer windowSize, float alpha) {
         this.CBOW = CBOW;
         this.hierarchicalSoftmax = hierarchicalSoftmax;
         this.usePosition = usePosition;
@@ -54,11 +54,11 @@ public class NeuralNetworkWord2Vec {
         return vectorDimensions;
     }
 
-    public void setSamplingFactor(Float samplingFactor) {
+    public void setSamplingFactor(float samplingFactor) {
         this.samplingFactor = samplingFactor;
     }
 
-    public Float getSamplingFactor() {
+    public float getSamplingFactor() {
         return samplingFactor;
     }
 
@@ -74,7 +74,7 @@ public class NeuralNetworkWord2Vec {
         return outputLayerNegativeSamples;
     }
 
-    public Float getAlpha() {
+    public float getAlpha() {
         return alpha;
     }
 
@@ -150,11 +150,11 @@ public class NeuralNetworkWord2Vec {
         globalWordCount += increment;
     }
 
-    public synchronized Float getCurrentAlpha() {
+    public synchronized float getCurrentAlpha() {
         return currentAlpha;
     }
 
-    public synchronized void setCurrentAlpha(Float alpha) {
+    public synchronized void setCurrentAlpha(float alpha) {
         currentAlpha = alpha;
     }
 }

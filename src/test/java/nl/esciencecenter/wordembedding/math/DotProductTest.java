@@ -11,8 +11,8 @@ public class DotProductTest {
 
     @Test
     public void compute() {
-        Float [] vectorOne = new Float [length];
-        Float [] vectorTwo = new Float [length];
+        float [] vectorOne = new float [length];
+        float [] vectorTwo = new float [length];
 
         for ( int item = 0; item < length; item++ ) {
             vectorOne[item] = item * 1.0f;
