@@ -102,7 +102,7 @@ public class TrainWord2VecModel extends Thread {
                     hiddenLayer0[neuronIndex] = 0.0f;
                     hiddenError0[neuronIndex] = 0.0f;
                 }
-                int randomStartingWord = randomNumberGenerator.nextInt() % neuralNetwork.getWindowSize();
+                int randomStartingWord = randomNumberGenerator.nextInt(neuralNetwork.getWindowSize());
                 if ( neuralNetwork.getCBOW() ) {
                     CBOW(vocabulary, sentence, word, sentencePosition, randomStartingWord);
                 } else {
