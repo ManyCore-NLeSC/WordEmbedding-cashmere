@@ -343,7 +343,7 @@ public class TrainWord2VecModel extends Thread {
     }
 
     private void printUpdateInfo(int threadId, float currentAlpha, float progress) {
-        System.out.format("Thread: %d\t\tAlpha: %.10f\t\tProgress: %.2f%%%n", threadId, currentAlpha, progress);
+        System.out.format("Thread: %d\t\tAlpha: %.6f\t\tProgress: %.2f%%%n", threadId, currentAlpha, progress);
     }
 
     private float computeGradient(float exponential, int label) {
