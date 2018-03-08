@@ -27,6 +27,8 @@ public class Word2VecEvaluateWordSimilarity {
             System.err.println("Impossible to open \"" + args[0] + "\".");
             return;
         }
+        System.out.println("Test file \"" + args[0] + "\" contains "
+                + similarity.getNumberOfSimilarities() + " tests.");
         // Load word embeddings from file
         embeddings = new WordEmbedding[args.length - 1];
         for ( int argument = 1; argument < args.length; argument++ ) {
