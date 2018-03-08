@@ -4,7 +4,7 @@ import com.beust.jcommander.Parameter;
 
 public class Word2VecCommandLineArguments {
     @Parameter(names = {"-help", "-h"}, help = true)
-    private Boolean help = false;
+    private boolean help = false;
     @Parameter(names = {"-training_file", "-train"}, description = "Text file containing the data to train the model.",
             required = true)
     private String trainingFilename = "";
@@ -22,21 +22,21 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-vocabulary_max_size"}, description = "Maximum number of words in the vocabulary.")
     private int vocabularyMaxSize = 30000000;
     @Parameter(names = {"-strict"}, description = "Only consider alphanumeric words, and remove punctuation.")
-    private Boolean strict = false;
+    private boolean strict = false;
     @Parameter(names = {"-debug"}, description = "Enable debug mode.")
-    private Boolean debug = false;
+    private boolean debug = false;
     @Parameter(names = {"-windowSize"}, description = "Window size.")
     private int windowSize = 5;
     @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
-    private Boolean softmax = true;
+    private boolean softmax = true;
     @Parameter(names = {"-learning_rate", "-alpha"}, description = "Starting learning rate.")
     private float alpha = 0.025f;
     @Parameter(names = {"-negative_samples", "-negative"}, description = "Number of negative samples.")
     private int negativeSamples = 0;
     @Parameter(names = {"-cbow"}, description = "Use the continuous bag of words (CBOW) model.")
-    private Boolean useCBOW = false;
+    private boolean useCBOW = false;
     @Parameter(names = {"-use_position", "-pos"}, description = "Use position for model training.")
-    private Boolean usePosition = false;
+    private boolean usePosition = false;
     @Parameter(names = {"-vector_dimensions", "-size"}, description = "Dimensions of the word vectors.")
     private int vectorDimensions = 100;
     @Parameter(names = {"-sampling", "-sample"}, description = "Use sampling for high-frequency words.")
@@ -44,7 +44,7 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-classes"}, description = "Use classes vectors instead of word vectors.")
     private int classes = 0;
     @Parameter(names = {"-binary_output", "-binary"}, description = "Use binary mode for output vectors.")
-    private Boolean binaryMode = false;
+    private boolean binaryMode = false;
     @Parameter(names = {"-store_context_vectors", "-dumpcv"}, description = "File where to store the context vectors.")
     private String outContextVectorsFilename = "";
     @Parameter(names = {"-threads"}, description = "Number of threads.")
@@ -52,7 +52,7 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
     private int seed = 1;
 
-    public Boolean getHelp() {
+    public boolean getHelp() {
         return help;
     }
 
@@ -80,11 +80,11 @@ public class Word2VecCommandLineArguments {
         return vocabularyMaxSize;
     }
 
-    public Boolean getStrict() {
+    public boolean getStrict() {
         return strict;
     }
 
-    public Boolean getDebug() {
+    public boolean getDebug() {
         return debug;
     }
 
@@ -92,7 +92,7 @@ public class Word2VecCommandLineArguments {
         return windowSize;
     }
 
-    public Boolean getSoftmax() {
+    public boolean getSoftmax() {
         return softmax;
     }
 
@@ -104,11 +104,11 @@ public class Word2VecCommandLineArguments {
         return negativeSamples;
     }
 
-    public Boolean getUseCBOW() {
+    public boolean getUseCBOW() {
         return useCBOW;
     }
 
-    public Boolean getUsePosition() {
+    public boolean getUsePosition() {
         return usePosition;
     }
 
@@ -124,7 +124,7 @@ public class Word2VecCommandLineArguments {
         return classes;
     }
 
-    public Boolean getBinaryMode() {
+    public boolean getBinaryMode() {
         return binaryMode;
     }
 

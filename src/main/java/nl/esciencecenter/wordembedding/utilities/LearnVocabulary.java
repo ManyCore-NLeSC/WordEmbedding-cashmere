@@ -10,9 +10,9 @@ public class LearnVocabulary extends Thread {
     private final double fillingThreshold = 0.7;
     private final Vocabulary vocabulary;
     private final BufferedReader fileReader;
-    private final Boolean strict;
+    private final boolean strict;
 
-    public LearnVocabulary(Vocabulary vocabulary, BufferedReader fileReader, Boolean strict) {
+    public LearnVocabulary(Vocabulary vocabulary, BufferedReader fileReader, boolean strict) {
         this.vocabulary = vocabulary;
         this.fileReader = fileReader;
         this.strict = strict;

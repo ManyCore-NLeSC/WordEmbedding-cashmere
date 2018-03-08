@@ -4,7 +4,7 @@ import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.Word;
 
 public class CompareVocabularies {
-    public static Boolean compare(Vocabulary [] vocabularies) {
+    public static boolean compare(Vocabulary [] vocabularies) {
         if ( vocabularies.length > 1 ) {
             // First check size
             for ( int vocabularyID = 1; vocabularyID < vocabularies.length; vocabularyID++ ) {

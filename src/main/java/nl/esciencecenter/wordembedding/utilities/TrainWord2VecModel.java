@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TrainWord2VecModel extends Thread {
-    private Boolean debug;
+    private boolean debug;
     private final int updateInterval = 10000;
     private final Vocabulary vocabulary;
     private final NeuralNetworkWord2Vec neuralNetwork;
@@ -26,7 +26,7 @@ public class TrainWord2VecModel extends Thread {
         this.fileReader = fileReader;
     }
 
-    public void setDebug(Boolean debug) {
+    public void setDebug(boolean debug) {
         this.debug = debug;
     }
 

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class CompareWordEmbeddings {
-    public static Boolean compareDimensionality(WordEmbedding [] embeddings) {
+    public static boolean compareDimensionality(WordEmbedding [] embeddings) {
         for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
             if ( embeddings[embeddingID].getVectorDimensions() != embeddings[0].getVectorDimensions() ) {
                 return false;
@@ -17,11 +17,11 @@ public class CompareWordEmbeddings {
         return true;
     }
 
-    public static Boolean compareNumericalIdentity(WordEmbedding [] embeddings) {
+    public static boolean compareNumericalIdentity(WordEmbedding [] embeddings) {
         return compareNumericalIdentity(embeddings, false);
     }
 
-    public static Boolean compareNumericalIdentity(WordEmbedding [] embeddings, Boolean allowError) {
+    public static boolean compareNumericalIdentity(WordEmbedding [] embeddings, boolean allowError) {
         if ( embeddings.length > 1 ) {
             for ( int embeddingID = 1; embeddingID < embeddings.length; embeddingID++ ) {
                 for ( String referenceWord : embeddings[0].getWords() ) {

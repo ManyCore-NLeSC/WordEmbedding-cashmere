@@ -3,9 +3,9 @@ package nl.esciencecenter.wordembedding.data;
 import java.util.Random;
 
 public class NeuralNetworkWord2Vec {
-    private final Boolean CBOW;
-    private final Boolean hierarchicalSoftmax;
-    private final Boolean usePosition;
+    private final boolean CBOW;
+    private final boolean hierarchicalSoftmax;
+    private final boolean usePosition;
     private final int negativeSamples;
     private final int vectorDimensions;
     private final int windowSize;
@@ -18,7 +18,7 @@ public class NeuralNetworkWord2Vec {
     private float [] outputLayer;
     private float [] outputLayerNegativeSamples;
 
-    public NeuralNetworkWord2Vec(Boolean CBOW, Boolean hierarchicalSoftmax, Boolean usePosition, int negativeSamples,
+    public NeuralNetworkWord2Vec(boolean CBOW, boolean hierarchicalSoftmax, boolean usePosition, int negativeSamples,
                                  int vectorDimensions, int windowSize, float alpha) {
         this.CBOW = CBOW;
         this.hierarchicalSoftmax = hierarchicalSoftmax;
@@ -30,19 +30,19 @@ public class NeuralNetworkWord2Vec {
         this.currentAlpha = alpha;
     }
 
-    public Boolean getSkipGram() {
+    public boolean getSkipGram() {
         return !CBOW;
     }
 
-    public Boolean getCBOW() {
+    public boolean getCBOW() {
         return CBOW;
     }
 
-    public Boolean getHierarchicalSoftmax() {
+    public boolean getHierarchicalSoftmax() {
         return hierarchicalSoftmax;
     }
 
-    public Boolean getUsePosition() {
+    public boolean getUsePosition() {
         return usePosition;
     }
 
