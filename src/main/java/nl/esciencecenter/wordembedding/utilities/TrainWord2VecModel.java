@@ -35,8 +35,8 @@ public class TrainWord2VecModel extends Thread {
     }
 
     public void run() {
-        int currentWordCount = 0;
-        int previousWordCount = 0;
+        long currentWordCount = 0;
+        long previousWordCount = 0;
         int sentencePosition = 0;
         String line;
         Random randomNumberGenerator = new Random();
@@ -52,10 +52,9 @@ public class TrainWord2VecModel extends Thread {
                     neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
                     previousWordCount = currentWordCount;
                     if ( debug ) {
-                        System.out.format("Thread: %d\t\tAlpha: %.10f\t\tProgress: %.2f%%%n",
-                                Thread.currentThread().getId(),
-                                neuralNetwork.getCurrentAlpha(),
-                                (neuralNetwork.getGlobalWordCount() / (float)(vocabulary.getOccurrences() + 1)) * 100);
+                        printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
+                                (neuralNetwork.getGlobalWordCount()
+                                        / (float)(vocabulary.getOccurrences() + 1)) * 100);
                     }
                     neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
                             * (1 - (neuralNetwork.getGlobalWordCount() / (float)(vocabulary.getOccurrences() + 1))));
@@ -92,6 +91,8 @@ public class TrainWord2VecModel extends Thread {
                     }
                     sentencePosition = 0;
                 }
+                // Increment the word counter for every sentence to account for "</s>"
+                currentWordCount++;
                 if ( sentence.size() == 0 ) {
                     // If there are no words in the sentence, read another line.
                     continue;
@@ -114,6 +115,17 @@ public class TrainWord2VecModel extends Thread {
             }
         } catch ( IOException err ) {
             err.printStackTrace();
+        }
+        neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
+        if ( debug ) {
+            printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
+                    (neuralNetwork.getGlobalWordCount()
+                            / (float)(vocabulary.getOccurrences() + 1)) * 100);
+        }
+        neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
+                * (1 - (neuralNetwork.getGlobalWordCount() / (float)(vocabulary.getOccurrences() + 1))));
+        if ( neuralNetwork.getCurrentAlpha() < neuralNetwork.getAlpha() * 0.0001f ) {
+            neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha() * 0.0001f);
         }
     }
 
@@ -328,6 +340,10 @@ public class TrainWord2VecModel extends Thread {
                 }
             }
         }
+    }
+
+    private void printUpdateInfo(int threadId, float currentAlpha, float progress) {
+        System.out.format("Thread: %d\t\tAlpha: %.10f\t\tProgress: %.2f%%%n", threadId, currentAlpha, progress);
     }
 
     private float computeGradient(float exponential, int label) {
