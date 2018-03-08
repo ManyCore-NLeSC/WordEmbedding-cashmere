@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class WordSimilarity {
+    private long similaritiesNumber;
+
     private HashMap<String, HashMap<String, Float>> similarities;
 
     public WordSimilarity() {
@@ -12,6 +14,14 @@ public class WordSimilarity {
 
     public WordSimilarity(HashMap<String, HashMap<String, Float>> similarities) {
         this.similarities = similarities;
+        similaritiesNumber = this.similarities.size();
+        for ( HashMap<String, Float> similarity : this.similarities.values() ) {
+            similaritiesNumber += similarity.size();
+        }
+    }
+
+    public long getNumberOfSimilarities() {
+        return similaritiesNumber;
     }
 
     public float getSimilarityScore(String wordOne, String wordTwo) {
@@ -25,6 +35,7 @@ public class WordSimilarity {
         } else {
             similarities.get(wordOne).put(wordTwo, similarity);
         }
+        similaritiesNumber++;
     }
 
     public int getNrWords() {
