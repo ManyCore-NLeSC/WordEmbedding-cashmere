@@ -180,33 +180,23 @@ public class TrainWord2VecModel extends Thread {
             }
         }
         if ( neuralNetwork.getNegativeSamples() > 0 ) {
-            int target;
-            int label;
             int relatedWordIndex;
             float exponential;
             float gradient;
             Random randomNumberGenerator = new Random();
+            TargetLabel targetLabel =  new TargetLabel(randomNumberGenerator);
 
             for ( int sample = 0; sample < neuralNetwork.getNegativeSamples() + 1; sample++ ) {
-                if ( sample == 0 ) {
-                    target = vocabulary.getWord(word).getSortedIndex();
-                    label = 1;
-                } else {
-                    target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
-                    if ( target == 0 ) {
-                        target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                    } else if ( target == vocabulary.getWord(word).getSortedIndex() ) {
-                        continue;
-                    }
-                    label = 0;
+                if ( !targetLabel.compute(sample, word) ) {
+                    continue;
                 }
                 exponential = 0.0f;
-                relatedWordIndex = target * neuralNetwork.getVectorDimensions();
+                relatedWordIndex = targetLabel.getTarget() * neuralNetwork.getVectorDimensions();
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     exponential += hiddenLayer0[neuronIndex]
                             * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndex + neuronIndex);
                 }
-                gradient = computeGradient(exponential, label);
+                gradient = computeGradient(exponential, targetLabel.getLabel());
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
                             + (gradient
@@ -289,25 +279,15 @@ public class TrainWord2VecModel extends Thread {
                     }
                 }
                 if ( neuralNetwork.getNegativeSamples() > 0 ) {
-                    int target;
-                    int label;
                     Random randomNumberGenerator = new Random();
+                    TargetLabel targetLabel = new TargetLabel(randomNumberGenerator);
 
                     for ( int sample = 0; sample < neuralNetwork.getNegativeSamples() + 1; sample++ ) {
-                        if ( sample == 0 ) {
-                            target = vocabulary.getWord(word).getSortedIndex();
-                            label = 1;
-                        } else {
-                            target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
-                            if ( target == 0 ) {
-                                target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
-                            } else if ( target == vocabulary.getWord(word).getSortedIndex() ) {
-                                continue;
-                            }
-                            label = 0;
+                        if ( !targetLabel.compute(sample, word) ) {
+                            continue;
                         }
                         if ( neuralNetwork.getUsePosition() ) {
-                            relatedWordIndexTwo = (neuralNetwork.getWindowSize() * 2 * target)
+                            relatedWordIndexTwo = (neuralNetwork.getWindowSize() * 2 * targetLabel.getTarget())
                                     * neuralNetwork.getVectorDimensions();
                             if ( wordIndex > neuralNetwork.getWindowSize() ) {
                                 relatedWordIndexTwo += wordIndex - 1;
@@ -315,7 +295,7 @@ public class TrainWord2VecModel extends Thread {
                                 relatedWordIndexTwo += wordIndex;
                             }
                         } else {
-                            relatedWordIndexTwo = target * neuralNetwork.getVectorDimensions();
+                            relatedWordIndexTwo = targetLabel.getTarget() * neuralNetwork.getVectorDimensions();
                         }
                         exponential = 0.0f;
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
@@ -323,7 +303,7 @@ public class TrainWord2VecModel extends Thread {
                                     * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndexTwo
                                     + neuronIndex);
                         }
-                        gradient = computeGradient(exponential, label);
+                        gradient = computeGradient(exponential, targetLabel.getLabel());
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
                                     * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndexTwo
@@ -359,5 +339,39 @@ public class TrainWord2VecModel extends Thread {
                     / 2)))) * neuralNetwork.getCurrentAlpha();
         }
         return gradient;
+    }
+
+    private class TargetLabel {
+        private int target;
+        private int label;
+        private final Random randomNumberGenerator;
+
+        private TargetLabel(Random randomNumberGenerator) {
+            this.randomNumberGenerator = randomNumberGenerator;
+        }
+
+        private int getTarget() {
+            return target;
+        }
+
+        private int getLabel() {
+            return label;
+        }
+
+        private boolean compute(int sample, String word) {
+            if ( sample == 0 ) {
+                target = vocabulary.getWord(word).getSortedIndex();
+                label = 1;
+            } else {
+                target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
+                if ( target == vocabulary.getWord("</s>").getSortedIndex() ) {
+                    target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
+                } else if ( target == vocabulary.getWord(word).getSortedIndex() ) {
+                    return false;
+                }
+                label = 0;
+            }
+            return true;
+        }
     }
 }
