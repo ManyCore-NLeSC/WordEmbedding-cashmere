@@ -82,10 +82,7 @@ public class NeuralNetworkWord2Vec {
         return windowSize;
     }
 
-    //
-    // Synchronized methods
-    //
-    public synchronized void initialize(Vocabulary vocabulary, int seed) {
+    public void initialize(Vocabulary vocabulary, int seed) {
         Random randomNumberGenerator = new Random(seed);
 
         inputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
@@ -106,55 +103,55 @@ public class NeuralNetworkWord2Vec {
         vocabulary.generateCodes();
     }
 
-    public synchronized float getValueInputLayer(int item) {
+    public float getValueInputLayer(int item) {
         return inputLayer[item];
     }
 
-    public synchronized void setValueInputLayer(int item, float value) {
+    public void setValueInputLayer(int item, float value) {
         inputLayer[item] = value;
     }
 
-    public synchronized void incrementValueInputLayer(int item, float increment) {
+    public void incrementValueInputLayer(int item, float increment) {
         inputLayer[item] += increment;
     }
 
-    public synchronized float getValueOutputLayer(int item) {
+    public float getValueOutputLayer(int item) {
         return outputLayer[item];
     }
 
-    public synchronized  void setValueOutputLayer(int item, float value) {
+    public void setValueOutputLayer(int item, float value) {
         outputLayer[item] = value;
     }
 
-    public synchronized void incrementValueOutputLayer(int item, float increment) {
+    public void incrementValueOutputLayer(int item, float increment) {
         outputLayer[item] += increment;
     }
 
-    public synchronized float getValueOutputLayerNegativeSamples(int item) {
+    public float getValueOutputLayerNegativeSamples(int item) {
         return outputLayerNegativeSamples[item];
     }
 
-    public synchronized void setValueOutputNegativeSamples(int item, float value) {
+    public void setValueOutputNegativeSamples(int item, float value) {
         outputLayerNegativeSamples[item] = value;
     }
 
-    public synchronized void incrementValueOutputNegativeSamples(int item, float increment) {
+    public void incrementValueOutputNegativeSamples(int item, float increment) {
         outputLayerNegativeSamples[item] += increment;
     }
 
-    public synchronized long getGlobalWordCount() {
+    public long getGlobalWordCount() {
         return globalWordCount;
     }
 
-    public synchronized void incrementGlobalWordCount(long increment) {
+    public void incrementGlobalWordCount(long increment) {
         globalWordCount += increment;
     }
 
-    public synchronized float getCurrentAlpha() {
+    public float getCurrentAlpha() {
         return currentAlpha;
     }
 
-    public synchronized void setCurrentAlpha(float alpha) {
+    public void setCurrentAlpha(float alpha) {
         currentAlpha = alpha;
     }
 }
