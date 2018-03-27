@@ -23,7 +23,9 @@ public class LearnVocabulary extends Thread {
 
         try {
             while ( (line = fileReader.readLine()) != null ) {
-                vocabulary.addWord("</s>");
+                synchronized ( vocabulary ) {
+                    vocabulary.addWord("</s>");
+                }
                 while ( !line.isEmpty() ) {
                     String word = ReadWord.readWord(line, strict);
 
@@ -34,9 +36,11 @@ public class LearnVocabulary extends Thread {
                         line = line.substring(word.length());
                         line = line.trim();
                     }
-                    vocabulary.addWord(word);
-                    if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
-                        ReduceVocabulary.reduce(vocabulary);
+                    synchronized ( vocabulary ) {
+                        vocabulary.addWord(word);
+                        if ( vocabulary.getNrWords() > vocabulary.getMaxSize() * fillingThreshold ) {
+                            ReduceVocabulary.reduce(vocabulary);
+                        }
                     }
                 }
             }
