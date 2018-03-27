@@ -6,7 +6,6 @@ import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SaveWord2VecClasses {
     public static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, BufferedWriter fileWriter,

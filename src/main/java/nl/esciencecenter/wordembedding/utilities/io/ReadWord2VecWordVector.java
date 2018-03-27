@@ -1,6 +1,5 @@
 package nl.esciencecenter.wordembedding.utilities.io;
 
-import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 
 import java.io.BufferedReader;
