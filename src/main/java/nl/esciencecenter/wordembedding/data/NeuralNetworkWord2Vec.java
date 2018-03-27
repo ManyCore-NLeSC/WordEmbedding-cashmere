@@ -90,8 +90,8 @@ public class NeuralNetworkWord2Vec {
 
         inputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
         for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-            inputLayer[index] = ((randomNumberGenerator.nextInt() / (float)(Integer.MAX_VALUE)) - 0.5f)
-                    / vectorDimensions;
+            inputLayer[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
+                / vectorDimensions;
         }
         if ( hierarchicalSoftmax ) {
             outputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
