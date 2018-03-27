@@ -49,17 +49,21 @@ public class TrainWord2VecModel extends Thread {
                 ArrayList<String> sentence = new ArrayList<>();
 
                 if ( (currentWordCount - previousWordCount) > updateInterval ) {
-                    neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
+                    synchronized ( neuralNetwork ) {
+                        neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
+                    }
                     previousWordCount = currentWordCount;
                     if ( debug ) {
                         printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
                                 (neuralNetwork.getGlobalWordCount()
                                         / (float)(vocabulary.getOccurrences() + 1)) * 100);
                     }
-                    neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
+                    synchronized ( neuralNetwork ) {
+                        neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
                             * (1 - (neuralNetwork.getGlobalWordCount() / (float)(vocabulary.getOccurrences() + 1))));
-                    if ( neuralNetwork.getCurrentAlpha() < neuralNetwork.getAlpha() * 0.0001f ) {
-                        neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha() * 0.0001f);
+                        if ( neuralNetwork.getCurrentAlpha() < neuralNetwork.getAlpha() * 0.0001f ) {
+                            neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha() * 0.0001f);
+                        }
                     }
                 }
                 if ( sentence.size() == 0 ) {
@@ -116,16 +120,20 @@ public class TrainWord2VecModel extends Thread {
         } catch ( IOException err ) {
             err.printStackTrace();
         }
-        neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
+        synchronized ( neuralNetwork ) {
+            neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
+        }
         if ( debug ) {
             printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
                     (neuralNetwork.getGlobalWordCount()
                             / (float)(vocabulary.getOccurrences() + 1)) * 100);
         }
-        neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
+        synchronized ( neuralNetwork ) {
+            neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
                 * (1 - (neuralNetwork.getGlobalWordCount() / (float)(vocabulary.getOccurrences() + 1))));
-        if ( neuralNetwork.getCurrentAlpha() < neuralNetwork.getAlpha() * 0.0001f ) {
-            neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha() * 0.0001f);
+            if ( neuralNetwork.getCurrentAlpha() < neuralNetwork.getAlpha() * 0.0001f ) {
+                neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha() * 0.0001f);
+            }
         }
     }
 
@@ -174,8 +182,10 @@ public class TrainWord2VecModel extends Thread {
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
                             + (gradient * neuralNetwork.getValueOutputLayer(relatedWordIndex + neuronIndex));
-                    neuralNetwork.incrementValueOutputLayer(relatedWordIndex + neuronIndex,
+                    synchronized ( neuralNetwork ) {
+                        neuralNetwork.incrementValueOutputLayer(relatedWordIndex + neuronIndex,
                             gradient * hiddenLayer0[neuronIndex]);
+                    }
                 }
             }
         }
@@ -201,8 +211,10 @@ public class TrainWord2VecModel extends Thread {
                     hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
                             + (gradient
                             * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndex + neuronIndex));
-                    neuralNetwork.incrementValueOutputNegativeSamples(relatedWordIndex + neuronIndex,
+                    synchronized ( neuralNetwork ) {
+                        neuralNetwork.incrementValueOutputNegativeSamples(relatedWordIndex + neuronIndex,
                             gradient * hiddenLayer0[neuronIndex]);
+                    }
                 }
             }
         }
@@ -218,9 +230,11 @@ public class TrainWord2VecModel extends Thread {
                     continue;
                 }
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-                    neuralNetwork.incrementValueInputLayer((lastWordIndex * neuralNetwork.getVectorDimensions())
-                            + neuronIndex,
+                    synchronized ( neuralNetwork ) {
+                        neuralNetwork.incrementValueInputLayer(
+                            (lastWordIndex * neuralNetwork.getVectorDimensions()) + neuronIndex,
                             hiddenError0[neuronIndex]);
+                    }
                 }
             }
         }
@@ -272,9 +286,11 @@ public class TrainWord2VecModel extends Thread {
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
                                     + (gradient
                                     * neuralNetwork.getValueOutputLayer(relatedWordIndexTwo + neuronIndex));
-                            neuralNetwork.incrementValueOutputLayer(relatedWordIndexTwo + neuronIndex,
+                            synchronized ( neuralNetwork ) {
+                                neuralNetwork.incrementValueOutputLayer(relatedWordIndexTwo + neuronIndex,
                                     gradient
-                                            * neuralNetwork.getValueInputLayer(relatedWordIndexOne + neuronIndex));
+                                        * neuralNetwork.getValueInputLayer(relatedWordIndexOne + neuronIndex));
+                            }
                         }
                     }
                 }
@@ -308,22 +324,29 @@ public class TrainWord2VecModel extends Thread {
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
                                     * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndexTwo
                                     + neuronIndex));
-                            neuralNetwork.incrementValueOutputNegativeSamples(relatedWordIndexTwo + neuronIndex,
+                            synchronized ( neuralNetwork ) {
+                                neuralNetwork.incrementValueOutputNegativeSamples(
+                                    relatedWordIndexTwo + neuronIndex,
                                     gradient * neuralNetwork.getValueInputLayer(
-                                            relatedWordIndexOne + neuronIndex));
+                                        relatedWordIndexOne + neuronIndex));
+                            }
                         }
                     }
                 }
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-                    neuralNetwork.incrementValueInputLayer(relatedWordIndexOne + neuronIndex,
+                    synchronized ( neuralNetwork ) {
+                        neuralNetwork.incrementValueInputLayer(relatedWordIndexOne + neuronIndex,
                             hiddenError0[neuronIndex]);
+                    }
                 }
             }
         }
     }
 
     private void printUpdateInfo(int threadId, float currentAlpha, float progress) {
-        System.out.format("Thread: %d\t\tAlpha: %.6f\t\tProgress: %.2f%%%n", threadId, currentAlpha, progress);
+        synchronized ( System.out ) {
+            System.out.format("Thread: %d\t\tAlpha: %.6f\t\tProgress: %.2f%%%n", threadId, currentAlpha, progress);
+        }
     }
 
     private float computeGradient(float exponential, int label) {
