@@ -1,28 +1,25 @@
 package nl.esciencecenter.wordembedding.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class Vocabulary {
     private int maxSize;
     private int occurrenceThreshold;
     private long occurrences;
-    private final HashMap<String, Word> words;
+    private final LinkedHashMap<String, Word> words;
 
     public Vocabulary() {
         maxSize = Integer.MAX_VALUE;
         occurrenceThreshold = 0;
         occurrences = 0;
-        words = new HashMap<>();
+        words = new LinkedHashMap<>();
     }
 
     public Vocabulary(int occurrenceThreshold) {
         maxSize = Integer.MAX_VALUE;
         this.occurrenceThreshold = occurrenceThreshold;
         occurrences = 0;
-        words = new HashMap<>();
+        words = new LinkedHashMap<>();
     }
 
     public void setMaxSize(int maxSize) {
@@ -51,14 +48,13 @@ public class Vocabulary {
 
         sortedWords.sort((stringOne, stringTwo) -> {
             if ( stringOne.equals("</s>") ) {
-                return 1;
-            } else if ( stringTwo.equals("</s>") ) {
                 return -1;
+            } else if ( stringTwo.equals("</s>") ) {
+                return 1;
             } else {
-                return Integer.compare(getWord(stringOne).getOccurrences(), getWord(stringTwo).getOccurrences());
+                return getWord(stringTwo).getOccurrences() - getWord(stringOne).getOccurrences();
             }
         });
-        Collections.reverse(sortedWords);
         for ( int wordIndex = 0; wordIndex < getNrWords(); wordIndex++ ) {
             words.get(sortedWords.get(wordIndex)).setSortedIndex(wordIndex);
             occurrences += words.get(sortedWords.get(wordIndex)).getOccurrences();
