@@ -134,14 +134,11 @@ public class Vocabulary {
         }
     }
 
-    //
-    // Synchronized methods
-    //
-    public synchronized void incrementOccurrenceThreshold(int increment) {
+    public void incrementOccurrenceThreshold(int increment) {
         this.occurrenceThreshold += increment;
     }
 
-    public synchronized void addWord(Word word) {
+    public void addWord(Word word) {
         if ( words.containsKey(word.getWord()) ) {
             words.get(word.getWord()).incrementOccurrences();
         } else {
@@ -150,23 +147,23 @@ public class Vocabulary {
         }
     }
 
-    public synchronized void addWord(String word) {
+    public void addWord(String word) {
         addWord(new Word(word));
     }
 
-    public synchronized void removeWord(String word) {
+    public void removeWord(String word) {
         words.remove(word);
     }
 
-    public synchronized Word getWord(String word) {
+    public Word getWord(String word) {
         return words.get(word);
     }
 
-    public synchronized Collection<Word> getWords() {
+    public Collection<Word> getWords() {
         return words.values();
     }
 
-    public synchronized int getNrWords() {
+    public int getNrWords() {
         return words.size();
     }
 }
