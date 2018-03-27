@@ -2,7 +2,7 @@ package nl.esciencecenter.wordembedding.validation;
 
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordSimilarity;
-import nl.esciencecenter.wordembedding.math.Cosine;
+import nl.esciencecenter.wordembedding.math.DotProduct;
 import nl.esciencecenter.wordembedding.math.SpearmanRankCorrelation;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class EvaluateWordSimilarity {
                 if ( (embedding.getWordCoordinates(wordOne) != null)
                         && (embedding.getWordCoordinates(wordTwo) != null) ) {
                     pair[0] = similarity.getSimilarityScore(wordOne, wordTwo);
-                    pair[1] = Cosine.compute(embedding.getWordCoordinates(wordOne),
+                    pair[1] = DotProduct.compute(embedding.getWordCoordinates(wordOne),
                             embedding.getWordCoordinates(wordTwo));
                 } else {
                     pair[0] = similarity.getSimilarityScore(wordOne, wordTwo);
