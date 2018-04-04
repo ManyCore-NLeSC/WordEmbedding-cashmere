@@ -67,7 +67,7 @@ public class Vocabulary {
         int positionOne, positionTwo;
         int minimumOne, minimumTwo;
         int [] count = new int [(getNrWords() * 2) + 1];
-        int [] binary = new int [(getNrWords() * 2) + 1];
+        byte [] binary = new byte [(getNrWords() * 2) + 1];
         int [] parent = new int [(getNrWords() * 2) + 1];
 
         for ( Word word : words.values() ) {
@@ -109,8 +109,8 @@ public class Vocabulary {
             binary[minimumTwo] = 1;
         }
         for ( Word word : words.values() ) {
-            ArrayList<Integer> tempCode = new ArrayList<>();
-            int [] code;
+            ArrayList<Byte> tempCode = new ArrayList<>();
+            byte [] code;
             ArrayList<Integer> tempPoints = new ArrayList<>();
             int [] points;
             int source = word.getSortedIndex();
@@ -122,7 +122,7 @@ public class Vocabulary {
                 index++;
                 source = parent[source];
             }
-            code = new int [index];
+            code = new byte [index];
             points = new int [index + 1];
             points[0] = getNrWords() - 2;
             for ( int symbolIndex = 0; symbolIndex < index; symbolIndex++ ) {
