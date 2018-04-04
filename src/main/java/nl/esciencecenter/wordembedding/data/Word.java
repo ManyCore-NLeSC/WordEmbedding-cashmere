@@ -6,7 +6,7 @@ public class Word implements Comparator<Word> {
     private int occurrences;
     private int sortedIndex;
     private final String word;
-    private int [] code;
+    private byte [] code;
     private int [] points;
 
     public Word(String word) {
@@ -49,7 +49,7 @@ public class Word implements Comparator<Word> {
         return code[index];
     }
 
-    public void setCodes(int [] code) {
+    public void setCodes(byte [] code) {
         this.code = code;
     }
 
