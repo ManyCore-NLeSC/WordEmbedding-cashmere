@@ -99,7 +99,7 @@ class Word2Vec {
             trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
             for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
                 workers[thread] = new TrainWord2VecModel(vocabulary, neuralNetwork, trainingFile);
-                workers[thread].setDebug(arguments.getDebug());
+                workers[thread].setProgress(arguments.getProgress());
                 workers[thread].setExponentialTable(exponentialTable);
                 workers[thread].start();
             }

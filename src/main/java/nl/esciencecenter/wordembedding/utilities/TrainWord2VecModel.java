@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TrainWord2VecModel extends Thread {
-    private boolean debug;
+    private boolean progress;
     private final int updateInterval = 10000;
     private final Vocabulary vocabulary;
     private final NeuralNetworkWord2Vec neuralNetwork;
@@ -26,8 +26,8 @@ public class TrainWord2VecModel extends Thread {
         this.fileReader = fileReader;
     }
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
+    public void setProgress(boolean progress) {
+        this.progress = progress;
     }
 
     public void setExponentialTable(ExponentialTable exponentialTable) {
@@ -53,7 +53,7 @@ public class TrainWord2VecModel extends Thread {
                         neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
                     }
                     previousWordCount = currentWordCount;
-                    if ( debug ) {
+                    if (progress) {
                         printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
                                 (neuralNetwork.getGlobalWordCount()
                                         / (float)(vocabulary.getOccurrences() + 1)) * 100);
@@ -123,7 +123,7 @@ public class TrainWord2VecModel extends Thread {
         synchronized ( neuralNetwork ) {
             neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
         }
-        if ( debug ) {
+        if (progress) {
             printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
                     (neuralNetwork.getGlobalWordCount()
                             / (float)(vocabulary.getOccurrences() + 1)) * 100);
