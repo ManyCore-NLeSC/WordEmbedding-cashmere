@@ -25,6 +25,8 @@ public class Word2VecCommandLineArguments {
     private boolean strict = false;
     @Parameter(names = {"-debug"}, description = "Enable debug mode.")
     private boolean debug = false;
+    @Parameter(names = {"-progress"}, description = "Print progress message.")
+    private boolean progress = false;
     @Parameter(names = {"-windowSize"}, description = "Window size.")
     private int windowSize = 5;
     @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
@@ -86,6 +88,10 @@ public class Word2VecCommandLineArguments {
 
     public boolean getDebug() {
         return debug;
+    }
+
+    public boolean getProgress() {
+        return progress;
     }
 
     public int getWindowSize() {
