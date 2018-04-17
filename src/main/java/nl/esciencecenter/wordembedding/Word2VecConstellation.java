@@ -17,17 +17,23 @@ public class Word2VecConstellation {
     private final static String CONTEXT_ID = "Word2VecContext";
 
     public static void main(String [] args) {
+        int overallEvent;
         Timer overallTimer;
-        Constellation constellation = null;
+        Constellation constellation;
         Vocabulary vocabulary;
 
         try {
             constellation = ConstellationFactory.createConstellation(createConfigurations());
         } catch (ConstellationCreationException e) {
             e.printStackTrace();
+            return;
+        }
+        if ( constellation == null ) {
+            System.err.println("Impossible to initialize constellation.");
+            return;
         }
         overallTimer = constellation.getOverallTimer();
-        int overallTimeEvent = overallTimer.start();
+        overallEvent = overallTimer.start();
         // Command line arguments parsing
         Word2VecCommandLineArguments arguments = Word2Vec.parseCommandLine(args);
         if ( arguments == null ) {
@@ -182,7 +188,7 @@ public class Word2VecConstellation {
         } catch ( IOException err ) {
             err.printStackTrace();
         }
-        overallTimer.stop(overallTimeEvent);
+        overallTimer.stop(overallEvent);
         if ( arguments.getDebug() ) {
             System.out.println("Word2VecCommandLine execution took " + (overallTimer.averageTimeVal() / 1.0e6) + " seconds.");
         }
