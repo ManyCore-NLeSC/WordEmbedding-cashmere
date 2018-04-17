@@ -38,10 +38,10 @@ public class Word2VecConstellation {
             System.err.println("Impossible to parse command line.");
             return;
         }
-        // Read or learn vocabulary
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
+            // Read vocabulary
             int event;
             Timer vocabularyTimer = constellation.getTimer();
 
@@ -54,6 +54,7 @@ public class Word2VecConstellation {
                 System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
+            // Learn vocabulary
             int event;
             Timer vocabularyTimer = constellation.getTimer();
 

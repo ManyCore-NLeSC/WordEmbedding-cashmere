@@ -21,10 +21,10 @@ class Word2VecCommandLine {
             System.err.println("Impossible to parse command line.");
             return;
         }
-        // Read or learn vocabulary
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
+            // Read vocabulary
             long timer;
 
             timer = System.nanoTime();
@@ -36,6 +36,7 @@ class Word2VecCommandLine {
                 System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
+            // Learn vocabulary
             long timer;
 
             timer = System.nanoTime();
