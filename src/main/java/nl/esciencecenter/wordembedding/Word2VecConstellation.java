@@ -30,13 +30,7 @@ public class Word2VecConstellation {
         overallTimer = constellation.getOverallTimer();
         int overallTimeEvent = overallTimer.start();
         // Command line arguments parsing
-        Word2VecCommandLineArguments arguments = new Word2VecCommandLineArguments();
-        JCommander commander = JCommander.newBuilder().addObject(arguments).build();
-        commander.parse(args);
-        if ( arguments.getHelp() ) {
-            commander.usage();
-            return;
-        }
+        Word2VecCommandLineArguments arguments = Word2Vec.parseCommandLine(args);
         // Read or learn vocabulary
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
@@ -187,7 +181,7 @@ public class Word2VecConstellation {
         }
         overallTimer.stop(overallTimeEvent);
         if ( arguments.getDebug() ) {
-            System.out.println("Word2Vec execution took " + (overallTimer.averageTimeVal() / 1.0e6) + " seconds.");
+            System.out.println("Word2VecCommandLine execution took " + (overallTimer.averageTimeVal() / 1.0e6) + " seconds.");
         }
     }
 

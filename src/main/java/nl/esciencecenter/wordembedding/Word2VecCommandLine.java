@@ -17,13 +17,7 @@ class Word2VecCommandLine {
         Vocabulary vocabulary;
 
         // Command line arguments parsing
-        Word2VecCommandLineArguments arguments = new Word2VecCommandLineArguments();
-        JCommander commander = JCommander.newBuilder().addObject(arguments).build();
-        commander.parse(args);
-        if ( arguments.getHelp() ) {
-            commander.usage();
-            return;
-        }
+        Word2VecCommandLineArguments arguments = Word2Vec.parseCommandLine(args);
         // Read or learn vocabulary
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
