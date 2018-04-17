@@ -1,6 +1,5 @@
 package nl.esciencecenter.wordembedding;
 
-import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
@@ -18,6 +17,10 @@ class Word2VecCommandLine {
 
         // Command line arguments parsing
         Word2VecCommandLineArguments arguments = Word2Vec.parseCommandLine(args);
+        if ( arguments == null ) {
+            System.err.println("Impossible to parse command line.");
+            return;
+        }
         // Read or learn vocabulary
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
