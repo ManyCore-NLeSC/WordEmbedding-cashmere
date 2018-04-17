@@ -16,13 +16,13 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-// Word2Vec JAR with dependencies
-task Word2Vec(type: Jar) {
+// Word2VecCommandLine JAR with dependencies
+task Word2VecCommandLine(type: Jar) {
     manifest {
         attributes "Implementation-Version" : version,
-            "Main-Class" : "nl.esciencecenter.wordembedding.Word2Vec"
+            "Main-Class" : "nl.esciencecenter.wordembedding.Word2VecCommandLine"
     }
-    baseName = project.name + '-Word2Vec'
+    baseName = project.name + '-Word2VecCommandLine'
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }

@@ -10,7 +10,7 @@ import nl.esciencecenter.wordembedding.utilities.io.*;
 
 import java.io.*;
 
-class Word2Vec {
+class Word2VecCommandLine {
 
     public static void main(String [] args) {
         long globalTimer = System.nanoTime();
@@ -170,7 +170,7 @@ class Word2Vec {
         }
         globalTimer = System.nanoTime() - globalTimer;
         if ( arguments.getDebug() ) {
-            System.out.println("Word2Vec execution took " + (globalTimer / 1.0e9) + " seconds.");
+            System.out.println("Word2VecCommandLine execution took " + (globalTimer / 1.0e9) + " seconds.");
         }
     }
 }
