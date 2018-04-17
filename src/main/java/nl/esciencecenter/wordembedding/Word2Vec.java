@@ -6,7 +6,6 @@ import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -30,8 +29,6 @@ class Word2Vec {
             inVocabularyFile = new BufferedReader(new FileReader(filename));
             ReadVocabulary.read(vocabulary, inVocabularyFile);
             inVocabularyFile.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
