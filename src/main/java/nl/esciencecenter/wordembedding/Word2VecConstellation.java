@@ -1,6 +1,5 @@
 package nl.esciencecenter.wordembedding;
 
-import com.beust.jcommander.JCommander;
 import ibis.constellation.*;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
@@ -31,6 +30,10 @@ public class Word2VecConstellation {
         int overallTimeEvent = overallTimer.start();
         // Command line arguments parsing
         Word2VecCommandLineArguments arguments = Word2Vec.parseCommandLine(args);
+        if ( arguments == null ) {
+            System.err.println("Impossible to parse command line.");
+            return;
+        }
         // Read or learn vocabulary
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
