@@ -25,18 +25,11 @@ class Word2VecCommandLine {
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
-            long timer = 0;
-            BufferedReader inVocabularyFile;
+            long timer;
 
-            try {
-                timer = System.nanoTime();
-                inVocabularyFile = new BufferedReader(new FileReader(arguments.getInVocabularyFilename()));
-                ReadVocabulary.read(vocabulary, inVocabularyFile);
-                inVocabularyFile.close();
-                timer = System.nanoTime() - timer;
-            }catch ( IOException err) {
-                err.printStackTrace();
-            }
+            timer = System.nanoTime();
+            Word2Vec.readVocabulary(vocabulary, arguments.getInVocabularyFilename());
+            timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
                 System.out.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\".");
                 System.out.println("Reading the vocabulary took " + (timer / 1.0e9) + " seconds.");

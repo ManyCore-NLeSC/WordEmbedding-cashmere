@@ -44,18 +44,12 @@ public class Word2VecConstellation {
         vocabulary = new Vocabulary(arguments.getMinCount());
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
+            int event;
             Timer vocabularyTimer = constellation.getTimer();
-            BufferedReader inVocabularyFile;
 
-            try {
-                int event = vocabularyTimer.start();
-                inVocabularyFile = new BufferedReader(new FileReader(arguments.getInVocabularyFilename()));
-                ReadVocabulary.read(vocabulary, inVocabularyFile);
-                inVocabularyFile.close();
-                vocabularyTimer.stop(event);
-            }catch ( IOException err) {
-                err.printStackTrace();
-            }
+            event = vocabularyTimer.start();
+            Word2Vec.readVocabulary(vocabulary, arguments.getInVocabularyFilename());
+            vocabularyTimer.stop(event);
             if ( arguments.getDebug() ) {
                 System.out.println("Read vocabulary from file \"" + arguments.getInVocabularyFilename() + "\".");
                 System.out.println("Reading the vocabulary took " + (vocabularyTimer.totalTimeVal() / 1.0e6) + " seconds.");

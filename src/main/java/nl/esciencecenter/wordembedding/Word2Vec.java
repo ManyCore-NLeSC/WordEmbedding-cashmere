@@ -2,6 +2,13 @@ package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
+import nl.esciencecenter.wordembedding.data.Vocabulary;
+import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 class Word2Vec {
 
@@ -14,6 +21,20 @@ class Word2Vec {
             return null;
         }
         return arguments;
+    }
+
+    static void readVocabulary(Vocabulary vocabulary, String filename) {
+        BufferedReader inVocabularyFile;
+
+        try {
+            inVocabularyFile = new BufferedReader(new FileReader(filename));
+            ReadVocabulary.read(vocabulary, inVocabularyFile);
+            inVocabularyFile.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
