@@ -3,6 +3,8 @@ package nl.esciencecenter.wordembedding;
 import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
+import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
+import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 
 import java.io.BufferedReader;
@@ -31,6 +33,30 @@ class Word2Vec {
             inVocabularyFile.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    static void learnVocabulary(int nrThreads, boolean strict, Vocabulary vocabulary, String filename) {
+        BufferedReader trainingFile;
+        LearnVocabulary[] workers = new LearnVocabulary [nrThreads];
+
+        try {
+            trainingFile = new BufferedReader(new FileReader(filename));
+            for ( int thread = 0; thread < nrThreads; thread++ ) {
+                workers[thread] = new LearnVocabulary(vocabulary, trainingFile, strict);
+                workers[thread].start();
+            }
+            for ( int thread = 0; thread < nrThreads; thread++ ) {
+                try {
+                    workers[thread].join();
+                } catch ( InterruptedException err ) {
+                    err.printStackTrace();
+                }
+            }
+            trainingFile.close();
+            ReduceVocabulary.reduce(vocabulary);
+        } catch ( IOException err ) {
+            err.printStackTrace();
         }
     }
 

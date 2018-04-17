@@ -36,30 +36,11 @@ class Word2VecCommandLine {
                 System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
-            long timer = 0;
-            BufferedReader trainingFile;
-            LearnVocabulary [] workers = new LearnVocabulary [arguments.getNrThreads()];
+            long timer;
 
-            try {
-                timer = System.nanoTime();
-                trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-                for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                    workers[thread] = new LearnVocabulary(vocabulary, trainingFile, arguments.getStrict());
-                    workers[thread].start();
-                }
-                for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                    try {
-                        workers[thread].join();
-                    } catch ( InterruptedException err ) {
-                        err.printStackTrace();
-                    }
-                }
-                trainingFile.close();
-                ReduceVocabulary.reduce(vocabulary);
-                timer = System.nanoTime() - timer;
-            } catch ( IOException err ) {
-                err.printStackTrace();
-            }
+            timer = System.nanoTime();
+            Word2Vec.learnVocabulary(arguments.getNrThreads(), arguments.getStrict(), vocabulary, arguments.getTrainingFilename());
+            timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
                 System.out.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\".");
                 System.out.println("Learning the vocabulary took " + (timer / 1.0e9) + " seconds.");

@@ -5,8 +5,6 @@ import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
-import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.TrainWord2VecModel;
 import nl.esciencecenter.wordembedding.utilities.io.*;
 
@@ -56,30 +54,12 @@ public class Word2VecConstellation {
                 System.out.println("The vocabulary contains " + vocabulary.getNrWords() + " words.");
             }
         } else {
+            int event;
             Timer vocabularyTimer = constellation.getTimer();
-            BufferedReader trainingFile;
-            LearnVocabulary[] workers = new LearnVocabulary [arguments.getNrThreads()];
 
-            try {
-                int event = vocabularyTimer.start();
-                trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-                for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                    workers[thread] = new LearnVocabulary(vocabulary, trainingFile, arguments.getStrict());
-                    workers[thread].start();
-                }
-                for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                    try {
-                        workers[thread].join();
-                    } catch ( InterruptedException err ) {
-                        err.printStackTrace();
-                    }
-                }
-                trainingFile.close();
-                ReduceVocabulary.reduce(vocabulary);
-                vocabularyTimer.stop(event);
-            } catch ( IOException err ) {
-                err.printStackTrace();
-            }
+            event = vocabularyTimer.start();
+            Word2Vec.learnVocabulary(arguments.getNrThreads(), arguments.getStrict(), vocabulary, arguments.getTrainingFilename());
+            vocabularyTimer.stop(event);
             if ( arguments.getDebug() ) {
                 System.out.println("Learned vocabulary from file \"" + arguments.getTrainingFilename() + "\".");
                 System.out.println("Learning the vocabulary took " + (vocabularyTimer.totalTimeVal() / 1.0e6) + " seconds.");
