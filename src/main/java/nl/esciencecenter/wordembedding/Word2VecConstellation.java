@@ -8,7 +8,7 @@ import nl.esciencecenter.wordembedding.data.Vocabulary;
 
 public class Word2VecConstellation {
     private final static int NR_WORKERS = 1;
-    private final static String CONTEXT_ID = "Word2VecContext";
+    private final static String CONTEXT_ID = "Word2VecConstellation";
 
     public static void main(String [] args) {
         int overallEvent;
@@ -17,6 +17,7 @@ public class Word2VecConstellation {
         Constellation constellation;
         Vocabulary vocabulary;
 
+        // Initialize constellation
         try {
             constellation = ConstellationFactory.createConstellation(createConfigurations());
         } catch (ConstellationCreationException e) {
