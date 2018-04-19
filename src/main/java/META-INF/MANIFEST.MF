@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: nl.esciencecenter.wordembedding.Word2Vec
+Main-Class: nl.esciencecenter.wordembedding.Word2VecCommandLine
 

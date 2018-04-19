@@ -2,11 +2,15 @@ package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
+import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
 import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.SaveVocabulary;
+import nl.esciencecenter.wordembedding.utilities.io.SaveWord2VecClasses;
+import nl.esciencecenter.wordembedding.utilities.io.SaveWord2VecWordVectors;
+import nl.esciencecenter.wordembedding.utilities.io.SaveWord2VecContextVectors;
 
 import java.io.*;
 
@@ -67,4 +71,27 @@ class Word2Vec {
         }
     }
 
+    static void saveVectors(int nrClasses, Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, String filename) {
+        try {
+            BufferedWriter outputFile = new BufferedWriter(new FileWriter(filename));
+            if ( nrClasses == 0 ) {
+                SaveWord2VecWordVectors.save(vocabulary, neuralNetwork, outputFile);
+            } else {
+                SaveWord2VecClasses.save(vocabulary, neuralNetwork, outputFile, nrClasses);
+            }
+            outputFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void saveContext(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, String filename) {
+        try {
+            BufferedWriter outputFile = new BufferedWriter(new FileWriter(filename));
+            SaveWord2VecContextVectors.save(vocabulary, neuralNetwork, outputFile);
+            outputFile.close();
+        } catch ( IOException err ) {
+            err.printStackTrace();
+        }
+    }
 }

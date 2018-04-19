@@ -5,7 +5,6 @@ import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.utilities.*;
-import nl.esciencecenter.wordembedding.utilities.io.*;
 
 import java.io.*;
 
@@ -13,6 +12,7 @@ class Word2VecCommandLine {
 
     public static void main(String [] args) {
         long globalTimer = System.nanoTime();
+        long timer = 0;
         Vocabulary vocabulary;
 
         // Command line arguments parsing
@@ -25,8 +25,6 @@ class Word2VecCommandLine {
         vocabulary.setMaxSize(arguments.getVocabularyMaxSize());
         if ( arguments.getInVocabularyFilename().length() > 0 ) {
             // Read vocabulary
-            long timer;
-
             timer = System.nanoTime();
             Word2Vec.readVocabulary(vocabulary, arguments.getInVocabularyFilename());
             timer = System.nanoTime() - timer;
@@ -37,8 +35,6 @@ class Word2VecCommandLine {
             }
         } else {
             // Learn vocabulary
-            long timer;
-
             timer = System.nanoTime();
             Word2Vec.learnVocabulary(arguments.getNrThreads(), arguments.getStrict(), vocabulary, arguments.getTrainingFilename());
             timer = System.nanoTime() - timer;
@@ -63,7 +59,6 @@ class Word2VecCommandLine {
         neuralNetwork.initialize(vocabulary, arguments.getSeed());
         // Train neural network
         try {
-            long timer;
             BufferedReader trainingFile;
             TrainWord2VecModel [] workers = new TrainWord2VecModel [arguments.getNrThreads()];
 
@@ -96,7 +91,7 @@ class Word2VecCommandLine {
         }
         // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {
-            long timer = System.nanoTime();
+            timer = System.nanoTime();
             Word2Vec.saveVocabulary(vocabulary, arguments.getOutVocabularyFilename());
             timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
@@ -104,32 +99,20 @@ class Word2VecCommandLine {
             }
         }
         // Save learned vectors
-        BufferedWriter outputFile;
-        try {
-            long timer = System.nanoTime();
-            outputFile = new BufferedWriter(new FileWriter(arguments.getOutputFilename()));
-            if ( arguments.getClasses() == 0 ) {
-                SaveWord2VecWordVectors.save(vocabulary, neuralNetwork, outputFile);
-            } else {
-                SaveWord2VecClasses.save(vocabulary, neuralNetwork, outputFile, arguments.getClasses());
-            }
-            outputFile.close();
+        timer = System.nanoTime();
+        Word2Vec.saveVectors(arguments.getClasses(), vocabulary, neuralNetwork, arguments.getOutputFilename());
+        timer = System.nanoTime() - timer;
+        if ( arguments.getDebug() ) {
+            System.out.println("Saving the output vectors took " + (timer / 1.0e9) + " seconds.");
+        }
+        // Save context vectors
+        if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
+            timer = System.nanoTime();
+            Word2Vec.saveContext(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
             timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
-                System.out.println("Saving the output vectors took " + (timer / 1.0e9) + " seconds.");
+                System.out.println("Saving the context vectors took " + (timer / 1.0e9) + " seconds.");
             }
-            if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
-                timer = System.nanoTime();
-                outputFile = new BufferedWriter(new FileWriter(arguments.getOutContextVectorsFilename()));
-                SaveWord2VecContextVectors.save(vocabulary, neuralNetwork, outputFile);
-                outputFile.close();
-                timer = System.nanoTime() - timer;
-                if ( arguments.getDebug() ) {
-                    System.out.println("Saving the context vectors took " + (timer / 1.0e9) + " seconds.");
-                }
-            }
-        } catch ( IOException err ) {
-            err.printStackTrace();
         }
         globalTimer = System.nanoTime() - globalTimer;
         if ( arguments.getDebug() ) {
