@@ -6,10 +6,9 @@ import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
 import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
+import nl.esciencecenter.wordembedding.utilities.io.SaveVocabulary;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 class Word2Vec {
 
@@ -25,10 +24,8 @@ class Word2Vec {
     }
 
     static void readVocabulary(Vocabulary vocabulary, String filename) {
-        BufferedReader inVocabularyFile;
-
         try {
-            inVocabularyFile = new BufferedReader(new FileReader(filename));
+            BufferedReader inVocabularyFile = new BufferedReader(new FileReader(filename));
             ReadVocabulary.read(vocabulary, inVocabularyFile);
             inVocabularyFile.close();
         } catch (IOException e) {
@@ -55,6 +52,16 @@ class Word2Vec {
             }
             trainingFile.close();
             ReduceVocabulary.reduce(vocabulary);
+        } catch ( IOException err ) {
+            err.printStackTrace();
+        }
+    }
+
+    static void saveVocabulary(Vocabulary vocabulary, String filename) {
+        try {
+            BufferedWriter outVocabularyFile = new BufferedWriter(new FileWriter(filename));
+            SaveVocabulary.save(vocabulary, outVocabularyFile);
+            outVocabularyFile.close();
         } catch ( IOException err ) {
             err.printStackTrace();
         }

@@ -116,17 +116,10 @@ public class Word2VecConstellation {
         // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {
             Timer vocabularyTimer = constellation.getTimer();
-            BufferedWriter outVocabularyFile;
 
-            try {
-                int event = vocabularyTimer.start();
-                outVocabularyFile = new BufferedWriter(new FileWriter(arguments.getOutVocabularyFilename()));
-                SaveVocabulary.save(vocabulary, outVocabularyFile);
-                outVocabularyFile.close();
-                vocabularyTimer.stop(event);
-            } catch ( IOException err ) {
-                err.printStackTrace();
-            }
+            int event = vocabularyTimer.start();
+            Word2Vec.saveVocabulary(vocabulary, arguments.getOutVocabularyFilename());
+            vocabularyTimer.stop(event);
             if ( arguments.getDebug() ) {
                 System.out.println("Saving the vocabulary took " + (vocabularyTimer.totalTimeVal() / 1.0e6) + " seconds.");
             }

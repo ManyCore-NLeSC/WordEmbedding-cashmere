@@ -96,18 +96,9 @@ class Word2VecCommandLine {
         }
         // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {
-            long timer = 0;
-            BufferedWriter outVocabularyFile;
-
-            try {
-                timer = System.nanoTime();
-                outVocabularyFile = new BufferedWriter(new FileWriter(arguments.getOutVocabularyFilename()));
-                SaveVocabulary.save(vocabulary, outVocabularyFile);
-                outVocabularyFile.close();
-                timer = System.nanoTime() - timer;
-            } catch ( IOException err ) {
-                err.printStackTrace();
-            }
+            long timer = System.nanoTime();
+            Word2Vec.saveVocabulary(vocabulary, arguments.getOutVocabularyFilename());
+            timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
                 System.out.println("Saving the vocabulary took " + (timer / 1.0e9) + " seconds.");
             }
