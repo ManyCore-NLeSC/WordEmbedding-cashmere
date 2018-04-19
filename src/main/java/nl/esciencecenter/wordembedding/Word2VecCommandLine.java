@@ -4,9 +4,6 @@ import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
-import nl.esciencecenter.wordembedding.utilities.*;
-
-import java.io.*;
 
 class Word2VecCommandLine {
 
@@ -58,36 +55,13 @@ class Word2VecCommandLine {
         exponentialTable.initialize();
         neuralNetwork.initialize(vocabulary, arguments.getSeed());
         // Train neural network
-        try {
-            BufferedReader trainingFile;
-            TrainWord2VecModel [] workers = new TrainWord2VecModel [arguments.getNrThreads()];
-
-            timer = System.nanoTime();
-            trainingFile = new BufferedReader(new FileReader(arguments.getTrainingFilename()));
-            for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                workers[thread] = new TrainWord2VecModel(vocabulary, neuralNetwork, trainingFile);
-                workers[thread].setProgress(arguments.getProgress());
-                workers[thread].setExponentialTable(exponentialTable);
-                workers[thread].start();
-            }
-            for ( int thread = 0; thread < arguments.getNrThreads(); thread++ ) {
-                try {
-                    workers[thread].join();
-                } catch ( InterruptedException err ) {
-                    err.printStackTrace();
-                }
-            }
-            trainingFile.close();
-            timer = System.nanoTime() - timer;
-            if ( arguments.getDebug() ) {
-                System.out.println();
-                System.out.println("Training the neural network took " + (timer / 1.0e9) + " seconds.");
-                System.out.println("The neural network processed "
-                        + String.format("%.2f", vocabulary.getOccurrences() / (timer / 1.0e9))
-                        + " words per second.");
-            }
-        } catch ( IOException err ) {
-            err.printStackTrace();
+        timer = System.nanoTime();
+        Word2Vec.trainNetwork(arguments.getNrThreads(), arguments.getProgress(), vocabulary, neuralNetwork, exponentialTable, arguments.getTrainingFilename());
+        timer = System.nanoTime() - timer;
+        if ( arguments.getDebug() ) {
+            System.out.println();
+            System.out.println("Training the neural network took " + (timer / 1.0e9) + " seconds.");
+            System.out.println("The neural network processed " + String.format("%.2f", vocabulary.getOccurrences() / (timer / 1.0e9)) + " words per second.");
         }
         // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {

@@ -2,6 +2,7 @@ package nl.esciencecenter.wordembedding;
 
 import com.beust.jcommander.JCommander;
 import nl.esciencecenter.wordembedding.commandline.Word2VecCommandLineArguments;
+import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnVocabulary;
@@ -11,6 +12,7 @@ import nl.esciencecenter.wordembedding.utilities.io.SaveVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.SaveWord2VecClasses;
 import nl.esciencecenter.wordembedding.utilities.io.SaveWord2VecWordVectors;
 import nl.esciencecenter.wordembedding.utilities.io.SaveWord2VecContextVectors;
+import nl.esciencecenter.wordembedding.utilities.TrainWord2VecModel;
 
 import java.io.*;
 
@@ -90,6 +92,31 @@ class Word2Vec {
             BufferedWriter outputFile = new BufferedWriter(new FileWriter(filename));
             SaveWord2VecContextVectors.save(vocabulary, neuralNetwork, outputFile);
             outputFile.close();
+        } catch ( IOException err ) {
+            err.printStackTrace();
+        }
+    }
+
+    static void trainNetwork(int nrThreads, boolean showProgress, Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, ExponentialTable exponentialTable, String filename) {
+        try {
+            BufferedReader trainingFile;
+            TrainWord2VecModel [] workers = new TrainWord2VecModel [nrThreads];
+
+            trainingFile = new BufferedReader(new FileReader(filename));
+            for ( int thread = 0; thread < nrThreads; thread++ ) {
+                workers[thread] = new TrainWord2VecModel(vocabulary, neuralNetwork, trainingFile);
+                workers[thread].setProgress(showProgress);
+                workers[thread].setExponentialTable(exponentialTable);
+                workers[thread].start();
+            }
+            for ( int thread = 0; thread < nrThreads; thread++ ) {
+                try {
+                    workers[thread].join();
+                } catch ( InterruptedException err ) {
+                    err.printStackTrace();
+                }
+            }
+            trainingFile.close();
         } catch ( IOException err ) {
             err.printStackTrace();
         }
