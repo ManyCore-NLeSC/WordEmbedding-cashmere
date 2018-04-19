@@ -29,6 +29,19 @@ task Word2VecCommandLine(type: Jar) {
     with jar
 }
 
+// Word2VecConstellation JAR with dependencies
+task Word2VecContellation(type: Jar) {
+    manifest {
+        attributes "Implementation-Version" : version,
+            "Main-Class" : "nl.esciencecenter.wordembedding.Word2VecConstellation"
+    }
+    baseName = project.name + '-Word2VecConstellation'
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
 // Word2VecCompareVocabularies JAR with dependencies
 task Word2VecCompareVocabularies(type: Jar) {
     manifest {
