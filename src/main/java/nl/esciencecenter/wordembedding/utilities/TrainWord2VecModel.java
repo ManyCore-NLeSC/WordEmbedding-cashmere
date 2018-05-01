@@ -155,7 +155,7 @@ public class TrainWord2VecModel extends Thread {
                 }
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenLayer0[neuronIndex] = hiddenLayer0[neuronIndex]
-                            + neuralNetwork.getValueInputLayer(
+                            + neuralNetwork.getValueWordVector(
                                     (lastWordIndex * neuralNetwork.getVectorDimensions()) + neuronIndex);
                 }
             }
@@ -204,15 +204,15 @@ public class TrainWord2VecModel extends Thread {
                 relatedWordIndex = targetLabel.getTarget() * neuralNetwork.getVectorDimensions();
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     exponential += hiddenLayer0[neuronIndex]
-                            * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndex + neuronIndex);
+                            * neuralNetwork.getValueContextVector(relatedWordIndex + neuronIndex);
                 }
                 gradient = computeGradient(exponential, targetLabel.getLabel());
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
                             + (gradient
-                            * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndex + neuronIndex));
+                            * neuralNetwork.getValueContextVector(relatedWordIndex + neuronIndex));
                     synchronized ( neuralNetwork ) {
-                        neuralNetwork.incrementValueOutputNegativeSamples(relatedWordIndex + neuronIndex,
+                        neuralNetwork.incrementValueContextVector(relatedWordIndex + neuronIndex,
                             gradient * hiddenLayer0[neuronIndex]);
                     }
                 }
@@ -231,7 +231,7 @@ public class TrainWord2VecModel extends Thread {
                 }
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     synchronized ( neuralNetwork ) {
-                        neuralNetwork.incrementValueInputLayer(
+                        neuralNetwork.incrementValueWordVector(
                             (lastWordIndex * neuralNetwork.getVectorDimensions()) + neuronIndex,
                             hiddenError0[neuronIndex]);
                     }
@@ -270,7 +270,7 @@ public class TrainWord2VecModel extends Thread {
                         relatedWordIndexTwo = vocabulary.getWord(word).getPoint(symbolIndex)
                                 * neuralNetwork.getVectorDimensions();
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-                            exponential += neuralNetwork.getValueInputLayer(relatedWordIndexOne + neuronIndex)
+                            exponential += neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex)
                                     * neuralNetwork.getValueOutputLayer(relatedWordIndexTwo + neuronIndex);
                         }
                         if ( (exponential <= -exponentialTable.getMaximumExponential())
@@ -289,7 +289,7 @@ public class TrainWord2VecModel extends Thread {
                             synchronized ( neuralNetwork ) {
                                 neuralNetwork.incrementValueOutputLayer(relatedWordIndexTwo + neuronIndex,
                                     gradient
-                                        * neuralNetwork.getValueInputLayer(relatedWordIndexOne + neuronIndex));
+                                        * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
                             }
                         }
                     }
@@ -315,19 +315,19 @@ public class TrainWord2VecModel extends Thread {
                         }
                         exponential = 0.0f;
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-                            exponential += neuralNetwork.getValueInputLayer(relatedWordIndexOne + neuronIndex)
-                                    * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndexTwo
+                            exponential += neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex)
+                                    * neuralNetwork.getValueContextVector(relatedWordIndexTwo
                                     + neuronIndex);
                         }
                         gradient = computeGradient(exponential, targetLabel.getLabel());
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
-                                    * neuralNetwork.getValueOutputLayerNegativeSamples(relatedWordIndexTwo
+                                    * neuralNetwork.getValueContextVector(relatedWordIndexTwo
                                     + neuronIndex));
                             synchronized ( neuralNetwork ) {
-                                neuralNetwork.incrementValueOutputNegativeSamples(
+                                neuralNetwork.incrementValueContextVector(
                                     relatedWordIndexTwo + neuronIndex,
-                                    gradient * neuralNetwork.getValueInputLayer(
+                                    gradient * neuralNetwork.getValueWordVector(
                                         relatedWordIndexOne + neuronIndex));
                             }
                         }
@@ -335,7 +335,7 @@ public class TrainWord2VecModel extends Thread {
                 }
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     synchronized ( neuralNetwork ) {
-                        neuralNetwork.incrementValueInputLayer(relatedWordIndexOne + neuronIndex,
+                        neuralNetwork.incrementValueWordVector(relatedWordIndexOne + neuronIndex,
                             hiddenError0[neuronIndex]);
                     }
                 }

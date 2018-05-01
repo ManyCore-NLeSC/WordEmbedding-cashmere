@@ -101,7 +101,7 @@ public class Word2VecConstellation {
         Timer outputTimer = constellation.getTimer();
 
         event = outputTimer.start();
-        Word2Vec.saveVectors(arguments.getClasses(), vocabulary, neuralNetwork, arguments.getOutputFilename());
+        Word2Vec.saveWordVectors(arguments.getClasses(), vocabulary, neuralNetwork, arguments.getOutputFilename());
         outputTimer.stop(event);
         if ( arguments.getDebug() ) {
             System.out.println("Saving the output vectors took " + (outputTimer.totalTimeVal() / 1.0e6) + " seconds.");
@@ -109,7 +109,7 @@ public class Word2VecConstellation {
         // Save context vectors
         if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
             event = outputTimer.start();
-            Word2Vec.saveContext(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
+            Word2Vec.saveContextVectors(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
             outputTimer.stop(event);
             if ( arguments.getDebug() ) {
                 System.out.println("Saving the context vectors took " + (outputTimer.totalTimeVal() / 1.0e6) + " seconds.");

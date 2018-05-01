@@ -9,6 +9,6 @@ import java.io.IOException;
 public class SaveWord2VecContextVectors {
     public static void save(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, BufferedWriter fileWriter)
             throws IOException {
-        SaveWord2VecVectors.save(vocabulary, neuralNetwork, neuralNetwork.getOutputLayerNegativeSamples(), fileWriter);
+        SaveWord2VecVectors.save(vocabulary, neuralNetwork, neuralNetwork.getContextVector(), fileWriter);
     }
 }

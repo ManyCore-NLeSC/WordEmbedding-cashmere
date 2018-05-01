@@ -14,9 +14,9 @@ public class NeuralNetworkWord2Vec {
     // Members that can be modified concurrently
     private long globalWordCount = 0;
     private float currentAlpha;
-    private float [] inputLayer;
+    private float [] wordVector;
     private float [] outputLayer;
-    private float [] outputLayerNegativeSamples;
+    private float [] contextVector;
 
     public NeuralNetworkWord2Vec(boolean CBOW, boolean hierarchicalSoftmax, boolean usePosition, int negativeSamples,
                                  int vectorDimensions, int windowSize, float alpha) {
@@ -62,16 +62,16 @@ public class NeuralNetworkWord2Vec {
         return samplingFactor;
     }
 
-    public float [] getInputLayer() {
-        return inputLayer;
+    public float [] getWordVector() {
+        return wordVector;
     }
 
     public float [] getOutputLayer() {
         return outputLayer;
     }
 
-    public float [] getOutputLayerNegativeSamples() {
-        return outputLayerNegativeSamples;
+    public float [] getContextVector() {
+        return contextVector;
     }
 
     public float getAlpha() {
@@ -85,9 +85,9 @@ public class NeuralNetworkWord2Vec {
     public void initialize(Vocabulary vocabulary, int seed) {
         Random randomNumberGenerator = new Random(seed);
 
-        inputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
+        wordVector = new float [vocabulary.getNrWords() * vectorDimensions];
         for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-            inputLayer[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
+            wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
                 / vectorDimensions;
         }
         if ( hierarchicalSoftmax ) {
@@ -95,24 +95,24 @@ public class NeuralNetworkWord2Vec {
         }
         if ( negativeSamples > 0 ) {
             if (usePosition) {
-                outputLayerNegativeSamples = new float [vocabulary.getNrWords() * vectorDimensions * windowSize * 2];
+                contextVector = new float [vocabulary.getNrWords() * vectorDimensions * windowSize * 2];
             } else {
-                outputLayerNegativeSamples = new float [vocabulary.getNrWords() * vectorDimensions];
+                contextVector = new float [vocabulary.getNrWords() * vectorDimensions];
             }
         }
         vocabulary.generateCodes();
     }
 
-    public float getValueInputLayer(int item) {
-        return inputLayer[item];
+    public float getValueWordVector(int item) {
+        return wordVector[item];
     }
 
-    public void setValueInputLayer(int item, float value) {
-        inputLayer[item] = value;
+    public void setValueWordVector(int item, float value) {
+        wordVector[item] = value;
     }
 
-    public void incrementValueInputLayer(int item, float increment) {
-        inputLayer[item] += increment;
+    public void incrementValueWordVector(int item, float increment) {
+        wordVector[item] += increment;
     }
 
     public float getValueOutputLayer(int item) {
@@ -127,16 +127,16 @@ public class NeuralNetworkWord2Vec {
         outputLayer[item] += increment;
     }
 
-    public float getValueOutputLayerNegativeSamples(int item) {
-        return outputLayerNegativeSamples[item];
+    public float getValueContextVector(int item) {
+        return contextVector[item];
     }
 
-    public void setValueOutputNegativeSamples(int item, float value) {
-        outputLayerNegativeSamples[item] = value;
+    public void setValueContextVector(int item, float value) {
+        contextVector[item] = value;
     }
 
-    public void incrementValueOutputNegativeSamples(int item, float increment) {
-        outputLayerNegativeSamples[item] += increment;
+    public void incrementValueContextVector(int item, float increment) {
+        contextVector[item] += increment;
     }
 
     public long getGlobalWordCount() {

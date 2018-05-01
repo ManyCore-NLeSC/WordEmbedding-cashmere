@@ -73,7 +73,7 @@ class Word2Vec {
         }
     }
 
-    static void saveVectors(int nrClasses, Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, String filename) {
+    static void saveWordVectors(int nrClasses, Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, String filename) {
         try {
             BufferedWriter outputFile = new BufferedWriter(new FileWriter(filename));
             if ( nrClasses == 0 ) {
@@ -87,7 +87,7 @@ class Word2Vec {
         }
     }
 
-    static void saveContext(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, String filename) {
+    static void saveContextVectors(Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, String filename) {
         try {
             BufferedWriter outputFile = new BufferedWriter(new FileWriter(filename));
             SaveWord2VecContextVectors.save(vocabulary, neuralNetwork, outputFile);

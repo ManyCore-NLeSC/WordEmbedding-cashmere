@@ -74,7 +74,7 @@ class Word2VecCommandLine {
         }
         // Save learned vectors
         timer = System.nanoTime();
-        Word2Vec.saveVectors(arguments.getClasses(), vocabulary, neuralNetwork, arguments.getOutputFilename());
+        Word2Vec.saveWordVectors(arguments.getClasses(), vocabulary, neuralNetwork, arguments.getOutputFilename());
         timer = System.nanoTime() - timer;
         if ( arguments.getDebug() ) {
             System.out.println("Saving the output vectors took " + (timer / 1.0e9) + " seconds.");
@@ -82,7 +82,7 @@ class Word2VecCommandLine {
         // Save context vectors
         if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
             timer = System.nanoTime();
-            Word2Vec.saveContext(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
+            Word2Vec.saveContextVectors(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
             timer = System.nanoTime() - timer;
             if ( arguments.getDebug() ) {
                 System.out.println("Saving the context vectors took " + (timer / 1.0e9) + " seconds.");

@@ -28,7 +28,7 @@ public class SaveWord2VecClasses {
             for ( int wordIndex = 0; wordIndex < vocabulary.getNrWords(); wordIndex++ ) {
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     classVector[(classMapping[wordIndex] * neuralNetwork.getVectorDimensions()) + neuronIndex] +=
-                            neuralNetwork.getValueInputLayer(
+                            neuralNetwork.getValueWordVector(
                                     (wordIndex * neuralNetwork.getVectorDimensions()) + neuronIndex
                             );
                 }
@@ -57,7 +57,7 @@ public class SaveWord2VecClasses {
 
                     for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                         position += classVector[(classIndex * neuralNetwork.getVectorDimensions()) + neuronIndex]
-                                * neuralNetwork.getValueInputLayer(
+                                * neuralNetwork.getValueWordVector(
                                 (wordIndex * neuralNetwork.getVectorDimensions()) + neuronIndex
                         );
                     }
