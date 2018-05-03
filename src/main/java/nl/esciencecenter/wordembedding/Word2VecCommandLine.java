@@ -56,7 +56,7 @@ class Word2VecCommandLine {
         neuralNetwork.initialize(vocabulary, arguments.getSeed());
         // Train neural network
         timer = System.nanoTime();
-        Word2Vec.trainNetwork(arguments.getNrThreads(), arguments.getProgress(), vocabulary, neuralNetwork, exponentialTable, arguments.getTrainingFilename());
+        Word2Vec.trainNetwork(arguments.getNrThreads(), arguments.getThreadSynchronization(), arguments.getProgress(), vocabulary, neuralNetwork, exponentialTable, arguments.getTrainingFilename());
         timer = System.nanoTime() - timer;
         if ( arguments.getDebug() ) {
             System.out.println();

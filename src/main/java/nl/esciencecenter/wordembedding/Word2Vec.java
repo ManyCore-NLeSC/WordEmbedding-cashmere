@@ -97,7 +97,7 @@ class Word2Vec {
         }
     }
 
-    static void trainNetwork(int nrThreads, boolean showProgress, Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, ExponentialTable exponentialTable, String filename) {
+    static void trainNetwork(int nrThreads, boolean synchronizeThreads, boolean showProgress, Vocabulary vocabulary, NeuralNetworkWord2Vec neuralNetwork, ExponentialTable exponentialTable, String filename) {
         try {
             BufferedReader trainingFile;
             TrainWord2VecModel [] workers = new TrainWord2VecModel [nrThreads];
@@ -106,6 +106,7 @@ class Word2Vec {
             for ( int thread = 0; thread < nrThreads; thread++ ) {
                 workers[thread] = new TrainWord2VecModel(vocabulary, neuralNetwork, trainingFile);
                 workers[thread].setProgress(showProgress);
+                workers[thread].setThreadSynchronization(synchronizeThreads);
                 workers[thread].setExponentialTable(exponentialTable);
                 workers[thread].start();
             }

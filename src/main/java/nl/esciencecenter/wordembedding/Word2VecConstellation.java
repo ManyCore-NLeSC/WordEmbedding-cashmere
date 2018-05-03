@@ -79,7 +79,7 @@ public class Word2VecConstellation {
         // Train neural network
         Timer trainingTimer = constellation.getTimer();
         event = trainingTimer.start();
-        Word2Vec.trainNetwork(arguments.getNrThreads(), arguments.getProgress(), vocabulary, neuralNetwork, exponentialTable, arguments.getTrainingFilename());
+        Word2Vec.trainNetwork(arguments.getNrThreads(), arguments.getThreadSynchronization(), arguments.getProgress(), vocabulary, neuralNetwork, exponentialTable, arguments.getTrainingFilename());
         trainingTimer.stop(event);
         if ( arguments.getDebug() ) {
             System.out.println();
