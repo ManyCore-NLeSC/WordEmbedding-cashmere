@@ -51,6 +51,8 @@ public class Word2VecCommandLineArguments {
     private String outContextVectorsFilename = "";
     @Parameter(names = {"-threads"}, description = "Number of threads.")
     private int threads = 1;
+    @Parameter(names = {"-synchronize", "-sync"}, description = "Thread synchronization during training.", arity = 1)
+    private boolean threadSynchronization = true;
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
     private int seed = 1;
 
@@ -140,6 +142,11 @@ public class Word2VecCommandLineArguments {
 
     public int getNrThreads() {
         return threads;
+    }
+
+    public boolean getThreadSynchronization()
+    {
+        return threadSynchronization;
     }
 
     public int getSeed() {
