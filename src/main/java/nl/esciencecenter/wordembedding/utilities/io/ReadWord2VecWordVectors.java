@@ -5,8 +5,9 @@ import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class ReadWord2VecWordVector {
-    public static WordEmbedding read(BufferedReader fileReader) throws IOException {
+public class ReadWord2VecWordVectors {
+    public static WordEmbedding read(BufferedReader fileReader) throws IOException
+    {
         int dimensions;
         String line;
         String [] values;

@@ -2,7 +2,7 @@ package nl.esciencecenter.wordembedding;
 
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.utilities.NormalizeWordEmbedding;
-import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVector;
+import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
 import nl.esciencecenter.wordembedding.validation.CompareWordEmbeddings;
 
 import java.io.BufferedReader;
@@ -25,7 +25,7 @@ public class Word2VecCompareWordEmbeddings {
         for ( int argument = 0; argument < args.length; argument++ ) {
             try {
                 embeddingFile = new BufferedReader(new FileReader(args[argument]));
-                embeddings[argument] = ReadWord2VecWordVector.read(embeddingFile);
+                embeddings[argument] = ReadWord2VecWordVectors.read(embeddingFile);
                 embeddingFile.close();
             } catch ( IOException err ) {
                 System.err.println("Impossible to open \"" + args[argument] + "\".");
