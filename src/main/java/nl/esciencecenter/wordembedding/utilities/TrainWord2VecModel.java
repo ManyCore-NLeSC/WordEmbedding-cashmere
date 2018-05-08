@@ -62,7 +62,7 @@ public class TrainWord2VecModel extends Thread {
                     if (progress) {
                         printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
                                 (neuralNetwork.getGlobalWordCount()
-                                        / (float)(vocabulary.getOccurrences() + 1)) * 100);
+                                        / (float)((neuralNetwork.getNrIterations() * vocabulary.getOccurrences()) + 1)) * 100);
                     }
                     synchronized ( neuralNetwork ) {
                         neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()
@@ -132,7 +132,7 @@ public class TrainWord2VecModel extends Thread {
         if (progress) {
             printUpdateInfo((int)(Thread.currentThread().getId()), neuralNetwork.getCurrentAlpha(),
                     (neuralNetwork.getGlobalWordCount()
-                            / (float)(vocabulary.getOccurrences() + 1)) * 100);
+                            / (float)((neuralNetwork.getNrIterations() * vocabulary.getOccurrences()) + 1)) * 100);
         }
         synchronized ( neuralNetwork ) {
             neuralNetwork.setCurrentAlpha(neuralNetwork.getAlpha()

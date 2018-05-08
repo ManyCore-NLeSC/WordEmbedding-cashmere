@@ -12,9 +12,9 @@ public class NeuralNetworkWord2Vec {
     private final int negativeSamples;
     private final int vectorDimensions;
     private final int windowSize;
+    private int nrIterations = 1;
     private final float alpha;
     private float samplingFactor = 0.0f;
-    // Members that can be modified concurrently
     private long globalWordCount = 0;
     private float currentAlpha;
     private float [] wordVector;
@@ -83,6 +83,16 @@ public class NeuralNetworkWord2Vec {
 
     public int getWindowSize() {
         return windowSize;
+    }
+
+    public void setNrIterations(int nrIterations)
+    {
+        this.nrIterations = nrIterations;
+    }
+
+    public int getNrIterations()
+    {
+        return nrIterations;
     }
 
     public void initialize(Vocabulary vocabulary, int seed, String wordVectorFilename) throws IOException
