@@ -1,5 +1,8 @@
 package nl.esciencecenter.wordembedding.data;
 
+import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
+
+import java.io.IOException;
 import java.util.Random;
 
 public class NeuralNetworkWord2Vec {
@@ -82,19 +85,30 @@ public class NeuralNetworkWord2Vec {
         return windowSize;
     }
 
-    public void initialize(Vocabulary vocabulary, int seed) {
+    public void initialize(Vocabulary vocabulary, int seed, String wordVectorFilename) throws IOException
+    {
         Random randomNumberGenerator = new Random(seed);
 
-        wordVector = new float [vocabulary.getNrWords() * vectorDimensions];
-        for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-            wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
-                / vectorDimensions;
+        if (wordVectorFilename.equals(""))
+        {
+            wordVector = new float [vocabulary.getNrWords() * vectorDimensions];
+            for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
+                wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
+                    / vectorDimensions;
+            }
         }
-        if ( hierarchicalSoftmax ) {
+        else
+        {
+            wordVector = ReadWord2VecWordVectors.read(wordVectorFilename);
+        }
+        if ( hierarchicalSoftmax )
+        {
             hierarchicalSoftMaxLayer = new float [vocabulary.getNrWords() * vectorDimensions];
         }
-        if ( negativeSamples > 0 ) {
-            if (usePosition) {
+        if ( negativeSamples > 0 )
+        {
+            if (usePosition)
+            {
                 contextVector = new float [vocabulary.getNrWords() * vectorDimensions * windowSize * 2];
             } else {
                 contextVector = new float [vocabulary.getNrWords() * vectorDimensions];

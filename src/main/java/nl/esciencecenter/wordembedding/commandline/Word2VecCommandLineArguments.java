@@ -55,6 +55,8 @@ public class Word2VecCommandLineArguments {
     private boolean threadSynchronization = true;
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
     private int seed = 1;
+    @Parameter(names = {"-pinit"}, description = "Read the word vectors initialization from the specified file.")
+    private String wordVectorInitializationFile = "";
 
     public boolean getHelp() {
         return help;
@@ -151,5 +153,9 @@ public class Word2VecCommandLineArguments {
 
     public int getSeed() {
         return seed;
+    }
+
+    public String getWordVectorInitializationFile() {
+        return wordVectorInitializationFile;
     }
 }

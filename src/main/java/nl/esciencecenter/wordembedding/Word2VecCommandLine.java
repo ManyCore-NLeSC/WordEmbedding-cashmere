@@ -5,6 +5,8 @@ import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 
+import java.io.IOException;
+
 class Word2VecCommandLine {
 
     public static void main(String [] args) {
@@ -53,7 +55,11 @@ class Word2VecCommandLine {
                 arguments.getWindowSize(), arguments.getAlpha());
         ExponentialTable exponentialTable = new ExponentialTable();
         exponentialTable.initialize();
-        neuralNetwork.initialize(vocabulary, arguments.getSeed());
+        try {
+            neuralNetwork.initialize(vocabulary, arguments.getSeed(), arguments.getWordVectorInitializationFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // Train neural network
         timer = System.nanoTime();
         Word2Vec.trainNetwork(arguments.getNrThreads(), arguments.getThreadSynchronization(), arguments.getProgress(), vocabulary, neuralNetwork, exponentialTable, arguments.getTrainingFilename());
