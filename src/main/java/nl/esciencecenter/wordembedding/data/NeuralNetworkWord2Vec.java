@@ -15,7 +15,7 @@ public class NeuralNetworkWord2Vec {
     private long globalWordCount = 0;
     private float currentAlpha;
     private float [] wordVector;
-    private float [] outputLayer;
+    private float [] hierarchicalSoftMaxLayer;
     private float [] contextVector;
 
     public NeuralNetworkWord2Vec(boolean CBOW, boolean hierarchicalSoftmax, boolean usePosition, int negativeSamples,
@@ -66,8 +66,8 @@ public class NeuralNetworkWord2Vec {
         return wordVector;
     }
 
-    public float [] getOutputLayer() {
-        return outputLayer;
+    public float [] getHierarchicalSoftMaxLayer() {
+        return hierarchicalSoftMaxLayer;
     }
 
     public float [] getContextVector() {
@@ -91,7 +91,7 @@ public class NeuralNetworkWord2Vec {
                 / vectorDimensions;
         }
         if ( hierarchicalSoftmax ) {
-            outputLayer = new float [vocabulary.getNrWords() * vectorDimensions];
+            hierarchicalSoftMaxLayer = new float [vocabulary.getNrWords() * vectorDimensions];
         }
         if ( negativeSamples > 0 ) {
             if (usePosition) {
@@ -115,16 +115,16 @@ public class NeuralNetworkWord2Vec {
         wordVector[item] += increment;
     }
 
-    public float getValueOutputLayer(int item) {
-        return outputLayer[item];
+    public float getValueHierarchicalSoftMaxLayer(int item) {
+        return hierarchicalSoftMaxLayer[item];
     }
 
-    public void setValueOutputLayer(int item, float value) {
-        outputLayer[item] = value;
+    public void setValueHierarchicalSoftMaxLayer(int item, float value) {
+        hierarchicalSoftMaxLayer[item] = value;
     }
 
-    public void incrementValueOutputLayer(int item, float increment) {
-        outputLayer[item] += increment;
+    public void incrementValueHierarchicalSoftMaxLayer(int item, float increment) {
+        hierarchicalSoftMaxLayer[item] += increment;
     }
 
     public float getValueContextVector(int item) {

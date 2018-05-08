@@ -175,7 +175,7 @@ public class TrainWord2VecModel extends Thread {
 
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     exponential += hiddenLayer0[neuronIndex]
-                            * neuralNetwork.getValueOutputLayer(relatedWordIndex + neuronIndex);
+                            * neuralNetwork.getValueHierarchicalSoftMaxLayer(relatedWordIndex + neuronIndex);
                 }
                 if ( (exponential <= -exponentialTable.getMaximumExponential())
                         || (exponential >= exponentialTable.getMaximumExponential()) ) {
@@ -187,17 +187,17 @@ public class TrainWord2VecModel extends Thread {
                         * neuralNetwork.getCurrentAlpha();
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
-                            + (gradient * neuralNetwork.getValueOutputLayer(relatedWordIndex + neuronIndex));
+                            + (gradient * neuralNetwork.getValueHierarchicalSoftMaxLayer(relatedWordIndex + neuronIndex));
                     if ( threadSynchronization )
                     {
                         synchronized ( neuralNetwork )
                         {
-                            neuralNetwork.incrementValueOutputLayer(relatedWordIndex + neuronIndex,gradient * hiddenLayer0[neuronIndex]);
+                            neuralNetwork.incrementValueHierarchicalSoftMaxLayer(relatedWordIndex + neuronIndex,gradient * hiddenLayer0[neuronIndex]);
                         }
                     }
                     else
                     {
-                        neuralNetwork.incrementValueOutputLayer(relatedWordIndex + neuronIndex,gradient * hiddenLayer0[neuronIndex]);
+                        neuralNetwork.incrementValueHierarchicalSoftMaxLayer(relatedWordIndex + neuronIndex,gradient * hiddenLayer0[neuronIndex]);
                     }
                 }
             }
@@ -297,7 +297,7 @@ public class TrainWord2VecModel extends Thread {
                                 * neuralNetwork.getVectorDimensions();
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                             exponential += neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex)
-                                    * neuralNetwork.getValueOutputLayer(relatedWordIndexTwo + neuronIndex);
+                                    * neuralNetwork.getValueHierarchicalSoftMaxLayer(relatedWordIndexTwo + neuronIndex);
                         }
                         if ( (exponential <= -exponentialTable.getMaximumExponential())
                                 || (exponential >= exponentialTable.getMaximumExponential()) ) {
@@ -311,17 +311,17 @@ public class TrainWord2VecModel extends Thread {
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex]
                                     + (gradient
-                                    * neuralNetwork.getValueOutputLayer(relatedWordIndexTwo + neuronIndex));
+                                    * neuralNetwork.getValueHierarchicalSoftMaxLayer(relatedWordIndexTwo + neuronIndex));
                             if ( threadSynchronization )
                             {
                                 synchronized ( neuralNetwork )
                                 {
-                                    neuralNetwork.incrementValueOutputLayer(relatedWordIndexTwo + neuronIndex, gradient * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
+                                    neuralNetwork.incrementValueHierarchicalSoftMaxLayer(relatedWordIndexTwo + neuronIndex, gradient * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
                                 }
                             }
                             else
                             {
-                                neuralNetwork.incrementValueOutputLayer(relatedWordIndexTwo + neuronIndex, gradient * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
+                                neuralNetwork.incrementValueHierarchicalSoftMaxLayer(relatedWordIndexTwo + neuronIndex, gradient * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
                             }
                         }
                     }
