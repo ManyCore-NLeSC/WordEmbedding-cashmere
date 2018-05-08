@@ -11,7 +11,7 @@ class Word2VecCommandLine {
 
     public static void main(String [] args) {
         long globalTimer = System.nanoTime();
-        long timer = 0;
+        long timer;
         Vocabulary vocabulary;
 
         // Command line arguments parsing
