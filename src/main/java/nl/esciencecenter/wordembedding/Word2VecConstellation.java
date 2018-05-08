@@ -6,6 +6,8 @@ import nl.esciencecenter.wordembedding.data.ExponentialTable;
 import nl.esciencecenter.wordembedding.data.NeuralNetworkWord2Vec;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 
+import java.io.IOException;
+
 public class Word2VecConstellation {
     private final static int NR_WORKERS = 1;
     private final static String CONTEXT_ID = "Word2VecConstellation";
@@ -75,7 +77,12 @@ public class Word2VecConstellation {
             arguments.getWindowSize(), arguments.getAlpha());
         ExponentialTable exponentialTable = new ExponentialTable();
         exponentialTable.initialize();
-        neuralNetwork.initialize(vocabulary, arguments.getSeed());
+        neuralNetwork.setNrIterations(arguments.getNrIterations());
+        try {
+            neuralNetwork.initialize(vocabulary, arguments.getSeed(), arguments.getWordVectorInitializationFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // Train neural network
         Timer trainingTimer = constellation.getTimer();
         event = trainingTimer.start();
@@ -84,7 +91,7 @@ public class Word2VecConstellation {
         if ( arguments.getDebug() ) {
             System.out.println();
             System.out.println("Training the neural network took " + (trainingTimer.totalTimeVal() / 1.0e6) + " seconds.");
-            System.out.println("The neural network processed " + String.format("%.2f", vocabulary.getOccurrences() / (trainingTimer.totalTimeVal() / 1.0e6)) + " words per second.");
+            System.out.println("The neural network processed " + String.format("%.2f", (neuralNetwork.getNrIterations() * vocabulary.getOccurrences()) / (trainingTimer.totalTimeVal() / 1.0e6)) + " words per second.");
         }
         // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {

@@ -71,7 +71,7 @@ class Word2VecCommandLine {
         if ( arguments.getDebug() ) {
             System.out.println();
             System.out.println("Training the neural network took " + (timer / 1.0e9) + " seconds.");
-            System.out.println("The neural network processed " + String.format("%.2f", (vocabulary.getOccurrences() * neuralNetwork.getNrIterations()) / (timer / 1.0e9)) + " words per second.");
+            System.out.println("The neural network processed " + String.format("%.2f", (neuralNetwork.getNrIterations() * vocabulary.getOccurrences()) / (timer / 1.0e9)) + " words per second.");
         }
         // Save vocabulary
         if ( arguments.getOutVocabularyFilename().length() > 0 ) {
