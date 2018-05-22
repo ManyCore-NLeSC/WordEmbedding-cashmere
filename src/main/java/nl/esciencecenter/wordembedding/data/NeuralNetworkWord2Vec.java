@@ -1,5 +1,6 @@
 package nl.esciencecenter.wordembedding.data;
 
+import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecContextVectors;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
 
 import java.io.IOException;
@@ -121,7 +122,14 @@ public class NeuralNetworkWord2Vec {
             {
                 contextVector = new float [vocabulary.getNrWords() * vectorDimensions * windowSize * 2];
             } else {
-                contextVector = new float [vocabulary.getNrWords() * vectorDimensions];
+                if (wordVectorFilename.equals(""))
+                {
+                    contextVector = new float [vocabulary.getNrWords() * vectorDimensions];
+                }
+                else
+                {
+                    contextVector = ReadWord2VecContextVectors.read(wordVectorFilename);
+                }
             }
         }
         vocabulary.generateCodes();
