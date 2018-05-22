@@ -21,7 +21,7 @@ public class ReadWord2VecVectors {
             BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
             // Read the first line
             line = fileReader.readLine();
-            values = line.split(" ");
+            values = line.split("[ \t]");
             nrWords = Integer.parseInt(values[0]);
             dimensions = Integer.parseInt(values[1]);
             vectors = new float [nrWords * dimensions];
