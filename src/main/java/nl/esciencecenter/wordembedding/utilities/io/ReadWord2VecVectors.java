@@ -46,7 +46,7 @@ public class ReadWord2VecVectors {
         FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
         for (int element = 0; element < nrElements; element++)
         {
-            vectors[element] = buffer.get(element);
+            vectors[element] = buffer.get();
         }
         fileReader.close();
         return vectors;
