@@ -14,9 +14,5 @@ public class ReadVocabulary {
             String [] values = line.split("[ \t]+");
             vocabulary.addWord(new Word(values[0], Integer.parseInt(values[1])));
         }
-        if (vocabulary.getWord("</s>") == null)
-        {
-            vocabulary.addWord("</s>");
-        }
     }
 }
