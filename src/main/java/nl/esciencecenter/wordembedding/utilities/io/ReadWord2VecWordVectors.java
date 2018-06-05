@@ -15,13 +15,13 @@ public class ReadWord2VecWordVectors {
 
         // Read the first line
         line = fileReader.readLine();
-        values = line.split(" ");
+        values = line.split("[ \t]+");
         dimensions = Integer.parseInt(values[1]);
         embedding = new WordEmbedding(dimensions);
         // Read the vectors
         while ( (line = fileReader.readLine()) != null ) {
             float [] coordinates = new float [dimensions];
-            values = line.split(" ");
+            values = line.split("[ \t]+");
             for ( int dimension = 0; dimension < dimensions; dimension++ ) {
                 coordinates[dimension] = Float.parseFloat(values[dimension + 1]);
             }

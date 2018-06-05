@@ -20,14 +20,14 @@ public class ReadWord2VecVectors {
         BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
         // Read the first line
         line = fileReader.readLine();
-        values = line.split("[ \t]");
+        values = line.split("[ \t]+");
         nrWords = Integer.parseInt(values[0]);
         dimensions = Integer.parseInt(values[1]);
         vectors = new float [nrWords * dimensions];
         // Read the vectors
         int wordIndex = 0;
         while ( (line = fileReader.readLine()) != null ) {
-            values = line.split(" ");
+            values = line.split("[ \t]+");
             for ( int dimension = 0; dimension < dimensions; dimension++ ) {
                 vectors[(wordIndex * dimensions) + dimension] = Float.parseFloat(values[dimension + 1]);
             }
