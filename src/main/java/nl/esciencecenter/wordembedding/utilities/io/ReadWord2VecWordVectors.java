@@ -35,4 +35,9 @@ public class ReadWord2VecWordVectors {
     {
        return ReadWord2VecVectors.read(fileName);
     }
+
+    public static float [] read(String fileName, int nrElements) throws IOException
+    {
+        return ReadWord2VecVectors.read(fileName, nrElements);
+    }
 }

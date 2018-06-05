@@ -110,7 +110,14 @@ public class NeuralNetworkWord2Vec {
         }
         else
         {
-            wordVector = ReadWord2VecWordVectors.read(wordVectorFilename);
+            if (wordVectorFilename.contains(".txt"))
+            {
+                wordVector = ReadWord2VecWordVectors.read(wordVectorFilename);
+            }
+            else
+            {
+                wordVector = ReadWord2VecWordVectors.read(wordVectorFilename, vocabulary.getNrWords() * vectorDimensions);
+            }
         }
         if ( hierarchicalSoftmax )
         {

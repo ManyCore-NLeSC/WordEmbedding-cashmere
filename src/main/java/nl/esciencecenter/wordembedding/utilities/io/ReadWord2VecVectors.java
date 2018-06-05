@@ -13,42 +13,42 @@ public class ReadWord2VecVectors {
     {
         float [] vectors;
 
-        if (fileName.contains(".txt"))
-        {
-            int nrWords;
-            int dimensions;
-            String line;
-            String [] values;
-            BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
-            // Read the first line
-            line = fileReader.readLine();
-            values = line.split("[ \t]");
-            nrWords = Integer.parseInt(values[0]);
-            dimensions = Integer.parseInt(values[1]);
-            vectors = new float [nrWords * dimensions];
-            // Read the vectors
-            int wordIndex = 0;
-            while ( (line = fileReader.readLine()) != null ) {
-                values = line.split(" ");
-                for ( int dimension = 0; dimension < dimensions; dimension++ ) {
-                    vectors[(wordIndex * dimensions) + dimension] = Float.parseFloat(values[dimension + 1]);
-                }
-                wordIndex++;
+        int nrWords;
+        int dimensions;
+        String line;
+        String [] values;
+        BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
+        // Read the first line
+        line = fileReader.readLine();
+        values = line.split("[ \t]");
+        nrWords = Integer.parseInt(values[0]);
+        dimensions = Integer.parseInt(values[1]);
+        vectors = new float [nrWords * dimensions];
+        // Read the vectors
+        int wordIndex = 0;
+        while ( (line = fileReader.readLine()) != null ) {
+            values = line.split(" ");
+            for ( int dimension = 0; dimension < dimensions; dimension++ ) {
+                vectors[(wordIndex * dimensions) + dimension] = Float.parseFloat(values[dimension + 1]);
             }
-            fileReader.close();
+            wordIndex++;
         }
-        else
+        fileReader.close();
+        return vectors;
+    }
+
+    public static float [] read(String fileName, int nrElements) throws IOException
+    {
+        float [] vectors;
+
+        FileChannel fileReader = new RandomAccessFile(fileName, "r").getChannel();
+        vectors = new float [nrElements];
+        FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        for (int element = 0; element < nrElements; element++)
         {
-            FileChannel fileReader = new RandomAccessFile(fileName, "r").getChannel();
-            int nrElements = (int)(fileReader.size() / 4);
-            vectors = new float [nrElements];
-            FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
-            for (int element = 0; element < nrElements; element++)
-            {
-                vectors[element] = buffer.get(element);
-            }
-            fileReader.close();
+            vectors[element] = buffer.get(element);
         }
+        fileReader.close();
         return vectors;
     }
 }
