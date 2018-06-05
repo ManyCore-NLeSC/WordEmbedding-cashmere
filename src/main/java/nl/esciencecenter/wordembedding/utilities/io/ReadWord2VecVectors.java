@@ -39,10 +39,9 @@ public class ReadWord2VecVectors {
 
     public static float [] read(String fileName, int nrElements) throws IOException
     {
-        float [] vectors;
+        float [] vectors = new float [nrElements];
 
         FileChannel fileReader = new RandomAccessFile(fileName, "r").getChannel();
-        vectors = new float [nrElements];
         FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
         for (int element = 0; element < nrElements; element++)
         {
