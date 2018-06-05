@@ -431,7 +431,7 @@ public class TrainWord2VecModel extends Thread {
                 label = 1;
             } else {
                 target = randomNumberGenerator.nextInt(vocabulary.getNrWords());
-                if ( target == vocabulary.getWord("</s>").getSortedIndex() ) {
+                if ((vocabulary.getWord("</s>") != null) && (target == vocabulary.getWord("</s>").getSortedIndex())) {
                     target = randomNumberGenerator.nextInt(vocabulary.getNrWords()) + 1;
                 } else if ( target == vocabulary.getWord(word).getSortedIndex() ) {
                     return false;
