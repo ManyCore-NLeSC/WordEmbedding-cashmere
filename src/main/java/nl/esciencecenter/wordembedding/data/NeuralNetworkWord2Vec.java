@@ -139,11 +139,11 @@ public class NeuralNetworkWord2Vec {
                 {
                     if (wordVectorFilename.contains(".txt"))
                     {
-                        contextVector = ReadWord2VecWordVectors.read(wordVectorFilename);
+                        contextVector = ReadWord2VecContextVectors.read(wordVectorFilename, (long)(vocabulary.getNrWords() * vectorDimensions));
                     }
                     else
                     {
-                        contextVector = ReadWord2VecWordVectors.read(wordVectorFilename, vocabulary.getNrWords() * vectorDimensions);
+                        contextVector = ReadWord2VecContextVectors.read(wordVectorFilename, vocabulary.getNrWords() * vectorDimensions, (long)(vocabulary.getNrWords() * vectorDimensions));
                     }
                 }
             }
