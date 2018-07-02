@@ -11,6 +11,11 @@ import java.nio.channels.FileChannel;
 public class ReadWord2VecVectors {
     public static float [] read(String fileName) throws IOException
     {
+        return read(fileName, (long)(0));
+    }
+
+    public static float [] read(String fileName, long bytesToSkip) throws IOException
+    {
         float [] vectors;
 
         int nrWords;
@@ -18,6 +23,7 @@ public class ReadWord2VecVectors {
         String line;
         String [] values;
         BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
+        fileReader.skip(bytesToSkip);
         // Read the first line
         line = fileReader.readLine();
         values = line.split("[ \t]+");
@@ -39,9 +45,15 @@ public class ReadWord2VecVectors {
 
     public static float [] read(String fileName, int nrElements) throws IOException
     {
+        return read(fileName, nrElements, 0);
+    }
+
+    public static float [] read(String fileName, int nrElements, long bytesToSkip) throws IOException
+    {
         float [] vectors = new float [nrElements];
 
         FileChannel fileReader = new RandomAccessFile(fileName, "r").getChannel();
+        fileReader.position(bytesToSkip);
         FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
         for (int element = 0; element < nrElements; element++)
         {
