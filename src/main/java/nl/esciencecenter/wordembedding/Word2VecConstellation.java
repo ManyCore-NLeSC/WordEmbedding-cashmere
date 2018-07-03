@@ -79,7 +79,7 @@ public class Word2VecConstellation {
         exponentialTable.initialize();
         neuralNetwork.setNrIterations(arguments.getNrIterations());
         try {
-            neuralNetwork.initialize(vocabulary, arguments.getSeed(), arguments.getWordVectorInitializationFile());
+            neuralNetwork.initialize(vocabulary, arguments.getSeed(), arguments.getVectorInitializationFile());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -56,7 +56,7 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
     private int seed = 1;
     @Parameter(names = {"-pinit"}, description = "Read the word vectors initialization from the specified file.")
-    private String wordVectorInitializationFile = "";
+    private String vectorInitializationFile = "";
     @Parameter(names = {"-iters", "-iterations"}, description = "Number of iterations over the training file.")
     private int nrIterations = 1;
 
@@ -157,8 +157,8 @@ public class Word2VecCommandLineArguments {
         return seed;
     }
 
-    public String getWordVectorInitializationFile() {
-        return wordVectorInitializationFile;
+    public String getVectorInitializationFile() {
+        return vectorInitializationFile;
     }
 
     public int getNrIterations()
