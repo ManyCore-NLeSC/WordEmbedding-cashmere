@@ -1,7 +1,6 @@
 package nl.esciencecenter.wordembedding.data;
 
-import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecContextVectors;
-import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
+import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordAndContextVectors;
 
 import java.io.IOException;
 import java.util.Random;
@@ -96,29 +95,11 @@ public class NeuralNetworkWord2Vec {
         return nrIterations;
     }
 
-    public void initialize(Vocabulary vocabulary, int seed, String wordVectorFilename) throws IOException
+    public void initialize(Vocabulary vocabulary, int seed, String vectorFilename) throws IOException
     {
         Random randomNumberGenerator = new Random(seed);
 
-        if (wordVectorFilename.equals(""))
-        {
-            wordVector = new float [vocabulary.getNrWords() * vectorDimensions];
-            for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-                wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
-                    / vectorDimensions;
-            }
-        }
-        else
-        {
-            if (wordVectorFilename.contains(".txt"))
-            {
-                wordVector = ReadWord2VecWordVectors.read(wordVectorFilename);
-            }
-            else
-            {
-                wordVector = ReadWord2VecWordVectors.read(wordVectorFilename, vocabulary.getNrWords() * vectorDimensions);
-            }
-        }
+        wordVector = new float [vocabulary.getNrWords() * vectorDimensions];
         if ( hierarchicalSoftmax )
         {
             hierarchicalSoftMaxLayer = new float [vocabulary.getNrWords() * vectorDimensions];
@@ -131,21 +112,25 @@ public class NeuralNetworkWord2Vec {
             }
             else
             {
-                if (wordVectorFilename.equals(""))
-                {
-                    contextVector = new float [vocabulary.getNrWords() * vectorDimensions];
-                }
-                else
-                {
-                    if (wordVectorFilename.contains(".txt"))
-                    {
-                        contextVector = ReadWord2VecContextVectors.read(wordVectorFilename, (long)(vocabulary.getNrWords() * vectorDimensions));
-                    }
-                    else
-                    {
-                        contextVector = ReadWord2VecContextVectors.read(wordVectorFilename, vocabulary.getNrWords() * vectorDimensions, (long)(vocabulary.getNrWords() * vectorDimensions));
-                    }
-                }
+                contextVector = new float [vocabulary.getNrWords() * vectorDimensions];
+            }
+        }
+        if (vectorFilename.equals(""))
+        {
+            for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
+                wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
+                    / vectorDimensions;
+            }
+        }
+        else
+        {
+            if (vectorFilename.contains(".txt"))
+            {
+                ReadWord2VecWordAndContextVectors.read(vectorFilename, vectorDimensions, wordVector, contextVector);
+            }
+            else
+            {
+                ReadWord2VecWordAndContextVectors.read(vectorFilename, vocabulary.getNrWords() * vectorDimensions, wordVector, contextVector);
             }
         }
         vocabulary.generateCodes();

@@ -31,14 +31,7 @@ public class ReadWord2VecVectors {
         dimensions = Integer.parseInt(values[1]);
         vectors = new float [nrWords * dimensions];
         // Read the vectors
-        int wordIndex = 0;
-        while ( (line = fileReader.readLine()) != null ) {
-            values = line.split("[ \t]+");
-            for ( int dimension = 0; dimension < dimensions; dimension++ ) {
-                vectors[(wordIndex * dimensions) + dimension] = Float.parseFloat(values[dimension + 1]);
-            }
-            wordIndex++;
-        }
+        readTextVectors(dimensions, vectors, fileReader);
         fileReader.close();
         return vectors;
     }
@@ -61,5 +54,21 @@ public class ReadWord2VecVectors {
         }
         fileReader.close();
         return vectors;
+    }
+
+    static void readTextVectors(int vectorSize, float[] vectors, BufferedReader fileReader) throws IOException
+    {
+        int wordIndex = 0;
+        String line;
+        String[] values;
+        while ((line = fileReader.readLine()) != null)
+        {
+            values = line.split("[ \t]+");
+            for (int dimension = 0; dimension < vectorSize; dimension++)
+            {
+                vectors[(wordIndex * vectorSize) + dimension] = Float.parseFloat(values[dimension + 1]);
+            }
+            wordIndex++;
+        }
     }
 }
