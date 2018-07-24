@@ -59,6 +59,8 @@ public class Word2VecCommandLineArguments {
     private String vectorInitializationFile = "";
     @Parameter(names = {"-iters", "-iterations"}, description = "Number of iterations over the training file.")
     private int nrIterations = 1;
+    @Parameter(names = {"-test_file"}, description = "Test set for convergence.")
+    private String testSetFile = "";
 
     public boolean getHelp() {
         return help;
@@ -164,5 +166,10 @@ public class Word2VecCommandLineArguments {
     public int getNrIterations()
     {
         return nrIterations;
+    }
+
+    public String getTestSetFile()
+    {
+        return testSetFile;
     }
 }
