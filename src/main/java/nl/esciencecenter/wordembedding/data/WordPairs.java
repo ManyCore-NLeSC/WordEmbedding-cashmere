@@ -2,7 +2,8 @@ package nl.esciencecenter.wordembedding.data;
 
 import java.util.LinkedHashMap;
 
-public class WordPairs {
+public class WordPairs
+{
     private final String separator = "_<%%>_";
     private int occurrences;
     private LinkedHashMap<String, Integer> coOccurrences;
