@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 
 public class WordPairs
 {
+    private int windowSize;
     private final String separator = "_<%%>_";
     private int occurrences;
     private LinkedHashMap<String, Integer> coOccurrences;
@@ -12,6 +13,16 @@ public class WordPairs
     {
         this.coOccurrences = new LinkedHashMap<>();
         this.occurrences = 0;
+    }
+
+    public void setWindowSize(int window)
+    {
+        this.windowSize = window;
+    }
+
+    public int getWindowSize()
+    {
+        return this.windowSize;
     }
 
     public int getTotalPairs()
