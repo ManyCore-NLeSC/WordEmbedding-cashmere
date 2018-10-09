@@ -7,7 +7,7 @@ import nl.esciencecenter.wordembedding.data.WordPairs;
 
 public class LearnWordPairs
 {
-    public static void read(WordPairs pairs, BufferedReader fileReader) throws IOException
+    public static void learn(WordPairs pairs, BufferedReader fileReader) throws IOException
     {
         String line;
 
