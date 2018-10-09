@@ -22,6 +22,7 @@ public class Word2VecPMIComparison
             System.err.println("Usage: Word2VecPMIComparison <vocabulary_file> <window_size> <corpus_file>");
             return;
         }
+        // Read the vocabulary
         try {
             vocabulary = new Vocabulary();
             file = new BufferedReader(new FileReader(args[0]));
@@ -31,6 +32,7 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + args[0] + "\".");
             return;
         }
+        // Learn all pairs
         try {
             pairs = new WordPairs();
             pairs.setWindowSize(Integer.parseInt(args[1]));
