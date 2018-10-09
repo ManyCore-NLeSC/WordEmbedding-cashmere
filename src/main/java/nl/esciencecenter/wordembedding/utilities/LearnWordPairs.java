@@ -1,11 +1,11 @@
-package nl.esciencecenter.wordembedding.utilities.io;
+package nl.esciencecenter.wordembedding.utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
 import nl.esciencecenter.wordembedding.data.WordPairs;
 
-public class ReadWordPairs
+public class LearnWordPairs
 {
     public static void read(WordPairs pairs, BufferedReader fileReader) throws IOException
     {
