@@ -45,7 +45,8 @@ public class ReadWord2VecVectors {
     {
         float [] vectors = new float [nrElements];
 
-        FileChannel fileReader = new RandomAccessFile(fileName, "r").getChannel();
+        RandomAccessFile file = new RandomAccessFile(fileName, "r");
+        FileChannel fileReader = file.getChannel();
         fileReader.position(bytesToSkip);
         FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
         for (int element = 0; element < nrElements; element++)
@@ -53,6 +54,7 @@ public class ReadWord2VecVectors {
             vectors[element] = buffer.get();
         }
         fileReader.close();
+        file.close();
         return vectors;
     }
 

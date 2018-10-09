@@ -28,7 +28,8 @@ public class ReadWord2VecWordAndContextVectors {
         else
         {
             // Binary file
-            FileChannel fileReader = new RandomAccessFile(fileName, "r").getChannel();
+            RandomAccessFile file = new RandomAccessFile(fileName, "r");
+            FileChannel fileReader = file.getChannel();
             FloatBuffer buffer = fileReader.map(FileChannel.MapMode.READ_ONLY, 0, fileReader.size()).order(ByteOrder.nativeOrder()).asFloatBuffer();
             for (int element = 0; element < vectorSize; element++)
             {
@@ -39,6 +40,7 @@ public class ReadWord2VecWordAndContextVectors {
                 contextVectors[element] = buffer.get();
             }
             fileReader.close();
+            file.close();
         }
     }
 }
