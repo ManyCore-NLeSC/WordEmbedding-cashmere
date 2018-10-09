@@ -82,3 +82,16 @@ task Word2VecEvaluateWordSimilarity(type: Jar) {
     }
     with jar
 }
+
+// Word2VecCPMIComparison JAR with dependencies
+task Word2VecCPMIComparison(type: Jar) {
+    manifest {
+        attributes "Implementation-Version" : version,
+            "Main-Class" : "nl.esciencecenter.wordembedding.Word2VecPMIComparison"
+    }
+    baseName = project.name + '-Word2VecPMIComparison'
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
