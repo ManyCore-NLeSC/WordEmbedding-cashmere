@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
@@ -19,6 +20,7 @@ public class Word2VecPMIComparison
         BufferedReader file;
         Vocabulary vocabulary;
         WordPairs pairs;
+        PMITable pmiTable;
         WordEmbedding words, contexts;
 
         if ( args.length != 5 ) {
@@ -46,6 +48,7 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + args[2] + "\".");
             return;
         }
+        pmiTable = new PMITable(vocabulary, pairs);
         // Read word and context vectors
         try {
             file = new BufferedReader(new FileReader(args[3]));
