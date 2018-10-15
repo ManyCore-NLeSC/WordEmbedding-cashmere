@@ -5,9 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import nl.esciencecenter.wordembedding.data.Vocabulary;
+import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
+import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
 
 
 public class Word2VecPMIComparison
@@ -17,9 +19,10 @@ public class Word2VecPMIComparison
         BufferedReader file;
         Vocabulary vocabulary;
         WordPairs pairs;
+        WordEmbedding words, contexts;
 
-        if ( args.length != 3 ) {
-            System.err.println("Usage: Word2VecPMIComparison <vocabulary_file> <window_size> <corpus_file>");
+        if ( args.length != 5 ) {
+            System.err.println("Usage: Word2VecPMIComparison <vocabulary_file> <window_size> <corpus_file> <word_vectors> <context_vectors>");
             return;
         }
         // Read the vocabulary
@@ -41,6 +44,23 @@ public class Word2VecPMIComparison
             file.close();
         } catch ( IOException err ) {
             System.err.println("Impossible to open \"" + args[2] + "\".");
+            return;
+        }
+        // Read word and context vectors
+        try {
+            file = new BufferedReader(new FileReader(args[3]));
+            words = ReadWord2VecWordVectors.read(file);
+            file.close();
+        } catch ( IOException err ) {
+            System.err.println("Impossible to open \"" + args[3] + "\".");
+            return;
+        }
+        try {
+            file = new BufferedReader(new FileReader(args[4]));
+            contexts = ReadWord2VecWordVectors.read(file);
+            file.close();
+        } catch ( IOException err ) {
+            System.err.println("Impossible to open \"" + args[4] + "\".");
             return;
         }
     }
