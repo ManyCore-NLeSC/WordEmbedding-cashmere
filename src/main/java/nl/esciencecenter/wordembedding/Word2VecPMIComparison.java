@@ -8,6 +8,8 @@ import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
+import nl.esciencecenter.wordembedding.math.DotProduct;
+import nl.esciencecenter.wordembedding.data.Word;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
@@ -22,6 +24,7 @@ public class Word2VecPMIComparison
         WordPairs pairs;
         PMITable pmiTable;
         WordEmbedding words, contexts;
+        float [] differences;
 
         if ( args.length != 5 ) {
             System.err.println("Usage: Word2VecPMIComparison <vocabulary_file> <window_size> <corpus_file> <word_vectors> <context_vectors>");
@@ -65,6 +68,18 @@ public class Word2VecPMIComparison
         } catch ( IOException err ) {
             System.err.println("Impossible to open \"" + args[4] + "\".");
             return;
+        }
+        differences = new float [(vocabulary.getNrWords() - 1) * (vocabulary.getNrWords() - 1)];
+        int wordOneIndex = 0;
+        for ( Word wordOne : vocabulary.getWords() )
+        {
+            int wordTwoIndex = 0;
+            for ( Word wordTwo : vocabulary.getWords() )
+            {
+                differences[(wordOneIndex * (vocabulary.getNrWords() - 1)) + wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), words.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
+                wordTwoIndex++;
+            }
+            wordOneIndex++;
         }
     }
 }
