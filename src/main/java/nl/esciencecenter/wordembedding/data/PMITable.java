@@ -11,13 +11,13 @@ public class PMITable
         this.pairs = pairs;
     }
 
-    public double getPMI(String wordOne, String wordTwo)
+    public float getPMI(String wordOne, String wordTwo)
     {
         return log2((pairs.getPairOccurrences(wordOne, wordTwo) / pairs.getTotalPairs()) / ((vocabulary.getWord(wordOne).getOccurrences() / (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences())) * ((vocabulary.getWord(wordTwo).getOccurrences() / (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences())))));
     }
 
-    private double log2(double x)
+    private float log2(float x)
     {
-        return Math.log(x) / Math.log(2);
+        return (float)(Math.log(x) / Math.log(2));
     }
 }
