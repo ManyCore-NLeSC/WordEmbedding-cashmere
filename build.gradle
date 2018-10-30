@@ -83,8 +83,8 @@ task Word2VecEvaluateWordSimilarity(type: Jar) {
     with jar
 }
 
-// Word2VecCPMIComparison JAR with dependencies
-task Word2VecCPMIComparison(type: Jar) {
+// Word2VecPMIComparison JAR with dependencies
+task Word2VecPMIComparison(type: Jar) {
     manifest {
         attributes "Implementation-Version" : version,
             "Main-Class" : "nl.esciencecenter.wordembedding.Word2VecPMIComparison"
