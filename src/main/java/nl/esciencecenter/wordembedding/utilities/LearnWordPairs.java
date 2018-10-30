@@ -18,13 +18,12 @@ public class LearnWordPairs
             {
                 for ( int targetWord = word - pairs.getWindowSize(); targetWord < word + pairs.getWindowSize(); targetWord++ )
                 {
-                    if ( (vocabulary.getWord(values[word]) == null) || (vocabulary.getWord(values[targetWord]) == null) )
-                    {
-                        continue;
-                    }
                     if ( (word != targetWord) && (targetWord >= 0) && (targetWord < values.length) )
                     {
-                        pairs.addPair(values[word], values[targetWord]);
+                        if ( (vocabulary.getWord(values[word]) != null) && (vocabulary.getWord(values[targetWord]) != null) )
+                        {
+                            pairs.addPair(values[word], values[targetWord]);
+                        }
                     }
                 }
             }
