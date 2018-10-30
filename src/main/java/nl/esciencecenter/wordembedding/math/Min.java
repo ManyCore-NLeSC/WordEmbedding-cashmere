@@ -2,14 +2,17 @@ package nl.esciencecenter.wordembedding.math;
 
 public class Min
 {
-    public static float compute(float [] vector)
+    public static float compute(float [][] vector)
     {
         float min = Float.MAX_VALUE;
-        for ( int item = 0; item < vector.length; item++ )
+        for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
-            if ( vector[item] < min )
+            for ( int itemTwo = 0; itemTwo < vector[itemOne].length; itemTwo++ )
             {
-                min = vector[item];
+                if ( vector[itemOne][itemTwo] < min )
+                {
+                    min = vector[itemOne][itemTwo];
+                }
             }
         }
         return min;
