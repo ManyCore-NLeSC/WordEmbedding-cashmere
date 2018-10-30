@@ -20,6 +20,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean max = false;
     @Parameter(names = {"-min"}, description = "Compute the minimum difference.")
     private boolean min = false;
+    @Parameter(names = {"-mean"}, description = "Compute the mean difference.")
+    private boolean mean = false;
 
     public boolean getHelp()
     {
@@ -59,5 +61,10 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getMin()
     {
         return min;
+    }
+
+    public boolean getMean()
+    {
+        return mean;
     }
 }

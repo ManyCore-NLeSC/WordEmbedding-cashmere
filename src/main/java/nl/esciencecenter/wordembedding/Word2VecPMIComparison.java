@@ -13,6 +13,7 @@ import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
 import nl.esciencecenter.wordembedding.math.DotProduct;
 import nl.esciencecenter.wordembedding.math.Max;
+import nl.esciencecenter.wordembedding.math.Mean;
 import nl.esciencecenter.wordembedding.math.Min;
 import nl.esciencecenter.wordembedding.data.Word;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
@@ -93,6 +94,10 @@ public class Word2VecPMIComparison
         if ( arguments.getMin() )
         {
             System.out.println("Minimum difference: " + Min.compute(differences));
+        }
+        if ( arguments.getMean() )
+        {
+            System.out.println("Mean difference: " + Mean.compute(differences));
         }
         if ( arguments.getMax() )
         {
