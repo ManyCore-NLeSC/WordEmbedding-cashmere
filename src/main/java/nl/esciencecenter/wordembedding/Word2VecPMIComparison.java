@@ -84,9 +84,17 @@ public class Word2VecPMIComparison
         int wordOneIndex = 0;
         for ( Word wordOne : vocabulary.getWords() )
         {
+            if ( wordOne.getWord().equals("</s>") )
+            {
+                continue;
+            }
             int wordTwoIndex = 0;
             for ( Word wordTwo : vocabulary.getWords() )
             {
+                if ( wordTwo.getWord().equals("</s>") )
+                {
+                    continue;
+                }
                 differences[wordOneIndex][wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
                 wordTwoIndex++;
             }
