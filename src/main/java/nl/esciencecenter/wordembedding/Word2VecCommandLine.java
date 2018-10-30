@@ -91,11 +91,21 @@ class Word2VecCommandLine {
         }
         // Save context vectors
         if ( !arguments.getOutContextVectorsFilename().isEmpty() ) {
-            timer = System.nanoTime();
-            Word2Vec.saveContextVectors(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
-            timer = System.nanoTime() - timer;
-            if ( arguments.getDebug() ) {
-                System.out.println("Saving the context vectors took " + (timer / 1.0e9) + " seconds.");
+            if ( arguments.getNegativeSamples() > 0 )
+            {
+                timer = System.nanoTime();
+                Word2Vec.saveContextVectors(vocabulary, neuralNetwork, arguments.getOutContextVectorsFilename());
+                timer = System.nanoTime() - timer;
+                if ( arguments.getDebug() ) {
+                    System.out.println("Saving the context vectors took " + (timer / 1.0e9) + " seconds.");
+                }
+            }
+            else
+            {
+                if ( arguments.getDebug() )
+                {
+                    System.out.println("Context vectors are only available when using negative sampling.");
+                }
             }
         }
         globalTimer = System.nanoTime() - globalTimer;
