@@ -4,11 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.beust.jcommander.JCommander;
+
+import nl.esciencecenter.wordembedding.commandline.Word2VecPMIComparisonCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
 import nl.esciencecenter.wordembedding.math.DotProduct;
+import nl.esciencecenter.wordembedding.math.Max;
+import nl.esciencecenter.wordembedding.math.Min;
 import nl.esciencecenter.wordembedding.data.Word;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
@@ -24,49 +29,52 @@ public class Word2VecPMIComparison
         WordPairs pairs;
         PMITable pmiTable;
         WordEmbedding words, contexts;
+        Word2VecPMIComparisonCommandLineArguments arguments;
         float [] differences;
 
-        if ( args.length != 5 ) {
-            System.err.println("Usage: Word2VecPMIComparison <vocabulary_file> <window_size> <corpus_file> <word_vectors> <context_vectors>");
+        // Command line arguments parsing
+        arguments = Word2VecPMIComparison.parseCommandLine(args);
+        if ( arguments == null ) {
+            System.err.println("Impossible to parse command line.");
             return;
         }
         // Read the vocabulary
         try {
             vocabulary = new Vocabulary();
-            file = new BufferedReader(new FileReader(args[0]));
+            file = new BufferedReader(new FileReader(arguments.getVocabularyFileName()));
             ReadVocabulary.read(vocabulary, file);
             file.close();
         } catch ( IOException err ) {
-            System.err.println("Impossible to open \"" + args[0] + "\".");
+            System.err.println("Impossible to open \"" + arguments.getVocabularyFileName() + "\".");
             return;
         }
         // Learn all pairs
         try {
             pairs = new WordPairs();
-            pairs.setWindowSize(Integer.parseInt(args[1]));
-            file = new BufferedReader(new FileReader(args[2]));
+            pairs.setWindowSize(arguments.getWindow());
+            file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
             LearnWordPairs.learn(pairs, file);
             file.close();
         } catch ( IOException err ) {
-            System.err.println("Impossible to open \"" + args[2] + "\".");
+            System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
             return;
         }
         pmiTable = new PMITable(vocabulary, pairs);
         // Read word and context vectors
         try {
-            file = new BufferedReader(new FileReader(args[3]));
+            file = new BufferedReader(new FileReader(arguments.getVectorFileName()));
             words = ReadWord2VecWordVectors.read(file);
             file.close();
         } catch ( IOException err ) {
-            System.err.println("Impossible to open \"" + args[3] + "\".");
+            System.err.println("Impossible to open \"" + arguments.getVectorFileName() + "\".");
             return;
         }
         try {
-            file = new BufferedReader(new FileReader(args[4]));
+            file = new BufferedReader(new FileReader(arguments.getContextFileName()));
             contexts = ReadWord2VecWordVectors.read(file);
             file.close();
         } catch ( IOException err ) {
-            System.err.println("Impossible to open \"" + args[4] + "\".");
+            System.err.println("Impossible to open \"" + arguments.getContextFileName() + "\".");
             return;
         }
         differences = new float [(vocabulary.getNrWords() - 1) * (vocabulary.getNrWords() - 1)];
@@ -81,5 +89,25 @@ public class Word2VecPMIComparison
             }
             wordOneIndex++;
         }
+        // Compute statistics
+        if ( arguments.getMin() )
+        {
+            System.out.println("Minimum difference: " + Min.compute(differences));
+        }
+        if ( arguments.getMax() )
+        {
+            System.out.println("Maximum difference: " + Max.compute(differences));
+        }
+    }
+
+    static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String [] args) {
+        Word2VecPMIComparisonCommandLineArguments arguments = new Word2VecPMIComparisonCommandLineArguments();
+        JCommander commander = JCommander.newBuilder().addObject(arguments).build();
+        commander.parse(args);
+        if ( arguments.getHelp() ) {
+            commander.usage();
+            return null;
+        }
+        return arguments;
     }
 }
