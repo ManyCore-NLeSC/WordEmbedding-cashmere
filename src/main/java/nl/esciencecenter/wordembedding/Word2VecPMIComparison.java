@@ -56,7 +56,7 @@ public class Word2VecPMIComparison
             pairs = new WordPairs();
             pairs.setWindowSize(arguments.getWindow());
             file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
-            LearnWordPairs.learn(pairs, file);
+            LearnWordPairs.learn(pairs, vocabulary, file);
             file.close();
         } catch ( IOException err ) {
             System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
