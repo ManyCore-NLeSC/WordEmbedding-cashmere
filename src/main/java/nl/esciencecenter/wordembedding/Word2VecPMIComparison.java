@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import com.beust.jcommander.JCommander;
 
+import org.apache.commons.math3.linear.Array2DRowFieldMatrix;
+
 import nl.esciencecenter.wordembedding.commandline.Word2VecPMIComparisonCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
@@ -31,7 +33,7 @@ public class Word2VecPMIComparison
         PMITable pmiTable;
         WordEmbedding words, contexts;
         Word2VecPMIComparisonCommandLineArguments arguments;
-        float [] differences;
+        float [][] differences;
 
         // Command line arguments parsing
         arguments = Word2VecPMIComparison.parseCommandLine(args);
@@ -78,14 +80,14 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getContextFileName() + "\".");
             return;
         }
-        differences = new float [(vocabulary.getNrWords() - 1) * (vocabulary.getNrWords() - 1)];
+        differences = new float [vocabulary.getNrWords() - 1][vocabulary.getNrWords() - 1];
         int wordOneIndex = 0;
         for ( Word wordOne : vocabulary.getWords() )
         {
             int wordTwoIndex = 0;
             for ( Word wordTwo : vocabulary.getWords() )
             {
-                differences[(wordOneIndex * (vocabulary.getNrWords() - 1)) + wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), words.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
+                differences[wordOneIndex][wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
                 wordTwoIndex++;
             }
             wordOneIndex++;
@@ -95,10 +97,10 @@ public class Word2VecPMIComparison
         {
             System.out.println("Minimum difference: " + Min.compute(differences));
         }
-        if ( arguments.getMean() )
-        {
-            System.out.println("Mean difference: " + Mean.compute(differences));
-        }
+        // if ( arguments.getMean() )
+        // {
+        //     System.out.println("Mean difference: " + Mean.compute(differences));
+        // }
         if ( arguments.getMax() )
         {
             System.out.println("Maximum difference: " + Max.compute(differences));
