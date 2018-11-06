@@ -51,6 +51,8 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getVocabularyFileName() + "\".");
             return;
         }
+        vocabulary.sort();
+        System.out.println("The vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
         // Learn all pairs
         try {
             pairs = new WordPairs();
