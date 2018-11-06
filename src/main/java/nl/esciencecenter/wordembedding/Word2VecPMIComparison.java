@@ -115,6 +115,12 @@ public class Word2VecPMIComparison
         {
             System.out.println("Maximum difference: " + Max.compute(differences));
         }
+        if ( arguments.getHistogram() )
+        {
+            System.out.println("\nHistogram of differences\n");
+            Histogram.print(Histogram.compute(differences, Min.compute(differences), Max.compute(differences)));
+            System.out.println();
+        }
     }
 
     private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args) {
