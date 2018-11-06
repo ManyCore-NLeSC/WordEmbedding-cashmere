@@ -24,6 +24,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean mean = false;
     @Parameter(names = {"-std"}, description = "Compute the standard deviation of differences.")
     private boolean std = false;
+    @Parameter(names = {"-histogram"}, description = "Compute the histogram of differences distribution.")
+    private boolean histogram = false;
 
     public boolean getHelp()
     {
@@ -73,5 +75,10 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getStandardDeviation()
     {
         return std;
+    }
+
+    public boolean getHistogram()
+    {
+        return histogram;
     }
 }
