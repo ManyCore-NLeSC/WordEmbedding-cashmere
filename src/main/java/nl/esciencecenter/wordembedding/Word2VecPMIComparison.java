@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import com.beust.jcommander.JCommander;
 
-import org.apache.commons.math3.linear.Array2DRowFieldMatrix;
-
 import nl.esciencecenter.wordembedding.commandline.Word2VecPMIComparisonCommandLineArguments;
 import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
@@ -64,6 +62,7 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
             return;
         }
+        System.out.println("The corpus contains " + pairs.getTotalPairs() + " word pairs.");
         pmiTable = new PMITable(vocabulary, pairs);
         // Read word and context vectors
         try {
@@ -107,10 +106,10 @@ public class Word2VecPMIComparison
         {
             System.out.println("Minimum difference: " + Min.compute(differences));
         }
-        // if ( arguments.getMean() )
-        // {
-        //     System.out.println("Mean difference: " + Mean.compute(differences));
-        // }
+         if ( arguments.getMean() )
+         {
+             System.out.println("Mean difference: " + Mean.compute(differences));
+         }
         if ( arguments.getMax() )
         {
             System.out.println("Maximum difference: " + Max.compute(differences));
