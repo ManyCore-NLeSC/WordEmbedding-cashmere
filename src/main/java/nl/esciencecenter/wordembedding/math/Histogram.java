@@ -8,7 +8,6 @@ public class Histogram
         for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
             for ( int itemTwo = 0; itemTwo < vector[itemOne].length; itemTwo++ ) {
-                if ( (int)((Math.abs(vector[itemOne][itemTwo]) / (max - min)) * (histogram.length - 1)) > 0 )
                 histogram[(int)((Math.abs(vector[itemOne][itemTwo]) / (max - min)) * (histogram.length - 1))]++;
             }
         }
