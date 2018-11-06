@@ -7,7 +7,7 @@ public class Min
         float min = Float.MAX_VALUE;
         for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
-            for ( int itemTwo = 0; itemTwo < vector[itemOne].length; itemTwo++ )
+            for ( int itemTwo = itemOne; itemTwo < vector[itemOne].length; itemTwo++ )
             {
                 if ( vector[itemOne][itemTwo] < min )
                 {

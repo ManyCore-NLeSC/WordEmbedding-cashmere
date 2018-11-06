@@ -7,8 +7,11 @@ public class Histogram
         long [] histogram = new long [100];
         for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
-            for ( int itemTwo = 0; itemTwo < vector[itemOne].length; itemTwo++ ) {
-                histogram[(int)((Math.abs(vector[itemOne][itemTwo]) / (max - min)) * (histogram.length - 1))]++;
+            for ( int itemTwo = itemOne; itemTwo < vector[itemOne].length; itemTwo++ ) {
+                if ( Float.isFinite(vector[itemOne][itemTwo]) )
+                {
+                    histogram[(int)((Math.abs(vector[itemOne][itemTwo]) / (max - min)) * (histogram.length - 1))]++;
+                }
             }
         }
         return histogram;

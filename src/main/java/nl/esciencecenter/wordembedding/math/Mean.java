@@ -8,17 +8,20 @@ public class Mean
         float mean = 0;
         for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
-            for ( int itemTwo = 0; itemTwo < vector[itemOne].length; itemTwo++ )
+            for ( int itemTwo = itemOne; itemTwo < vector[itemOne].length; itemTwo++ )
             {
-                nrElements++;
-                if ( nrElements == 1 )
+                if ( Float.isFinite(vector[itemOne][itemTwo]) )
                 {
-                    mean = vector[itemOne][itemTwo];
-                }
-                else
-                {
-                    float oldMean = mean;
-                    mean = oldMean + ((vector[itemOne][itemTwo] - oldMean) / nrElements);
+                    nrElements++;
+                    if ( nrElements == 1 )
+                    {
+                        mean = vector[itemOne][itemTwo];
+                    }
+                    else
+                    {
+                        float oldMean = mean;
+                        mean = oldMean + ((vector[itemOne][itemTwo] - oldMean) / nrElements);
+                    }
                 }
             }
         }
