@@ -29,6 +29,11 @@ public class Word implements Comparator<Word> {
         occurrences++;
     }
 
+    public void incrementOccurrences(int increment)
+    {
+        occurrences += increment;
+    }
+
     public int getSortedIndex() {
         return sortedIndex;
     }
