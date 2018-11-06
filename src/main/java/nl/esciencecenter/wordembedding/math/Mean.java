@@ -2,13 +2,24 @@ package nl.esciencecenter.wordembedding.math;
 
 public class Mean
 {
-    public static float compute(float [] vector)
+    public static float compute(float [][] vector)
     {
-        float mean = vector[0];
-        for ( int item = 1; item < vector.length; item++ )
+        long nrElements = 1;
+        float mean = 0;
+        for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
-            float oldMean = mean;
-            mean = oldMean + ((vector[item] - oldMean) / (item + 1));
+            for ( int itemTwo = 0; itemTwo < vector[itemOne].length; itemTwo++ )
+            {
+                if ( nrElements == 1 )
+                {
+                    mean = vector[itemOne][itemTwo];
+                }
+                else
+                {
+                    float oldMean = mean;
+                    mean = oldMean + ((vector[itemOne][itemTwo] - oldMean) / nrElements);
+                }
+            }
         }
         return mean;
     }
