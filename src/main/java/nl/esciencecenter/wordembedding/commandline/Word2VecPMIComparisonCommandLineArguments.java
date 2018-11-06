@@ -22,6 +22,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean min = false;
     @Parameter(names = {"-mean"}, description = "Compute the mean difference.")
     private boolean mean = false;
+    @Parameter(names = {"-std"}, description = "Compute the standard deviation of differences.")
+    private boolean std = false;
 
     public boolean getHelp()
     {
@@ -66,5 +68,10 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getMean()
     {
         return mean;
+    }
+
+    public boolean getStandardDeviation()
+    {
+        return std;
     }
 }
