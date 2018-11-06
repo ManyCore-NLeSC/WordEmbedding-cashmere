@@ -13,7 +13,7 @@ public class PMITable
 
     public float getPMI(String wordOne, String wordTwo)
     {
-        return log2(((float)(pairs.getPairOccurrences(wordOne, wordTwo)) / pairs.getTotalPairs()) / (((float)(vocabulary.getWord(wordOne).getOccurrences()) / (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences())) * (((float)(vocabulary.getWord(wordTwo).getOccurrences()) / (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences())))));
+        return Math.max(log2(((float)(pairs.getPairOccurrences(wordOne, wordTwo)) / pairs.getTotalPairs()) / (((float)(vocabulary.getWord(wordOne).getOccurrences()) / (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences())) * (((float)(vocabulary.getWord(wordTwo).getOccurrences()) / (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()))))), 0.0f);
     }
 
     private float log2(float x)
