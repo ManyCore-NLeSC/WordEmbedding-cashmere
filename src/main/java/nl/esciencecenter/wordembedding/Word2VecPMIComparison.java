@@ -11,10 +11,7 @@ import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
-import nl.esciencecenter.wordembedding.math.DotProduct;
-import nl.esciencecenter.wordembedding.math.Max;
-import nl.esciencecenter.wordembedding.math.Mean;
-import nl.esciencecenter.wordembedding.math.Min;
+import nl.esciencecenter.wordembedding.math.*;
 import nl.esciencecenter.wordembedding.data.Word;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
@@ -106,10 +103,14 @@ public class Word2VecPMIComparison
         {
             System.out.println("Minimum difference: " + Min.compute(differences));
         }
-         if ( arguments.getMean() )
-         {
-             System.out.println("Mean difference: " + Mean.compute(differences));
-         }
+        if ( arguments.getMean() )
+        {
+            System.out.println("Mean difference: " + Mean.compute(differences));
+        }
+        if ( arguments.getStandardDeviation() )
+        {
+            System.out.println("Standard deviation of differences: " + StandardDeviation.compute(differences));
+        }
         if ( arguments.getMax() )
         {
             System.out.println("Maximum difference: " + Max.compute(differences));
