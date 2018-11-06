@@ -54,6 +54,13 @@ public class WordPairs
         {
             pairOccurrences = coOccurrences.get(wordTwo + separator + wordOne);
         }
-        return pairOccurrences;
+        if ( pairOccurrences == null )
+        {
+            return 0;
+        }
+        else
+        {
+            return pairOccurrences;
+        }
     }
 }
