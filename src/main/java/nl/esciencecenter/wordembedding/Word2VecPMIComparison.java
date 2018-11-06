@@ -117,7 +117,7 @@ public class Word2VecPMIComparison
         }
     }
 
-    static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String [] args) {
+    private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args) {
         Word2VecPMIComparisonCommandLineArguments arguments = new Word2VecPMIComparisonCommandLineArguments();
         JCommander commander = JCommander.newBuilder().addObject(arguments).build();
         commander.parse(args);
