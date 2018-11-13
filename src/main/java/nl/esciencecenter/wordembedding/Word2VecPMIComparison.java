@@ -31,10 +31,10 @@ public class Word2VecPMIComparison
         Word2VecPMIComparisonCommandLineArguments arguments;
         float [][] differences;
         // Statistics
-        float min = Float.MAX_VALUE;
-        float max = Float.MIN_VALUE;
-        float mean = 0;
-        float standardDeviation = 0;
+        float [] min = new float[3];
+        float [] max = new float[3];
+        float [] mean = new float[3];
+        float [] standardDeviation = new float[3];
         long [] histogram;
         float spearmanCorrelation = 0;
 
@@ -113,32 +113,53 @@ public class Word2VecPMIComparison
             }
             wordOneIndex++;
         }
+        System.out.println();
         // Compute statistics
         if ( arguments.getMin() )
         {
-            min = Min.compute(differences);
-            System.out.println("Minimum difference: " + min);
+            min[0] = Min.compute(vocabulary, words, contexts);
+            min[1] = Min.compute(vocabulary, pmiTable, arguments.getPPMI());
+            min[2] = Min.compute(differences);
+            System.out.println("Minimum Word2Vec value: " + min[0]);
+            System.out.println("Minimum PMI value: " + min[1]);
+            System.out.println("Minimum difference: " + min[2]);
+            System.out.println();
         }
         if ( arguments.getMean() )
         {
-            mean = Mean.compute(differences);
-            System.out.println("Mean difference: " + mean);
+            mean[0] = Mean.compute(vocabulary, words, contexts);
+            mean[1] = Mean.compute(vocabulary, pmiTable, arguments.getPPMI());
+            mean[2] = Mean.compute(differences);
+            System.out.println("Mean Word2Vec value: " + mean[0]);
+            System.out.println("Mean PMI value: " + mean[1]);
+            System.out.println("Mean difference: " + mean[2]);
+            System.out.println();
         }
         if ( arguments.getStandardDeviation() )
         {
-            standardDeviation = StandardDeviation.compute(differences);
-            System.out.println("Standard deviation of differences: " + standardDeviation);
+            standardDeviation[0] = StandardDeviation.compute(vocabulary, words, contexts);
+            standardDeviation[1] = StandardDeviation.compute(vocabulary, pmiTable, arguments.getPPMI());
+            standardDeviation[2] = StandardDeviation.compute(differences);
+            System.out.println("Standard deviation Word2Vec value: " + standardDeviation[0]);
+            System.out.println("Standard deviation PMI value: " + standardDeviation[1]);
+            System.out.println("Standard deviation of differences: " + standardDeviation[2]);
+            System.out.println();
         }
         if ( arguments.getMax() )
         {
-            max = Max.compute(differences);
-            System.out.println("Maximum difference: " + max);
+            max[0] = Max.compute(vocabulary, words, contexts);
+            max[1] = Max.compute(vocabulary, pmiTable, arguments.getPPMI());
+            max[2] = Max.compute(differences);
+            System.out.println("Maximum Word2Vec value: " + max[0]);
+            System.out.println("Maximum PMI value: " + max[1]);
+            System.out.println("Maximum difference: " + max[2]);
+            System.out.println();
         }
         if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
         {
-            histogram = Histogram.compute(differences, min, max);
+            histogram = Histogram.compute(differences, min[2], max[2]);
             System.out.println("\nHistogram of differences\n");
-            Histogram.print(histogram, min, max);
+            Histogram.print(histogram, min[2], max[2]);
             System.out.println();
         }
         if ( arguments.getSpearman() )
