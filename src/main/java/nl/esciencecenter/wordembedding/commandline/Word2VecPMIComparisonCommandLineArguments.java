@@ -29,6 +29,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean std = false;
     @Parameter(names = {"-histogram"}, description = "Compute the histogram of differences distribution.")
     private boolean histogram = false;
+    @Parameter(names = {"-spearman"}, description = "Compute the Spearman correlation between Word2Vec and PMI/PPMI.")
+    private boolean spearman = false;
 
     public boolean getHelp()
     {
@@ -88,5 +90,10 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getHistogram()
     {
         return histogram;
+    }
+
+    public boolean getSpearman()
+    {
+        return spearman;
     }
 }
