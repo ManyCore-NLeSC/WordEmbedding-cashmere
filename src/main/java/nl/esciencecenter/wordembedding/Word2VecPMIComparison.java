@@ -29,6 +29,12 @@ public class Word2VecPMIComparison
         WordEmbedding words, contexts;
         Word2VecPMIComparisonCommandLineArguments arguments;
         float [][] differences;
+        // Statistics
+        float min = Float.MAX_VALUE;
+        float max = Float.MIN_VALUE;
+        float mean = 0;
+        float standardDeviation = 0;
+        long [] histogram;
 
         // Command line arguments parsing
         arguments = Word2VecPMIComparison.parseCommandLine(args);
@@ -101,24 +107,29 @@ public class Word2VecPMIComparison
         // Compute statistics
         if ( arguments.getMin() )
         {
-            System.out.println("Minimum difference: " + Min.compute(differences));
+            min = Min.compute(differences);
+            System.out.println("Minimum difference: " + min);
         }
         if ( arguments.getMean() )
         {
-            System.out.println("Mean difference: " + Mean.compute(differences));
+            mean = Mean.compute(differences);
+            System.out.println("Mean difference: " + mean);
         }
         if ( arguments.getStandardDeviation() )
         {
-            System.out.println("Standard deviation of differences: " + StandardDeviation.compute(differences));
+            standardDeviation = StandardDeviation.compute(differences);
+            System.out.println("Standard deviation of differences: " + standardDeviation);
         }
         if ( arguments.getMax() )
         {
-            System.out.println("Maximum difference: " + Max.compute(differences));
+            max = Max.compute(differences);
+            System.out.println("Maximum difference: " + max);
         }
-        if ( arguments.getHistogram() )
+        if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
         {
+            histogram = Histogram.compute(differences, min, max);
             System.out.println("\nHistogram of differences\n");
-            Histogram.print(Histogram.compute(differences, Min.compute(differences), Max.compute(differences)));
+            Histogram.print(histogram, min, max);
             System.out.println();
         }
     }
