@@ -18,6 +18,7 @@ public class Word2VecPMIComparisonCommandLineArguments
     private String vectorFilename = "";
     @Parameter(names = {"-context_file"}, description = "Word2Vec context file.", required = true)
     private String contextFilename = "";
+    // Statistics
     @Parameter(names = {"-max"}, description = "Compute the maximum difference.")
     private boolean max = false;
     @Parameter(names = {"-min"}, description = "Compute the minimum difference.")
