@@ -3,6 +3,7 @@ package nl.esciencecenter.wordembedding;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.beust.jcommander.JCommander;
 
@@ -35,6 +36,7 @@ public class Word2VecPMIComparison
         float mean = 0;
         float standardDeviation = 0;
         long [] histogram;
+        float spearmanCorrelation = 0;
 
         // Command line arguments parsing
         arguments = Word2VecPMIComparison.parseCommandLine(args);
@@ -139,13 +141,51 @@ public class Word2VecPMIComparison
             Histogram.print(histogram, min, max);
             System.out.println();
         }
+        if ( arguments.getSpearman() )
+        {
+            ArrayList<float []> couples = new ArrayList<>();
+            wordOneIndex = 0;
+            for ( Word wordOne : vocabulary.getWords() )
+            {
+                if ( wordOne.getWord().equals("</s>") )
+                {
+                    continue;
+                }
+                int wordTwoIndex = 0;
+                for ( Word wordTwo : vocabulary.getWords() )
+                {
+                    if ( wordTwo.getWord().equals("</s>") )
+                    {
+                        continue;
+                    }
+                    float [] couple = new float [2];
+                    if ( arguments.getPPMI() )
+                    {
+                        couple[0] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord()));
+                        couple[1] = pmiTable.getPPMI(wordOne.getWord(), wordTwo.getWord());
+                    }
+                    else
+                    {
+                        couple[0] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord()));
+                        couple[1] = pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
+                    }
+                    couples.add(couple);
+                    wordTwoIndex++;
+                }
+                wordOneIndex++;
+            }
+            spearmanCorrelation = SpearmanRankCorrelation.compute(couples);
+            System.out.println("Spearman correlation: " + spearmanCorrelation);
+        }
     }
 
-    private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args) {
+    private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args)
+    {
         Word2VecPMIComparisonCommandLineArguments arguments = new Word2VecPMIComparisonCommandLineArguments();
         JCommander commander = JCommander.newBuilder().addObject(arguments).build();
         commander.parse(args);
-        if ( arguments.getHelp() ) {
+        if ( arguments.getHelp() )
+        {
             commander.usage();
             return null;
         }
