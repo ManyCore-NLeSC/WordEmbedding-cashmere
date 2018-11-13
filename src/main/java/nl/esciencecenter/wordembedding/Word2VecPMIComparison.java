@@ -144,14 +144,12 @@ public class Word2VecPMIComparison
         if ( arguments.getSpearman() )
         {
             ArrayList<float []> couples = new ArrayList<>();
-            wordOneIndex = 0;
             for ( Word wordOne : vocabulary.getWords() )
             {
                 if ( wordOne.getWord().equals("</s>") )
                 {
                     continue;
                 }
-                int wordTwoIndex = 0;
                 for ( Word wordTwo : vocabulary.getWords() )
                 {
                     if ( wordTwo.getWord().equals("</s>") )
@@ -170,9 +168,7 @@ public class Word2VecPMIComparison
                         couple[1] = pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
                     }
                     couples.add(couple);
-                    wordTwoIndex++;
                 }
-                wordOneIndex++;
             }
             spearmanCorrelation = SpearmanRankCorrelation.compute(couples);
             System.out.println("Spearman correlation: " + spearmanCorrelation);
