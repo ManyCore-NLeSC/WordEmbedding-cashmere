@@ -99,7 +99,14 @@ public class Word2VecPMIComparison
                 {
                     continue;
                 }
-                differences[wordOneIndex][wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
+                if ( arguments.getPPMI() )
+                {
+                    differences[wordOneIndex][wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPPMI(wordOne.getWord(), wordTwo.getWord());
+                }
+                else
+                {
+                    differences[wordOneIndex][wordTwoIndex] = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) - pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord());
+                }
                 wordTwoIndex++;
             }
             wordOneIndex++;
