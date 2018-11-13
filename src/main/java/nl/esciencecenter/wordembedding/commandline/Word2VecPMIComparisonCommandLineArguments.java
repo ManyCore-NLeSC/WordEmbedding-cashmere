@@ -6,6 +6,8 @@ public class Word2VecPMIComparisonCommandLineArguments
 {
     @Parameter(names = {"-help", "-h"}, help = true)
     private boolean help = false;
+    @Parameter(names = {"-ppmi"}, description = "Use PPMI instead of PMI.")
+    private boolean ppmi = false;
     @Parameter(names = {"-vocabulary_file"}, description = "Word2Vec vocabulary file.", required = true)
     private String vocabularyFilename = "";
     @Parameter(names = {"-window"}, description = "Window size for pair generation.")
@@ -30,6 +32,11 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getHelp()
     {
         return help;
+    }
+
+    public boolean getPPMI()
+    {
+        return ppmi;
     }
 
     public String getVocabularyFileName()
