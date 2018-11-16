@@ -55,6 +55,7 @@ public class Vocabulary {
                 return getWord(stringTwo).getOccurrences() - getWord(stringOne).getOccurrences();
             }
         });
+        occurrences = 0;
         for ( int wordIndex = 0; wordIndex < getNrWords(); wordIndex++ ) {
             words.get(sortedWords.get(wordIndex)).setSortedIndex(wordIndex);
             occurrences += words.get(sortedWords.get(wordIndex)).getOccurrences();
