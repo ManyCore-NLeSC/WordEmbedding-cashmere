@@ -6,17 +6,23 @@ public class Word2VecPMIComparisonCommandLineArguments
 {
     @Parameter(names = {"-help", "-h"}, help = true)
     private boolean help = false;
+    @Parameter(names = {"-word2vec"}, description = "Compute results for Word2Vec.")
+    private boolean word2vec = false;
+    @Parameter(names = {"-pmi"}, description = "Compute results for PMI.")
+    private boolean pmi = false;
+    @Parameter(names = {"-difference"}, description = "Compute difference between Word2Vec and PMI.")
+    private boolean difference = false;
     @Parameter(names = {"-ppmi"}, description = "Use PPMI instead of PMI.")
     private boolean ppmi = false;
     @Parameter(names = {"-vocabulary_file"}, description = "Word2Vec vocabulary file.", required = true)
     private String vocabularyFilename = "";
     @Parameter(names = {"-window"}, description = "Window size for pair generation.")
     private int window = 2;
-    @Parameter(names = {"-corpus_file"}, description = "Corpus file.", required = true)
+    @Parameter(names = {"-corpus_file"}, description = "Corpus file.")
     private String corpusFilename = "";
-    @Parameter(names = {"-vector_file"}, description = "Word2Vec vector file.", required = true)
+    @Parameter(names = {"-vector_file"}, description = "Word2Vec vector file.")
     private String vectorFilename = "";
-    @Parameter(names = {"-context_file"}, description = "Word2Vec context file.", required = true)
+    @Parameter(names = {"-context_file"}, description = "Word2Vec context file.")
     private String contextFilename = "";
     // Statistics
     @Parameter(names = {"-max"}, description = "Compute the maximum difference.")
@@ -35,6 +41,21 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getHelp()
     {
         return help;
+    }
+
+    public boolean getWord2Vec()
+    {
+        return word2vec;
+    }
+
+    public boolean getPMI()
+    {
+        return pmi;
+    }
+
+    public boolean getDifference()
+    {
+        return difference;
     }
 
     public boolean getPPMI()
