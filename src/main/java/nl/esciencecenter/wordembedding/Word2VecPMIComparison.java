@@ -83,6 +83,7 @@ public class Word2VecPMIComparison
                 System.err.println("Impossible to open \"" + arguments.getVectorFileName() + "\".");
                 return;
             }
+            System.out.println("Word2Vec vectors loaded.");
             try {
                 file = new BufferedReader(new FileReader(arguments.getContextFileName()));
                 contexts = ReadWord2VecWordVectors.read(file);
@@ -91,6 +92,7 @@ public class Word2VecPMIComparison
                 System.err.println("Impossible to open \"" + arguments.getContextFileName() + "\".");
                 return;
             }
+            System.out.println("Word2Vec context vectors loaded.");
         }
         if ( arguments.getWord2Vec() && (arguments.getPMI() || arguments.getPPMI()) && arguments.getDifference() )
         {
@@ -121,8 +123,9 @@ public class Word2VecPMIComparison
                 }
                 wordOneIndex++;
             }
-            System.out.println();
+            System.out.println("Differences computed.");
         }
+        System.out.println();
         // Compute statistics
         if ( arguments.getWord2Vec() )
         {
