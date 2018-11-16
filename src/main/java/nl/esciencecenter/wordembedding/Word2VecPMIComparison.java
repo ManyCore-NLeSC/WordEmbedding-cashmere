@@ -57,9 +57,9 @@ public class Word2VecPMIComparison
         }
         vocabulary.sort();
         System.out.println("The vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
-        if ( arguments.getMaxOccurrences() > 0 )
+        if ( arguments.getMinOccurrences() > 0 )
         {
-            vocabulary.setOccurrenceThreshold(arguments.getMaxOccurrences());
+            vocabulary.setOccurrenceThreshold(arguments.getMinOccurrences());
             ReduceVocabulary.reduce(vocabulary);
             vocabulary.sort();
             System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");

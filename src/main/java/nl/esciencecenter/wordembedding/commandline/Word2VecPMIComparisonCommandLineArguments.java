@@ -18,8 +18,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private String vocabularyFilename = "";
     @Parameter(names = {"-window"}, description = "Window size for pair generation.")
     private int window = 2;
-    @Parameter(names = {"-max_occurrences"}, description = "Threshold for the vocabulary.")
-    private int maxOccurrences = 0;
+    @Parameter(names = {"-min_occurrences"}, description = "Threshold for the vocabulary.")
+    private int minOccurrences = 0;
     @Parameter(names = {"-corpus_file"}, description = "Corpus file.")
     private String corpusFilename = "";
     @Parameter(names = {"-vector_file"}, description = "Word2Vec vector file.")
@@ -75,9 +75,9 @@ public class Word2VecPMIComparisonCommandLineArguments
         return window;
     }
 
-    public int getMaxOccurrences()
+    public int getMinOccurrences()
     {
-        return maxOccurrences;
+        return minOccurrences;
     }
 
     public String getCorpusFileName()
