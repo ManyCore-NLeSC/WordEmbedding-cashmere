@@ -6,7 +6,7 @@ public class WordPairs
 {
     private int windowSize;
     private final String separator = "_<%%>_";
-    private int occurrences;
+    private long occurrences;
     private LinkedHashMap<String, Integer> coOccurrences;
 
     public WordPairs()
@@ -25,7 +25,7 @@ public class WordPairs
         return this.windowSize;
     }
 
-    public int getTotalPairs()
+    public long getTotalPairs()
     {
         return this.occurrences;
     }
