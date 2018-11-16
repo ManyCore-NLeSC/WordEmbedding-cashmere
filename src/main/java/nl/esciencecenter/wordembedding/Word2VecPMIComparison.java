@@ -14,6 +14,7 @@ import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
 import nl.esciencecenter.wordembedding.math.*;
 import nl.esciencecenter.wordembedding.data.Word;
+import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
@@ -56,6 +57,13 @@ public class Word2VecPMIComparison
         }
         vocabulary.sort();
         System.out.println("The vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
+        if ( arguments.getMaxOccurrences() > 0 )
+        {
+            vocabulary.setOccurrenceThreshold(arguments.getMaxOccurrences());
+            ReduceVocabulary.reduce(vocabulary);
+            vocabulary.sort();
+            System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
+        }
         // Learn all pairs
         if ( arguments.getPMI() || arguments.getPPMI() )
         {
