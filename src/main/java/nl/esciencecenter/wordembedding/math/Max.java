@@ -47,7 +47,7 @@ public class Max
                 }
                 else
                 {
-                    if ( table.getPMI(wordOne.getWord(), wordTwo.getWord()) > max )
+                    if ( Float.isFinite(table.getPMI(wordOne.getWord(), wordTwo.getWord())) && table.getPMI(wordOne.getWord(), wordTwo.getWord()) > max )
                     {
                         max = table.getPMI(wordOne.getWord(), wordTwo.getWord());
                     }

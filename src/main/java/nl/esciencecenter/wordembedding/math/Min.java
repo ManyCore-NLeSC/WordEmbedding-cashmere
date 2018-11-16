@@ -47,7 +47,7 @@ public class Min
                 }
                 else
                 {
-                    if ( table.getPMI(wordOne.getWord(), wordTwo.getWord()) < min )
+                    if ( Float.isFinite(table.getPMI(wordOne.getWord(), wordTwo.getWord())) && table.getPMI(wordOne.getWord(), wordTwo.getWord()) < min )
                     {
                         min = table.getPMI(wordOne.getWord(), wordTwo.getWord());
                     }
