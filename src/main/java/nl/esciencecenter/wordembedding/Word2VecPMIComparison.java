@@ -159,7 +159,7 @@ public class Word2VecPMIComparison
             }
             if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
             {
-                histogram[0] = Histogram.compute(vocabulary, words, contexts, min[0], max[0]);
+                histogram[0] = Histogram.compute(vocabulary, words, contexts, arguments.getHistogramSize(), min[0], max[0]);
                 System.out.println("\nHistogram of Word2Vec table\n");
                 Histogram.print(histogram[0], min[0], max[0]);
                 System.out.println();
@@ -189,7 +189,7 @@ public class Word2VecPMIComparison
             }
             if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
             {
-                histogram[1] = Histogram.compute(vocabulary, pmiTable, min[1], max[1], arguments.getPPMI());
+                histogram[1] = Histogram.compute(vocabulary, pmiTable, arguments.getHistogramSize(), min[1], max[1], arguments.getPPMI());
                 System.out.println("\nHistogram of PMI table\n");
                 Histogram.print(histogram[1], min[1], max[1]);
                 System.out.println();
@@ -219,7 +219,7 @@ public class Word2VecPMIComparison
             }
             if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
             {
-                histogram[2] = Histogram.compute(differences, min[2], max[2]);
+                histogram[2] = Histogram.compute(differences, arguments.getHistogramSize(), min[2], max[2]);
                 System.out.println("\nHistogram of differences\n");
                 Histogram.print(histogram[2], min[2], max[2]);
                 System.out.println();
