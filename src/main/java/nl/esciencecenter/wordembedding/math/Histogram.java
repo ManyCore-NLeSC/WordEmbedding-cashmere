@@ -7,9 +7,9 @@ import nl.esciencecenter.wordembedding.data.WordEmbedding;
 
 public class Histogram
 {
-    public static long [] compute(float [][] vector, float min, float max)
+    public static long [] compute(float [][] vector, int histogramSize, float min, float max)
     {
-        long [] histogram = new long [100];
+        long [] histogram = new long [histogramSize];
         for ( int itemOne = 0; itemOne < vector.length; itemOne++ )
         {
             for ( int itemTwo = itemOne; itemTwo < vector[itemOne].length; itemTwo++ ) {
@@ -22,9 +22,9 @@ public class Histogram
         return histogram;
     }
 
-    public static long [] compute(Vocabulary vocabulary, PMITable table, float min, float max, boolean ppmi)
+    public static long [] compute(Vocabulary vocabulary, PMITable table, int histogramSize, float min, float max, boolean ppmi)
     {
-        long [] histogram = new long [100];
+        long [] histogram = new long [histogramSize];
         for ( Word wordOne : vocabulary.getWords() )
         {
             if ( wordOne.getWord().equals("</s>") )
@@ -56,9 +56,9 @@ public class Histogram
         return histogram;
     }
 
-    public static long [] compute(Vocabulary vocabulary, WordEmbedding words, WordEmbedding contexts, float min, float max)
+    public static long [] compute(Vocabulary vocabulary, WordEmbedding words, WordEmbedding contexts, int histogramSize, float min, float max)
     {
-        long [] histogram = new long [100];
+        long [] histogram = new long [histogramSize];
         for ( Word wordOne : vocabulary.getWords() )
         {
             if ( wordOne.getWord().equals("</s>") )
