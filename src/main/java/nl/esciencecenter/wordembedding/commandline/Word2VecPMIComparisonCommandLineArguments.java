@@ -37,6 +37,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean std = false;
     @Parameter(names = {"-histogram"}, description = "Compute the histogram of differences distribution.")
     private boolean histogram = false;
+    @Parameter(names = {"-histogram_size"}, description = "Number of bins in the histogram.")
+    private int histogramSize = 100;
     @Parameter(names = {"-spearman"}, description = "Compute the Spearman correlation between Word2Vec and PMI/PPMI.")
     private boolean spearman = false;
 
@@ -118,6 +120,11 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getHistogram()
     {
         return histogram;
+    }
+
+    public int getHistogramSize()
+    {
+        return histogramSize;
     }
 
     public boolean getSpearman()
