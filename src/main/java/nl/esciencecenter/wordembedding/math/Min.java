@@ -80,4 +80,28 @@ public class Min
         }
         return min;
     }
+
+    public static float compute(Vocabulary vocabulary, WordEmbedding words, WordEmbedding contexts, PMITable table)
+    {
+        float min = Float.MAX_VALUE;
+        for ( Word wordOne : vocabulary.getWords() )
+        {
+            if ( wordOne.getWord().equals("</s>") )
+            {
+                continue;
+            }
+            for ( Word wordTwo : vocabulary.getWords() )
+            {
+                if ( wordTwo.getWord().equals("</s>") )
+                {
+                    continue;
+                }
+                if ( Float.isFinite(table.getPMI(wordOne.getWord(), wordTwo.getWord())) && DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) < min )
+                {
+                    min = DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord()));
+                }
+            }
+        }
+        return min;
+    }
 }

@@ -74,6 +74,30 @@ public class Histogram
         return histogram;
     }
 
+    public static long [] compute(Vocabulary vocabulary, WordEmbedding words, WordEmbedding contexts, PMITable table, int histogramSize, float min, float max)
+    {
+        long [] histogram = new long [histogramSize];
+        for ( Word wordOne : vocabulary.getWords() )
+        {
+            if ( wordOne.getWord().equals("</s>") )
+            {
+                continue;
+            }
+            for ( Word wordTwo : vocabulary.getWords() )
+            {
+                if ( wordTwo.getWord().equals("</s>") )
+                {
+                    continue;
+                }
+                if ( Float.isFinite(DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord()))) )
+                {
+                    histogram[(int)(((DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord())) - min) * (histogram.length - 1)) / (max - min))]++;
+                }
+            }
+        }
+        return histogram;
+    }
+
     public static void print(long [] histogram, float min, float max)
     {
         for ( int item = 0; item < histogram.length; item++ )
