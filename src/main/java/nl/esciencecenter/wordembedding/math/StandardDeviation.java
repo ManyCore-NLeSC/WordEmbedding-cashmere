@@ -62,19 +62,16 @@ public class StandardDeviation
                 }
                 if ( ppmi )
                 {
-                    if ( Float.isFinite(table.getPPMI(wordOne.getWord(), wordTwo.getWord())) )
+                    nrElements++;
+                    if ( nrElements == 1 )
                     {
-                        nrElements++;
-                        if ( nrElements == 1 )
-                        {
-                            mean = table.getPPMI(wordOne.getWord(), wordTwo.getWord());
-                        }
-                        else
-                        {
-                            float oldMean = mean;
-                            mean = oldMean + ((table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - oldMean) / nrElements);
-                            variance += (table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - oldMean) * (table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - mean);
-                        }
+                        mean = table.getPPMI(wordOne.getWord(), wordTwo.getWord());
+                    }
+                    else
+                    {
+                        float oldMean = mean;
+                        mean = oldMean + ((table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - oldMean) / nrElements);
+                        variance += (table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - oldMean) * (table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - mean);
                     }
                 }
                 else
