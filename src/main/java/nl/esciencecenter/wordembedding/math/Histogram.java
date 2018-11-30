@@ -39,10 +39,7 @@ public class Histogram
                 }
                 if ( ppmi )
                 {
-                    if ( Float.isFinite(table.getPPMI(wordOne.getWord(), wordTwo.getWord())) )
-                    {
-                        histogram[(int)(((table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - min) * (histogram.length - 1)) / (max - min))]++;
-                    }
+                    histogram[(int)(((table.getPPMI(wordOne.getWord(), wordTwo.getWord()) - min) * (histogram.length - 1)) / (max - min))]++;
                 }
                 else
                 {
