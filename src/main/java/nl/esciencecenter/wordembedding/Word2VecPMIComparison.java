@@ -137,32 +137,65 @@ public class Word2VecPMIComparison
         // Compute statistics
         if ( arguments.getWord2Vec() )
         {
-            if ( arguments.getMin() )
+            if ( arguments.getPMI() && arguments.getNoInf() )
             {
-                min[0] = Min.compute(vocabulary, words, contexts);
-                System.out.println("Minimum Word2Vec value: " + min[0]);
+                if ( arguments.getMin() )
+                {
+                    min[0] = Min.compute(vocabulary, words, contexts, pmiTable);
+                    System.out.println("Minimum Word2Vec value: " + min[0]);
+                }
+                if ( arguments.getMean() )
+                {
+                    mean[0] = Mean.compute(vocabulary, words, contexts, pmiTable);
+                    System.out.println("Mean Word2Vec value: " + mean[0]);
+                }
+                if ( arguments.getStandardDeviation() )
+                {
+                    standardDeviation[0] = StandardDeviation.compute(vocabulary, words, contexts, pmiTable);
+                    System.out.println("Standard deviation Word2Vec value: " + standardDeviation[0]);
+                }
+                if ( arguments.getMax() )
+                {
+                    max[0] = Max.compute(vocabulary, words, contexts, pmiTable);
+                    System.out.println("Maximum Word2Vec value: " + max[0]);
+                }
+                if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
+                {
+                    histogram[0] = Histogram.compute(vocabulary, words, contexts, pmiTable, arguments.getHistogramSize(), min[0], max[0]);
+                    System.out.println("\nHistogram of Word2Vec table\n");
+                    Histogram.print(histogram[0], min[0], max[0]);
+                    System.out.println();
+                }
             }
-            if ( arguments.getMean() )
+            else
             {
-                mean[0] = Mean.compute(vocabulary, words, contexts);
-                System.out.println("Mean Word2Vec value: " + mean[0]);
-            }
-            if ( arguments.getStandardDeviation() )
-            {
-                standardDeviation[0] = StandardDeviation.compute(vocabulary, words, contexts);
-                System.out.println("Standard deviation Word2Vec value: " + standardDeviation[0]);
-            }
-            if ( arguments.getMax() )
-            {
-                max[0] = Max.compute(vocabulary, words, contexts);
-                System.out.println("Maximum Word2Vec value: " + max[0]);
-            }
-            if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
-            {
-                histogram[0] = Histogram.compute(vocabulary, words, contexts, arguments.getHistogramSize(), min[0], max[0]);
-                System.out.println("\nHistogram of Word2Vec table\n");
-                Histogram.print(histogram[0], min[0], max[0]);
-                System.out.println();
+                if ( arguments.getMin() )
+                {
+                    min[0] = Min.compute(vocabulary, words, contexts);
+                    System.out.println("Minimum Word2Vec value: " + min[0]);
+                }
+                if ( arguments.getMean() )
+                {
+                    mean[0] = Mean.compute(vocabulary, words, contexts);
+                    System.out.println("Mean Word2Vec value: " + mean[0]);
+                }
+                if ( arguments.getStandardDeviation() )
+                {
+                    standardDeviation[0] = StandardDeviation.compute(vocabulary, words, contexts);
+                    System.out.println("Standard deviation Word2Vec value: " + standardDeviation[0]);
+                }
+                if ( arguments.getMax() )
+                {
+                    max[0] = Max.compute(vocabulary, words, contexts);
+                    System.out.println("Maximum Word2Vec value: " + max[0]);
+                }
+                if ( arguments.getHistogram() && (arguments.getMin() && arguments.getMax()) )
+                {
+                    histogram[0] = Histogram.compute(vocabulary, words, contexts, arguments.getHistogramSize(), min[0], max[0]);
+                    System.out.println("\nHistogram of Word2Vec table\n");
+                    Histogram.print(histogram[0], min[0], max[0]);
+                    System.out.println();
+                }
             }
         }
         if ( arguments.getPMI() || arguments.getPPMI() )
