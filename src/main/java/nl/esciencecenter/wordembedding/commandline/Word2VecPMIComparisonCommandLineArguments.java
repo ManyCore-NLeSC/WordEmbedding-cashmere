@@ -41,6 +41,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private int histogramSize = 100;
     @Parameter(names = {"-spearman"}, description = "Compute the Spearman correlation between Word2Vec and PMI/PPMI.")
     private boolean spearman = false;
+    @Parameter(names = {"-noinf"}, description = "Compute values from Word2Vec only if they are finite in PMI.")
+    private boolean noInf = false;
 
     public boolean getHelp()
     {
@@ -130,5 +132,10 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getSpearman()
     {
         return spearman;
+    }
+
+    public boolean getNoInf()
+    {
+        return noInf;
     }
 }
