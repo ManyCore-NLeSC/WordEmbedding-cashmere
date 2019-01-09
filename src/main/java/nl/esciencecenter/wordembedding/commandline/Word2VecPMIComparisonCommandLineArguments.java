@@ -43,6 +43,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean spearman = false;
     @Parameter(names = {"-noinf"}, description = "Compute values from Word2Vec only if they are finite in PMI.")
     private boolean noInf = false;
+    @Parameter(names = {"-objective_functions"}, description = "Compute values of the objective functions.")
+    private boolean objectives = false;
 
     public boolean getHelp()
     {
@@ -137,5 +139,10 @@ public class Word2VecPMIComparisonCommandLineArguments
     public boolean getNoInf()
     {
         return noInf;
+    }
+
+    public boolean getObjective()
+    {
+        return objectives;
     }
 }
