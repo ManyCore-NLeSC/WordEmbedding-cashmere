@@ -18,6 +18,7 @@ import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
+import nl.esciencecenter.wordembedding.validation.ComputeObjectiveFunction;
 
 
 public class Word2VecPMIComparison
@@ -65,21 +66,18 @@ public class Word2VecPMIComparison
             System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
         }
         // Learn all pairs
-        if ( arguments.getPMI() || arguments.getPPMI() )
-        {
-            try {
-                pairs = new WordPairs();
-                pairs.setWindowSize(arguments.getWindow());
-                file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
-                LearnWordPairs.learn(pairs, vocabulary, file);
-                file.close();
-            } catch ( IOException err ) {
-                System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
-                return;
-            }
-            System.out.println("The corpus contains " + pairs.getTotalPairs() + " word pairs.");
-            pmiTable = new PMITable(vocabulary, pairs);
+        try {
+            pairs = new WordPairs();
+            pairs.setWindowSize(arguments.getWindow());
+            file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
+            LearnWordPairs.learn(pairs, vocabulary, file);
+            file.close();
+        } catch ( IOException err ) {
+            System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
+            return;
         }
+        System.out.println("The corpus contains " + pairs.getTotalPairs() + " word pairs.");
+        pmiTable = new PMITable(vocabulary, pairs);
         // Read word and context vectors
         if ( arguments.getWord2Vec() )
         {
@@ -289,6 +287,13 @@ public class Word2VecPMIComparison
             }
             spearmanCorrelation = SpearmanRankCorrelation.compute(couples);
             System.out.println("Spearman correlation: " + spearmanCorrelation);
+        }
+        if ( arguments.getObjective() )
+        {
+            if ( arguments.getWord2Vec() )
+            {
+                System.out.println("The value of the objective function for Word2Vec is: " + ComputeObjectiveFunction.compute(vocabulary, pairs, words, contexts, 5));
+            }
         }
     }
 
