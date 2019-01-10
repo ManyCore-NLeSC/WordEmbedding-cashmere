@@ -46,19 +46,6 @@ public class Word2VecPMIComparison
         }
         vocabulary.sort();
         System.out.println("The vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
-        // Learn all pairs and generate PMI table
-        try {
-            pairs = new WordPairs();
-            pairs.setWindowSize(arguments.getWindow());
-            file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
-            LearnWordPairs.learn(pairs, vocabulary, file);
-            file.close();
-        } catch ( IOException err ) {
-            System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
-            return;
-        }
-        System.out.println("The corpus contains " + pairs.getTotalPairs() + " word pairs.");
-        pmiTable = new PMITable(vocabulary, pairs);
         // Read word and context vectors
         try {
             file = new BufferedReader(new FileReader(arguments.getVectorFileName()));
@@ -78,6 +65,20 @@ public class Word2VecPMIComparison
             return;
         }
         System.out.println("Word2Vec context vectors loaded.");
+        // Learn all pairs and generate PMI table
+        try {
+            pairs = new WordPairs();
+            pairs.setWindowSize(arguments.getWindow());
+            file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
+            LearnWordPairs.learn(pairs, vocabulary, file);
+            file.close();
+        } catch ( IOException err ) {
+            System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
+            return;
+        }
+        System.out.println("The corpus contains " + pairs.getTotalPairs() + " word pairs.");
+        pmiTable = new PMITable(vocabulary, pairs);
+        // Empty line
         System.out.println();
         // Compute statistics and differences
         System.out.println("The value of the objective function for Word2Vec is: " + ComputeObjectiveFunction.compute(vocabulary, pairs, words, contexts, 5));
