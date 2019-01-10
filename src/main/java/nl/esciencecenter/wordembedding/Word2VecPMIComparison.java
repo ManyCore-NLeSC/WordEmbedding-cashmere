@@ -81,7 +81,7 @@ public class Word2VecPMIComparison
         // Empty line
         System.out.println();
         // Compute statistics and differences
-        System.out.println("The value of the objective function for Word2Vec is: " + ComputeObjectiveFunction.compute(vocabulary, pairs, words, contexts, arguments.getNegativeSamples()));
+        System.out.println("The value of the objective function for Word2Vec is: " + ComputeObjectiveFunction.objectiveFunctionWord2Vec(vocabulary, pairs, words, contexts, arguments.getNegativeSamples()));
     }
 
     private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args)
