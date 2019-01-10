@@ -389,7 +389,7 @@ public class TrainWord2VecModel extends Thread {
 
     private void printUpdateInfo(int threadId, float currentAlpha, float progress) {
         synchronized ( System.out ) {
-            System.out.format("%%rThread: %d\t\tAlpha: %.6f\t\tProgress: %.2f%", threadId, currentAlpha, progress);
+            System.out.format("\rThread: %d\t\tAlpha: %.6f\t\tProgress: %.2f%%", threadId, currentAlpha, progress);
             System.out.flush();
         }
     }
