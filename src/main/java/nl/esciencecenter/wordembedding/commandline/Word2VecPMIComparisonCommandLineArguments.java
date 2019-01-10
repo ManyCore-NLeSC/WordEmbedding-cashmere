@@ -6,20 +6,12 @@ public class Word2VecPMIComparisonCommandLineArguments
 {
     @Parameter(names = {"-help", "-h"}, help = true)
     private boolean help = false;
-    @Parameter(names = {"-word2vec"}, description = "Compute results for Word2Vec.")
-    private boolean word2vec = false;
-    @Parameter(names = {"-pmi"}, description = "Compute results for PMI.")
-    private boolean pmi = false;
-    @Parameter(names = {"-difference"}, description = "Compute difference between Word2Vec and PMI.")
-    private boolean difference = false;
     @Parameter(names = {"-ppmi"}, description = "Use PPMI instead of PMI.")
     private boolean ppmi = false;
     @Parameter(names = {"-vocabulary_file"}, description = "Word2Vec vocabulary file.", required = true)
     private String vocabularyFilename = "";
     @Parameter(names = {"-window"}, description = "Window size for pair generation.")
     private int window = 2;
-    @Parameter(names = {"-min_occurrences"}, description = "Threshold for the vocabulary.")
-    private int minOccurrences = 0;
     @Parameter(names = {"-corpus_file"}, description = "Corpus file.")
     private String corpusFilename = "";
     @Parameter(names = {"-vector_file"}, description = "Word2Vec vector file.")
@@ -51,21 +43,6 @@ public class Word2VecPMIComparisonCommandLineArguments
         return help;
     }
 
-    public boolean getWord2Vec()
-    {
-        return word2vec;
-    }
-
-    public boolean getPMI()
-    {
-        return pmi;
-    }
-
-    public boolean getDifference()
-    {
-        return difference;
-    }
-
     public boolean getPPMI()
     {
         return ppmi;
@@ -79,11 +56,6 @@ public class Word2VecPMIComparisonCommandLineArguments
     public int getWindow()
     {
         return window;
-    }
-
-    public int getMinOccurrences()
-    {
-        return minOccurrences;
     }
 
     public String getCorpusFileName()
