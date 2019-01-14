@@ -25,6 +25,11 @@ public class WordPairs
         return this.windowSize;
     }
 
+    public int getUniquePairs()
+    {
+        return occurrences.size();
+    }
+
     public long getTotalPairs()
     {
         return this.totalPairOccurrences;
