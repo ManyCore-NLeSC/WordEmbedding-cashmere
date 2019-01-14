@@ -67,8 +67,7 @@ public class Word2VecPMIComparison
         System.out.println("Word2Vec context vectors loaded.");
         // Learn all pairs and generate PMI table
         try {
-            pairs = new WordPairs();
-            pairs.setWindowSize(arguments.getWindow());
+            pairs = new WordPairs(arguments.getWindow());
             file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
             LearnWordPairs.learn(pairs, vocabulary, file);
             file.close();
@@ -76,7 +75,7 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
             return;
         }
-        System.out.println("The corpus contains " + pairs.getTotalPairs() + " word pairs.");
+        System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
         pmiTable = new PMITable(vocabulary, pairs);
         // Empty line
         System.out.println();
