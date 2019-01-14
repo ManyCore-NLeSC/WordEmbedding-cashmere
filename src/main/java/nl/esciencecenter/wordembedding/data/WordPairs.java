@@ -54,7 +54,7 @@ public class WordPairs
 
     private void addSingleton(String singleton)
     {
-        if ( singletonOccurrences.containsValue(singleton) )
+        if ( singletonOccurrences.containsKey(singleton) )
         {
             singletonOccurrences.put(singleton, singletonOccurrences.get(singleton) + 1);
         }
