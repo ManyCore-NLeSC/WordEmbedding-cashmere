@@ -4,19 +4,17 @@ import java.util.LinkedHashMap;
 
 public class WordPairs
 {
-    private int windowSize;
+    private final int windowSize;
     private final String separator = "_<%%>_";
     private long totalPairOccurrences;
-    private LinkedHashMap<String, Integer> occurrences;
+    private LinkedHashMap<String, Integer> pairOccurrences;
+    private LinkedHashMap<String, Integer> singletonOccurrences;
 
-    public WordPairs()
+    public WordPairs(int window)
     {
-        this.occurrences = new LinkedHashMap<>();
+        this.pairOccurrences = new LinkedHashMap<>();
+        this.singletonOccurrences = new LinkedHashMap<>();
         this.totalPairOccurrences = 0;
-    }
-
-    public void setWindowSize(int window)
-    {
         this.windowSize = window;
     }
 
@@ -27,7 +25,7 @@ public class WordPairs
 
     public int getUniquePairs()
     {
-        return occurrences.size();
+        return pairOccurrences.size();
     }
 
     public long getTotalPairs()
@@ -39,54 +37,54 @@ public class WordPairs
     {
         this.addSingleton(wordOne);
         this.addSingleton(wordTwo);
-        if ( occurrences.containsKey(wordOne + separator + wordTwo) )
+        if ( pairOccurrences.containsKey(wordOne + separator + wordTwo) )
         {
-            occurrences.put(wordOne + separator + wordTwo, occurrences.get(wordOne + separator + wordTwo) + 1);
+            pairOccurrences.put(wordOne + separator + wordTwo, pairOccurrences.get(wordOne + separator + wordTwo) + 1);
         }
-        else if ( occurrences.containsKey(wordTwo + separator + wordOne) )
+        else if ( pairOccurrences.containsKey(wordTwo + separator + wordOne) )
         {
-            occurrences.put(wordTwo + separator + wordOne, occurrences.get(wordTwo + separator + wordOne) + 1);
+            pairOccurrences.put(wordTwo + separator + wordOne, pairOccurrences.get(wordTwo + separator + wordOne) + 1);
         }
         else
         {
-            occurrences.put(wordOne + separator + wordTwo, 1);
+            pairOccurrences.put(wordOne + separator + wordTwo, 1);
         }
         totalPairOccurrences++;
     }
 
     private void addSingleton(String singleton)
     {
-        if ( occurrences.containsValue(singleton) )
+        if ( singletonOccurrences.containsValue(singleton) )
         {
-            occurrences.put(singleton, occurrences.get(singleton) + 1);
+            singletonOccurrences.put(singleton, singletonOccurrences.get(singleton) + 1);
         }
         else
         {
-            occurrences.put(singleton, 1);
+            singletonOccurrences.put(singleton, 1);
         }
     }
 
     public long getPairOccurrences(String wordOne, String wordTwo)
     {
-        Integer pairOccurrences = occurrences.get(wordOne + separator + wordTwo);
-        if ( pairOccurrences == null )
+        Integer occurrences = pairOccurrences.get(wordOne + separator + wordTwo);
+        if ( occurrences == null )
         {
-            pairOccurrences = occurrences.get(wordTwo + separator + wordOne);
+            occurrences = pairOccurrences.get(wordTwo + separator + wordOne);
         }
-        if ( pairOccurrences == null )
+        if ( occurrences == null )
         {
             return 0;
         }
-        return pairOccurrences;
+        return occurrences;
     }
 
     public long getOccurrences(String wordOne)
     {
-        Integer singletonOccurrences = occurrences.get(wordOne);
-        if ( singletonOccurrences == null )
+        Integer occurrences = singletonOccurrences.get(wordOne);
+        if ( occurrences == null )
         {
             return 0;
         }
-        return singletonOccurrences;
+        return occurrences;
     }
 }
