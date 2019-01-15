@@ -52,8 +52,11 @@ public class ComputeObjectiveFunction {
                 word2vecObjective += localObjective;
                 localObjective = pairs.getPairOccurrences(wordOne.getWord(), wordTwo.getWord());
                 localObjective *= Math.log(Sigmoid.compute(pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord()) - Math.log(k)));
-                localObjective += k * pairs.getOccurrences(wordOne.getWord()) * ((float)(pairs.getOccurrences(wordTwo.getWord())) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord()) - Math.log(k)));
-                pmiObjective += localObjective;
+                localObjective += k * pairs.getOccurrences(wordOne.getWord()) * ((float)(pairs.getOccurrences(wordTwo.getWord())) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(-(pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord()) - Math.log(k))));
+                if ( Double.isFinite(localObjective) )
+                {
+                    pmiObjective += localObjective;
+                }
             }
         }
         return (word2vecObjective - pmiObjective) / pmiObjective;
