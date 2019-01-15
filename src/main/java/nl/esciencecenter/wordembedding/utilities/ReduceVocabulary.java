@@ -23,14 +23,18 @@ public class ReduceVocabulary {
 
     public static void reduce(Vocabulary vocabulary, int probability) {
         Random generator = new Random();
+        ArrayList<String> wordsToRemove = new ArrayList<>();
         for ( Word word : vocabulary.getWords() ) {
             if ( word.getWord().equals("</s>") )
             {
                 continue;
             }
             if ( generator.nextInt(100) < probability ) {
-                vocabulary.removeWord(word.getWord());
+                wordsToRemove.add(word.getWord());
             }
+        }
+        for ( String word : wordsToRemove ) {
+            vocabulary.removeWord(word);
         }
     }
 }
