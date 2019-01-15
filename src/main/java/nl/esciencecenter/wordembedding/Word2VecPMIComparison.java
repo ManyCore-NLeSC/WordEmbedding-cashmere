@@ -47,6 +47,11 @@ public class Word2VecPMIComparison
         }
         vocabulary.sort();
         System.out.println("The vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
+        if ( arguments.getNegativeSamples() > 0 )
+        {
+            ReduceVocabulary.reduce(vocabulary, arguments.getSamplingRate());
+            System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
+        }
         // Read word and context vectors
         try {
             file = new BufferedReader(new FileReader(arguments.getVectorFileName()));
@@ -78,11 +83,6 @@ public class Word2VecPMIComparison
         }
         System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
         pmiTable = new PMITable(vocabulary, pairs);
-        if ( arguments.getNegativeSamples() > 0 )
-        {
-            ReduceVocabulary.reduce(vocabulary, arguments.getSamplingRate());
-            System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
-        }
         // Empty line
         System.out.println();
         // Compute statistics and differences
