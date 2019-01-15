@@ -50,6 +50,7 @@ public class Word2VecPMIComparison
         if ( arguments.getSamplingRate() > 0 )
         {
             ReduceVocabulary.reduce(vocabulary, arguments.getSamplingRate());
+            vocabulary.sort();
             System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
         }
         // Read word and context vectors
