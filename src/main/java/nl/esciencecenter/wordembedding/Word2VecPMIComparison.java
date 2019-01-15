@@ -11,6 +11,7 @@ import nl.esciencecenter.wordembedding.data.PMITable;
 import nl.esciencecenter.wordembedding.data.Vocabulary;
 import nl.esciencecenter.wordembedding.data.WordEmbedding;
 import nl.esciencecenter.wordembedding.data.WordPairs;
+import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
@@ -77,6 +78,11 @@ public class Word2VecPMIComparison
         }
         System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
         pmiTable = new PMITable(vocabulary, pairs);
+        if ( arguments.getNegativeSamples() > 0 )
+        {
+            ReduceVocabulary.reduce(vocabulary, arguments.getSamplingRate());
+            System.out.println("The reduced vocabulary contains " + (vocabulary.getNrWords() - 1) +  " words; the total number of occurrences is " + (vocabulary.getOccurrences() - vocabulary.getWord("</s>").getOccurrences()) + ".");
+        }
         // Empty line
         System.out.println();
         // Compute statistics and differences
