@@ -14,16 +14,21 @@ public class LearnWordPairs
 
         while ( (line = fileReader.readLine()) != null ) {
             String [] values = line.split("[ \t]+");
-            for ( int word = 0; word < values.length; word++ )
+            learn(pairs, vocabulary, values);
+        }
+    }
+
+    public static void learn(WordPairs pairs, Vocabulary vocabulary, String [] values)
+    {
+        for ( int word = 0; word < values.length; word++ )
+        {
+            for ( int targetWord = word - pairs.getWindowSize(); targetWord < word + pairs.getWindowSize(); targetWord++ )
             {
-                for ( int targetWord = word - pairs.getWindowSize(); targetWord < word + pairs.getWindowSize(); targetWord++ )
+                if ( (word != targetWord) && (targetWord >= 0) && (targetWord < values.length) )
                 {
-                    if ( (word != targetWord) && (targetWord >= 0) && (targetWord < values.length) )
+                    if ( (vocabulary.getWord(values[word]) != null) && (vocabulary.getWord(values[targetWord]) != null) )
                     {
-                        if ( (vocabulary.getWord(values[word]) != null) && (vocabulary.getWord(values[targetWord]) != null) )
-                        {
-                            pairs.addPair(values[word], values[targetWord]);
-                        }
+                        pairs.addPair(values[word], values[targetWord]);
                     }
                 }
             }
