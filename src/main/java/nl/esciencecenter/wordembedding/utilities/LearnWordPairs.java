@@ -22,7 +22,7 @@ public class LearnWordPairs
     {
         for ( int word = 0; word < values.length; word++ )
         {
-            for ( int targetWord = word - pairs.getWindowSize(); targetWord < word + pairs.getWindowSize(); targetWord++ )
+            for ( int targetWord = word - pairs.getWindowSize(); targetWord <= word + pairs.getWindowSize(); targetWord++ )
             {
                 if ( (word != targetWord) && (targetWord >= 0) && (targetWord < values.length) )
                 {
