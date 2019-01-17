@@ -11,6 +11,10 @@ public class ReduceVocabulary {
         ArrayList<String> wordsToRemove = new ArrayList<>();
 
         for ( Word word : vocabulary.getWords() ) {
+            if ( word.getWord().equals("</s>") )
+            {
+                continue;
+            }
             if ( word.getOccurrences() < vocabulary.getOccurrenceThreshold() ) {
                 wordsToRemove.add(word.getWord());
             }
