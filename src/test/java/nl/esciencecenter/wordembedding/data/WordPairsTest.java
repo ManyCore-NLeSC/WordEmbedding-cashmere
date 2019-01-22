@@ -6,7 +6,8 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 
 public class WordPairsTest {
-    private final String sentence = "the quick brown fox jumps over the lazy dog";
+    private final String foxSentence = "the quick brown fox jumps over the lazy dog";
+    private final String kingSentence = "a man a bearded king is a man";
 
     @Test
     public void getWindowSize()
@@ -20,9 +21,14 @@ public class WordPairsTest {
     {
         WordPairs pairs = new WordPairs(1);
         Vocabulary vocabulary = new Vocabulary();
-        populateVocabulary(vocabulary, sentence.split("[ \t]+"));
-        LearnWordPairs.learn(pairs, vocabulary, sentence.split("[ \t]+"));
-        assertEquals(8, pairs.getUniquePairs());
+        populateVocabulary(vocabulary, foxSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, foxSentence.split("[ \t]+"));
+        assertEquals(16, pairs.getUniquePairs());
+        pairs = new WordPairs(1);
+        vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, kingSentence.split("[ \t]+"));
+        assertEquals(10, pairs.getUniquePairs());
     }
 
     @Test
@@ -30,9 +36,14 @@ public class WordPairsTest {
     {
         WordPairs pairs = new WordPairs(1);
         Vocabulary vocabulary = new Vocabulary();
-        populateVocabulary(vocabulary, sentence.split("[ \t]+"));
-        LearnWordPairs.learn(pairs, vocabulary, sentence.split("[ \t]+"));
+        populateVocabulary(vocabulary, foxSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, foxSentence.split("[ \t]+"));
         assertEquals(16, pairs.getTotalPairs());
+        pairs = new WordPairs(1);
+        vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, kingSentence.split("[ \t]+"));
+        assertEquals(14, pairs.getTotalPairs());
     }
 
     @Test
@@ -41,18 +52,18 @@ public class WordPairsTest {
         WordPairs pairs = new WordPairs(1);
         pairs.addPair("the", "king");
         assertEquals(1, pairs.getPairOccurrences("the", "king"));
-        assertEquals(1, pairs.getPairOccurrences("king", "the"));
+        assertEquals(0, pairs.getPairOccurrences("king", "the"));
         assertEquals(1, pairs.getTotalPairs());
         assertEquals(1, pairs.getOccurrences("the"));
-        assertEquals(1, pairs.getOccurrences("king"));
+        assertEquals(0, pairs.getOccurrences("king"));
         assertEquals(1, pairs.getUniquePairs());
         pairs.addPair("king", "the");
-        assertEquals(2, pairs.getPairOccurrences("the", "king"));
-        assertEquals(2, pairs.getPairOccurrences("king", "the"));
+        assertEquals(1, pairs.getPairOccurrences("the", "king"));
+        assertEquals(1, pairs.getPairOccurrences("king", "the"));
         assertEquals(2, pairs.getTotalPairs());
-        assertEquals(2, pairs.getOccurrences("the"));
-        assertEquals(2, pairs.getOccurrences("king"));
-        assertEquals(1, pairs.getUniquePairs());
+        assertEquals(1, pairs.getOccurrences("the"));
+        assertEquals(1, pairs.getOccurrences("king"));
+        assertEquals(2, pairs.getUniquePairs());
     }
 
     @Test
@@ -60,11 +71,18 @@ public class WordPairsTest {
     {
         WordPairs pairs = new WordPairs(1);
         Vocabulary vocabulary = new Vocabulary();
-        populateVocabulary(vocabulary, sentence.split("[ \t]+"));
-        LearnWordPairs.learn(pairs, vocabulary, sentence.split("[ \t]+"));
+        populateVocabulary(vocabulary, foxSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, foxSentence.split("[ \t]+"));
         assertEquals(0, pairs.getPairOccurrences("the", "fox"));
-        assertEquals(2, pairs.getPairOccurrences("the", "lazy"));
-        assertEquals(2, pairs.getPairOccurrences("lazy", "the"));
+        assertEquals(1, pairs.getPairOccurrences("the", "lazy"));
+        assertEquals(1, pairs.getPairOccurrences("lazy", "the"));
+        pairs = new WordPairs(1);
+        vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, kingSentence.split("[ \t]+"));
+        assertEquals(3, pairs.getPairOccurrences("a", "man"));
+        assertEquals(0, pairs.getPairOccurrences("king", "man"));
+        assertEquals(1, pairs.getPairOccurrences("is", "king"));
     }
 
     @Test
@@ -72,11 +90,18 @@ public class WordPairsTest {
     {
         WordPairs pairs = new WordPairs(1);
         Vocabulary vocabulary = new Vocabulary();
-        populateVocabulary(vocabulary, sentence.split("[ \t]+"));
-        LearnWordPairs.learn(pairs, vocabulary, sentence.split("[ \t]+"));
+        populateVocabulary(vocabulary, foxSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, foxSentence.split("[ \t]+"));
         assertEquals(0, pairs.getOccurrences("king"));
-        assertEquals(6, pairs.getOccurrences("the"));
-        assertEquals(2, pairs.getOccurrences("dog"));
+        assertEquals(3, pairs.getOccurrences("the"));
+        assertEquals(1, pairs.getOccurrences("dog"));
+        pairs = new WordPairs(1);
+        vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, kingSentence.split("[ \t]+"));
+        assertEquals(0, pairs.getOccurrences("fox"));
+        assertEquals(5, pairs.getOccurrences("a"));
+        assertEquals(2, pairs.getOccurrences("bearded"));
     }
 
     private void populateVocabulary(Vocabulary vocabulary, String [] values)
