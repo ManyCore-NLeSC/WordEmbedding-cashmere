@@ -1,5 +1,6 @@
 package nl.esciencecenter.wordembedding.data;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class WordPairs
@@ -21,6 +22,11 @@ public class WordPairs
     public int getWindowSize()
     {
         return this.windowSize;
+    }
+
+    public String getSeparator()
+    {
+        return separator;
     }
 
     public int getUniquePairs()
@@ -77,5 +83,23 @@ public class WordPairs
             return 0;
         }
         return occurrences;
+    }
+
+    public void sort()
+    {
+        ArrayList<String> sortedPairs= new ArrayList<>(pairOccurrences.keySet());
+        sortedPairs.sort((pairOne, pairTwo) -> pairOccurrences.get(pairTwo) - pairOccurrences.get(pairOne));
+        LinkedHashMap<String, Integer> newOccurrences = new LinkedHashMap<>();
+        for ( String occurrence : sortedPairs ){
+            newOccurrences.put(occurrence, pairOccurrences.get(occurrence));
+        }
+        pairOccurrences = newOccurrences;
+        sortedPairs= new ArrayList<>(singletonOccurrences.keySet());
+        sortedPairs.sort((wordOne, wordTwo) -> singletonOccurrences.get(wordTwo) - singletonOccurrences.get(wordOne));
+        newOccurrences = new LinkedHashMap<>();
+        for ( String occurrence : sortedPairs ){
+            newOccurrences.put(occurrence, singletonOccurrences.get(occurrence));
+        }
+        singletonOccurrences = newOccurrences;
     }
 }
