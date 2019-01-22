@@ -6,58 +6,35 @@ import nl.esciencecenter.wordembedding.math.Negate;
 import nl.esciencecenter.wordembedding.math.Sigmoid;
 
 public class ComputeObjectiveFunction {
-    public static double objectiveFunctionWord2Vec(Vocabulary vocabulary, WordPairs pairs, WordEmbedding words, WordEmbedding contexts, int k)
+    public static double objectiveFunctionWord2Vec(WordPairs pairs, WordEmbedding words, WordEmbedding contexts, int k)
     {
         double globalObjective = 0;
-        for ( Word wordOne : vocabulary.getWords() )
+        for ( String pair : pairs.getPairOccurrences() )
         {
-            if ( wordOne.getWord().equals("</s>") )
-            {
-                continue;
-            }
-            for ( Word wordTwo : vocabulary.getWords() )
-            {
-                if ( wordTwo.getWord().equals("</s>") )
-                {
-                    continue;
-                }
-                double localObjective = pairs.getPairOccurrences(wordOne.getWord(), wordTwo.getWord());
-                localObjective *= Math.log(Sigmoid.compute(DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord()))));
-                localObjective += k * pairs.getSingletonOccurrences(wordOne.getWord()) * ((float)(pairs.getSingletonOccurrences(wordTwo.getWord())) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(DotProduct.compute(Negate.compute(words.getWordCoordinates(wordOne.getWord())), contexts.getWordCoordinates(wordTwo.getWord()))));
-                globalObjective += localObjective;
-            }
+            String [] pairWords = pair.split(pairs.getSeparator());
+            double localObjective = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
+            localObjective *= Math.log(Sigmoid.compute(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1]))));
+            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(DotProduct.compute(Negate.compute(words.getWordCoordinates(pairWords[0])), contexts.getWordCoordinates(pairWords[1]))));
+            globalObjective += localObjective;
         }
         return globalObjective;
     }
 
-    public static double deviationFromOptimalWord2Vec(Vocabulary vocabulary, WordPairs pairs, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k)
+    public static double deviationFromOptimalWord2Vec(WordPairs pairs, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k)
     {
         double word2vecObjective = 0;
         double pmiObjective = 0;
-        for ( Word wordOne : vocabulary.getWords() )
+        for ( String pair : pairs.getPairOccurrences() )
         {
-            if ( wordOne.getWord().equals("</s>") )
-            {
-                continue;
-            }
-            for ( Word wordTwo : vocabulary.getWords() )
-            {
-                if ( wordTwo.getWord().equals("</s>") )
-                {
-                    continue;
-                }
-                double localObjective = pairs.getPairOccurrences(wordOne.getWord(), wordTwo.getWord());
-                localObjective *= Math.log(Sigmoid.compute(pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord()) - Math.log(k)));
-                localObjective += k * pairs.getSingletonOccurrences(wordOne.getWord()) * ((float)(pairs.getSingletonOccurrences(wordTwo.getWord())) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(-(pmiTable.getPMI(wordOne.getWord(), wordTwo.getWord()) - Math.log(k))));
-                if ( Double.isFinite(localObjective) )
-                {
-                    pmiObjective += localObjective;
-                    localObjective = pairs.getPairOccurrences(wordOne.getWord(), wordTwo.getWord());
-                    localObjective *= Math.log(Sigmoid.compute(DotProduct.compute(words.getWordCoordinates(wordOne.getWord()), contexts.getWordCoordinates(wordTwo.getWord()))));
-                    localObjective += k * pairs.getSingletonOccurrences(wordOne.getWord()) * ((float)(pairs.getSingletonOccurrences(wordTwo.getWord())) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(DotProduct.compute(Negate.compute(words.getWordCoordinates(wordOne.getWord())), contexts.getWordCoordinates(wordTwo.getWord()))));
-                    word2vecObjective += localObjective;
-                }
-            }
+            String [] pairWords = pair.split(pairs.getSeparator());
+            double localObjective = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
+            localObjective *= Math.log(Sigmoid.compute(pmiTable.getPMI(pairWords[0], pairWords[1]) - Math.log(k)));
+            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(-(pmiTable.getPMI(pairWords[0], pairWords[1]) - Math.log(k))));
+            pmiObjective += localObjective;
+            localObjective = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
+            localObjective *= Math.log(Sigmoid.compute(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1]))));
+            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(DotProduct.compute(Negate.compute(words.getWordCoordinates(pairWords[0])), contexts.getWordCoordinates(pairWords[1]))));
+            word2vecObjective += localObjective;
         }
         return (word2vecObjective - pmiObjective) / pmiObjective;
     }
