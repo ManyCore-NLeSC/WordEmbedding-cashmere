@@ -4,6 +4,7 @@ import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class WordPairsTest {
     private final String foxSentence = "the quick brown fox jumps over the lazy dog";
@@ -14,6 +15,13 @@ public class WordPairsTest {
     {
         WordPairs pairs = new WordPairs(5);
         assertEquals(5, pairs.getWindowSize());
+    }
+
+    @Test
+    public void getSeparator()
+    {
+        WordPairs pairs = new WordPairs(3);
+        assertEquals("_<%%>_", pairs.getSeparator());
     }
 
     @Test
@@ -86,7 +94,7 @@ public class WordPairsTest {
     }
 
     @Test
-    public void getOccurrences()
+    public void getSingletonOccurrences()
     {
         WordPairs pairs = new WordPairs(1);
         Vocabulary vocabulary = new Vocabulary();
@@ -102,6 +110,36 @@ public class WordPairsTest {
         assertEquals(0, pairs.getSingletonOccurrences("fox"));
         assertEquals(5, pairs.getSingletonOccurrences("a"));
         assertEquals(2, pairs.getSingletonOccurrences("bearded"));
+    }
+
+    @Test
+    public void sort()
+    {
+        WordPairs pairs = new WordPairs(1);
+        pairs.addPair("a", "king");
+        pairs.addPair("king", "bearded");
+        pairs.addPair("king", "bearded");
+        pairs.addPair("bearded", "fox");
+        pairs.sort();
+        long previousOccurrences = 0;
+        for ( String wordPair : pairs.getPairOccurrences() )
+        {
+            String [] pairWords = wordPair.split(pairs.getSeparator());
+            if ( previousOccurrences > 0 )
+            {
+                assertTrue(pairs.getPairOccurrences(pairWords[0], pairWords[1]) <= previousOccurrences);
+            }
+            previousOccurrences = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
+        }
+        previousOccurrences = 0;
+        for ( String singleton : pairs.getSingletonOccurrences() )
+        {
+            if ( previousOccurrences > 0 )
+            {
+                assertTrue(pairs.getSingletonOccurrences(singleton) <= previousOccurrences);
+            }
+            previousOccurrences = pairs.getSingletonOccurrences(singleton);
+        }
     }
 
     private void populateVocabulary(Vocabulary vocabulary, String [] values)
