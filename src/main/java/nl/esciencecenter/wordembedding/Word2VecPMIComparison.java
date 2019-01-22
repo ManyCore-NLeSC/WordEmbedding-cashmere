@@ -22,6 +22,7 @@ public class Word2VecPMIComparison
 {
     public static void main(String [] args)
     {
+        long maxPairs = 0;
         BufferedReader file;
         Vocabulary vocabulary;
         WordPairs pairs;
@@ -76,6 +77,14 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
             return;
         }
+        if ( arguments.getMaxPairs() > 0 )
+        {
+            maxPairs = arguments.getMaxPairs();
+        }
+        else
+        {
+            maxPairs = pairs.getUniquePairs();
+        }
         System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
         pairs.sort();
         pmiTable = new PMITable(pairs);
@@ -88,7 +97,7 @@ public class Word2VecPMIComparison
         // Empty line
         System.out.println();
         // Compute statistics and differences
-        System.out.println("The deviation of the objective function for Word2Vec is: " + ComputeObjectiveFunction.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples()));
+        System.out.println("The deviation of the objective function for Word2Vec is: " + ComputeObjectiveFunction.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
     }
 
     private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args)
