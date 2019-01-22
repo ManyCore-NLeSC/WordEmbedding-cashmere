@@ -14,6 +14,8 @@ public class Word2VecPMIComparisonCommandLineArguments
     private int negativeSamples = 1;
     @Parameter(names = {"-sampling_rate"}, description = "Probability that a word is removed from the vocabulary.")
     private int samplingRate = 0;
+    @Parameter(names = {"-max_pairs"}, description = "Maximum number of pairs.")
+    private int maxPairs = 0;
     // Files
     @Parameter(names = {"-vocabulary_file"}, description = "Word2Vec vocabulary file.", required = true)
     private String vocabularyFilename = "";
@@ -52,6 +54,11 @@ public class Word2VecPMIComparisonCommandLineArguments
     public int getSamplingRate()
     {
         return samplingRate;
+    }
+
+    public int getMaxPairs()
+    {
+        return maxPairs;
     }
 
     public String getCorpusFileName()
