@@ -54,15 +54,15 @@ public class WordPairsTest {
         assertEquals(1, pairs.getPairOccurrences("the", "king"));
         assertEquals(0, pairs.getPairOccurrences("king", "the"));
         assertEquals(1, pairs.getTotalPairs());
-        assertEquals(1, pairs.getOccurrences("the"));
-        assertEquals(0, pairs.getOccurrences("king"));
+        assertEquals(1, pairs.getSingletonOccurrences("the"));
+        assertEquals(0, pairs.getSingletonOccurrences("king"));
         assertEquals(1, pairs.getUniquePairs());
         pairs.addPair("king", "the");
         assertEquals(1, pairs.getPairOccurrences("the", "king"));
         assertEquals(1, pairs.getPairOccurrences("king", "the"));
         assertEquals(2, pairs.getTotalPairs());
-        assertEquals(1, pairs.getOccurrences("the"));
-        assertEquals(1, pairs.getOccurrences("king"));
+        assertEquals(1, pairs.getSingletonOccurrences("the"));
+        assertEquals(1, pairs.getSingletonOccurrences("king"));
         assertEquals(2, pairs.getUniquePairs());
     }
 
@@ -92,16 +92,16 @@ public class WordPairsTest {
         Vocabulary vocabulary = new Vocabulary();
         populateVocabulary(vocabulary, foxSentence.split("[ \t]+"));
         LearnWordPairs.learn(pairs, vocabulary, foxSentence.split("[ \t]+"));
-        assertEquals(0, pairs.getOccurrences("king"));
-        assertEquals(3, pairs.getOccurrences("the"));
-        assertEquals(1, pairs.getOccurrences("dog"));
+        assertEquals(0, pairs.getSingletonOccurrences("king"));
+        assertEquals(3, pairs.getSingletonOccurrences("the"));
+        assertEquals(1, pairs.getSingletonOccurrences("dog"));
         pairs = new WordPairs(1);
         vocabulary = new Vocabulary();
         populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
         LearnWordPairs.learn(pairs, vocabulary, kingSentence.split("[ \t]+"));
-        assertEquals(0, pairs.getOccurrences("fox"));
-        assertEquals(5, pairs.getOccurrences("a"));
-        assertEquals(2, pairs.getOccurrences("bearded"));
+        assertEquals(0, pairs.getSingletonOccurrences("fox"));
+        assertEquals(5, pairs.getSingletonOccurrences("a"));
+        assertEquals(2, pairs.getSingletonOccurrences("bearded"));
     }
 
     private void populateVocabulary(Vocabulary vocabulary, String [] values)

@@ -77,6 +77,7 @@ public class Word2VecPMIComparison
             return;
         }
         System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
+        pairs.sort();
         pmiTable = new PMITable(pairs);
         if ( arguments.getSamplingRate() > 0 )
         {

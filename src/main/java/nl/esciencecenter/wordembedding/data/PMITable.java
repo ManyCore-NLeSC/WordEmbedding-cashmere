@@ -11,7 +11,7 @@ public class PMITable
 
     public float getPMI(String wordOne, String wordTwo)
     {
-        return log2((float)(pairs.getPairOccurrences(wordOne, wordTwo) * pairs.getTotalPairs()) / (pairs.getOccurrences(wordOne) * pairs.getOccurrences(wordTwo)));
+        return log2((float)(pairs.getPairOccurrences(wordOne, wordTwo) * pairs.getTotalPairs()) / (pairs.getSingletonOccurrences(wordOne) * pairs.getSingletonOccurrences(wordTwo)));
     }
 
     public float getPPMI(String wordOne, String wordTwo)

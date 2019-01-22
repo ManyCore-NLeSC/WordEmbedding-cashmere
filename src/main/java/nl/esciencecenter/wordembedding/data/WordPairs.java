@@ -2,6 +2,7 @@ package nl.esciencecenter.wordembedding.data;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 public class WordPairs
 {
@@ -75,7 +76,12 @@ public class WordPairs
         return occurrences;
     }
 
-    public long getOccurrences(String wordOne)
+    public Set<String> getPairOccurrences()
+    {
+        return pairOccurrences.keySet();
+    }
+
+    public long getSingletonOccurrences(String wordOne)
     {
         Integer occurrences = singletonOccurrences.get(wordOne);
         if ( occurrences == null )
@@ -83,6 +89,11 @@ public class WordPairs
             return 0;
         }
         return occurrences;
+    }
+
+    public Set<String> getSingletonOccurrences()
+    {
+        return singletonOccurrences.keySet();
     }
 
     public void sort()
