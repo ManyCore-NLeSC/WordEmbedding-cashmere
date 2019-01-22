@@ -57,7 +57,7 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getVectorFileName() + "\".");
             return;
         }
-        System.out.println("Word2Vec vectors loaded.");
+        System.out.println("Word2Vec word svectors loaded.");
         try {
             file = new BufferedReader(new FileReader(arguments.getContextFileName()));
             contexts = ReadWord2VecWordVectors.read(file);
