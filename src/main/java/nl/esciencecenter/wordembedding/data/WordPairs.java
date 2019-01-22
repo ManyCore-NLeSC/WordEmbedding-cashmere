@@ -36,14 +36,9 @@ public class WordPairs
     public void addPair(String wordOne, String wordTwo)
     {
         this.addSingleton(wordOne);
-        this.addSingleton(wordTwo);
         if ( pairOccurrences.containsKey(wordOne + separator + wordTwo) )
         {
             pairOccurrences.put(wordOne + separator + wordTwo, pairOccurrences.get(wordOne + separator + wordTwo) + 1);
-        }
-        else if ( pairOccurrences.containsKey(wordTwo + separator + wordOne) )
-        {
-            pairOccurrences.put(wordTwo + separator + wordOne, pairOccurrences.get(wordTwo + separator + wordOne) + 1);
         }
         else
         {
@@ -67,10 +62,6 @@ public class WordPairs
     public long getPairOccurrences(String wordOne, String wordTwo)
     {
         Integer occurrences = pairOccurrences.get(wordOne + separator + wordTwo);
-        if ( occurrences == null )
-        {
-            occurrences = pairOccurrences.get(wordTwo + separator + wordOne);
-        }
         if ( occurrences == null )
         {
             return 0;
