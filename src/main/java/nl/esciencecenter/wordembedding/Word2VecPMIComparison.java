@@ -22,7 +22,7 @@ public class Word2VecPMIComparison
 {
     public static void main(String [] args)
     {
-        long maxPairs = 0;
+        long maxPairs;
         BufferedReader file;
         Vocabulary vocabulary;
         WordPairs pairs;
