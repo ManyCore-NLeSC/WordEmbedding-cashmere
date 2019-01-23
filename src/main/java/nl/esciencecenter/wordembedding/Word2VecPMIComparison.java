@@ -15,7 +15,7 @@ import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
-import nl.esciencecenter.wordembedding.validation.ComputeObjectiveFunction;
+import nl.esciencecenter.wordembedding.validation.CompareObjectiveFunction;
 
 
 public class Word2VecPMIComparison
@@ -97,7 +97,7 @@ public class Word2VecPMIComparison
         // Empty line
         System.out.println();
         // Compute statistics and differences
-        System.out.println("The deviation of the objective function for Word2Vec is: " + ComputeObjectiveFunction.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
+        System.out.println("The deviation of the objective function for Word2Vec is: " + CompareObjectiveFunction.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
     }
 
     private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args)

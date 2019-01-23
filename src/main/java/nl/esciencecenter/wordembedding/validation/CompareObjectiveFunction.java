@@ -5,7 +5,7 @@ import nl.esciencecenter.wordembedding.math.DotProduct;
 import nl.esciencecenter.wordembedding.math.Negate;
 import nl.esciencecenter.wordembedding.math.Sigmoid;
 
-public class ComputeObjectiveFunction {
+public class CompareObjectiveFunction {
     public static double objectiveFunctionWord2Vec(WordPairs pairs, WordEmbedding words, WordEmbedding contexts, int k, long maxPairs)
     {
         long pairsCounter = 0;
