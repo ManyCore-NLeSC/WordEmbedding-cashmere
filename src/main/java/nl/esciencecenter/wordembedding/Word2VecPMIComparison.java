@@ -97,7 +97,7 @@ public class Word2VecPMIComparison
         // Empty line
         System.out.println();
         // Compute statistics and differences
-        System.out.println("Word2Vec as a percentage of PMI: " + CompareObjectiveFunction.distanceFromPMIWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
+        System.out.println("Average distance between Word2Vec and PMI: " + CompareObjectiveFunction.distanceFromPMIWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
         System.out.println("The deviation of the objective function between Word2Vec and PMI is: " + CompareObjectiveFunction.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
     }
 

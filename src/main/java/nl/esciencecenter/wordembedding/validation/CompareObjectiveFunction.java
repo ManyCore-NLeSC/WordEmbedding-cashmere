@@ -54,8 +54,7 @@ public class CompareObjectiveFunction {
     public static double distanceFromPMIWord2Vec(WordPairs pairs, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, long maxPairs)
     {
         long pairsCounter = 0;
-        double word2vecTotal = 0;
-        double pmiTotal = 0;
+        double distance = 0;
         for ( String pair : pairs.getPairOccurrences() )
         {
             if ( pairsCounter >= maxPairs )
@@ -63,10 +62,9 @@ public class CompareObjectiveFunction {
                 break;
             }
             String [] pairWords = pair.split(pairs.getSeparator());
-            pmiTotal += pmiTable.getPMI(pairWords[0], pairWords[1]) - Math.log(k);
-            word2vecTotal += DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1]));
+            distance += Math.pow(pmiTable.getPMI(pairWords[0], pairWords[1]) - Math.log(k) - DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1])), 2);
             pairsCounter++;
         }
-        return (word2vecTotal * 100.0) / pmiTotal;
+        return Math.sqrt(distance) / pairsCounter;
     }
 }
