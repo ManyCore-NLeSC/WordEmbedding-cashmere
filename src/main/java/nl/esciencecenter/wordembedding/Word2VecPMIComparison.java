@@ -81,12 +81,12 @@ public class Word2VecPMIComparison
         if ( arguments.getMaxPairs() > 0 )
         {
             maxPairs = arguments.getMaxPairs();
+            pairs.sort();
         }
         else
         {
             maxPairs = pairs.getUniquePairs();
         }
-        pairs.sort();
         pmiTable = new PMITable(pairs);
         if ( arguments.getSamplingRate() > 0 )
         {
