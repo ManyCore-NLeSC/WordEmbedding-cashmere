@@ -10,12 +10,16 @@ public class WordPairs
     private final String separator = "_<%%>_";
     private long totalPairOccurrences;
     private LinkedHashMap<String, Integer> pairOccurrences;
+    private ArrayList<String> sortedPairs;
     private LinkedHashMap<String, Integer> singletonOccurrences;
+    private ArrayList<String> sortedSingletons;
 
     public WordPairs(int window)
     {
         this.pairOccurrences = new LinkedHashMap<>();
+        this.sortedPairs = new ArrayList<>();
         this.singletonOccurrences = new LinkedHashMap<>();
+        this.sortedSingletons = new ArrayList<>();
         this.totalPairOccurrences = 0;
         this.windowSize = window;
     }
@@ -50,6 +54,7 @@ public class WordPairs
         else
         {
             pairOccurrences.put(wordOne + separator + wordTwo, 1);
+            sortedPairs.add(wordOne + separator + wordTwo);
         }
         totalPairOccurrences++;
     }
@@ -63,6 +68,7 @@ public class WordPairs
         else
         {
             singletonOccurrences.put(singleton, 1);
+            sortedSingletons.add(singleton);
         }
     }
 
@@ -76,9 +82,14 @@ public class WordPairs
         return occurrences;
     }
 
-    public Set<String> getPairOccurrences()
+    public Set<String> getPairs()
     {
         return pairOccurrences.keySet();
+    }
+
+    public ArrayList<String> getSortedPairs()
+    {
+        return sortedPairs;
     }
 
     public long getSingletonOccurrences(String wordOne)
@@ -91,26 +102,19 @@ public class WordPairs
         return occurrences;
     }
 
-    public Set<String> getSingletonOccurrences()
+    public Set<String> getSingletons()
     {
         return singletonOccurrences.keySet();
     }
 
+    public ArrayList<String> getSortedSingletons()
+    {
+        return sortedSingletons;
+    }
+
     public void sort()
     {
-        ArrayList<String> sortedPairs= new ArrayList<>(pairOccurrences.keySet());
         sortedPairs.sort((pairOne, pairTwo) -> pairOccurrences.get(pairTwo) - pairOccurrences.get(pairOne));
-        LinkedHashMap<String, Integer> newOccurrences = new LinkedHashMap<>();
-        for ( String occurrence : sortedPairs ){
-            newOccurrences.put(occurrence, pairOccurrences.get(occurrence));
-        }
-        pairOccurrences = newOccurrences;
-        sortedPairs= new ArrayList<>(singletonOccurrences.keySet());
-        sortedPairs.sort((wordOne, wordTwo) -> singletonOccurrences.get(wordTwo) - singletonOccurrences.get(wordOne));
-        newOccurrences = new LinkedHashMap<>();
-        for ( String occurrence : sortedPairs ){
-            newOccurrences.put(occurrence, singletonOccurrences.get(occurrence));
-        }
-        singletonOccurrences = newOccurrences;
+        sortedSingletons.sort((wordOne, wordTwo) -> singletonOccurrences.get(wordTwo) - singletonOccurrences.get(wordOne));
     }
 }

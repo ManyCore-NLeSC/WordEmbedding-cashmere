@@ -10,7 +10,7 @@ public class CompareObjectiveFunction {
     {
         long pairsCounter = 0;
         double globalObjective = 0;
-        for ( String pair : pairs.getPairOccurrences() )
+        for ( String pair : pairs.getPairs() )
         {
             if ( pairsCounter >= maxPairs )
             {
@@ -31,7 +31,7 @@ public class CompareObjectiveFunction {
         long pairsCounter = 0;
         double word2vecObjective = 0;
         double pmiObjective = 0;
-        for ( String pair : pairs.getPairOccurrences() )
+        for ( String pair : pairs.getSortedPairs() )
         {
             if ( pairsCounter >= maxPairs )
             {
@@ -55,7 +55,7 @@ public class CompareObjectiveFunction {
     {
         long pairsCounter = 0;
         double distance = 0;
-        for ( String pair : pairs.getPairOccurrences() )
+        for ( String pair : pairs.getSortedPairs() )
         {
             if ( pairsCounter >= maxPairs )
             {
