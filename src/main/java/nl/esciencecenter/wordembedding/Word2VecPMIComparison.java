@@ -77,6 +77,7 @@ public class Word2VecPMIComparison
             System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
             return;
         }
+        System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
         if ( arguments.getMaxPairs() > 0 )
         {
             maxPairs = arguments.getMaxPairs();
@@ -86,7 +87,6 @@ public class Word2VecPMIComparison
             maxPairs = pairs.getUniquePairs();
         }
         pairs.sort();
-        System.out.println("The corpus contains " + pairs.getUniquePairs() + " word pairs; the total number of occurrences is " + pairs.getTotalPairs() + ".");
         pmiTable = new PMITable(pairs);
         if ( arguments.getSamplingRate() > 0 )
         {
