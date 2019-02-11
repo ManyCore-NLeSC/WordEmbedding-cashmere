@@ -1,8 +1,13 @@
 package nl.esciencecenter.wordembedding.data;
 
+import sun.awt.image.ImageWatched;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toMap;
 
 public class WordPairs
 {
@@ -10,16 +15,12 @@ public class WordPairs
     private final String separator = "_<%%>_";
     private long totalPairOccurrences;
     private LinkedHashMap<String, Integer> pairOccurrences;
-    private ArrayList<String> sortedPairs;
     private LinkedHashMap<String, Integer> singletonOccurrences;
-    private ArrayList<String> sortedSingletons;
 
     public WordPairs(int window)
     {
         this.pairOccurrences = new LinkedHashMap<>();
-        this.sortedPairs = new ArrayList<>();
         this.singletonOccurrences = new LinkedHashMap<>();
-        this.sortedSingletons = new ArrayList<>();
         this.totalPairOccurrences = 0;
         this.windowSize = window;
     }
@@ -54,7 +55,6 @@ public class WordPairs
         else
         {
             pairOccurrences.put(wordOne + separator + wordTwo, 1);
-            sortedPairs.add(wordOne + separator + wordTwo);
         }
         totalPairOccurrences++;
     }
@@ -68,7 +68,6 @@ public class WordPairs
         else
         {
             singletonOccurrences.put(singleton, 1);
-            sortedSingletons.add(singleton);
         }
     }
 
@@ -87,11 +86,6 @@ public class WordPairs
         return pairOccurrences.keySet();
     }
 
-    public ArrayList<String> getSortedPairs()
-    {
-        return sortedPairs;
-    }
-
     public long getSingletonOccurrences(String wordOne)
     {
         Integer occurrences = singletonOccurrences.get(wordOne);
@@ -107,14 +101,9 @@ public class WordPairs
         return singletonOccurrences.keySet();
     }
 
-    public ArrayList<String> getSortedSingletons()
-    {
-        return sortedSingletons;
-    }
-
     public void sort()
     {
-        sortedPairs.sort((pairOne, pairTwo) -> pairOccurrences.get(pairTwo) - pairOccurrences.get(pairOne));
-        sortedSingletons.sort((wordOne, wordTwo) -> singletonOccurrences.get(wordTwo) - singletonOccurrences.get(wordOne));
+        pairOccurrences = pairOccurrences.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1,LinkedHashMap::new));
+        singletonOccurrences= singletonOccurrences.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1,LinkedHashMap::new));
     }
 }
