@@ -51,6 +51,7 @@ public class TrainWord2VecModel extends Thread {
 
         // Training loop
         try {
+	    // loops over the whole file
             while ( (line = fileReader.readLine()) != null ) {
                 ArrayList<String> sentence = new ArrayList<>();
 
@@ -118,6 +119,7 @@ public class TrainWord2VecModel extends Thread {
                 } else {
                     skipGram(vocabulary, sentence, word, sentencePosition, randomStartingWord);
                 }
+		// this is where we move to the next word in the sentence
                 sentencePosition++;
                 if ( sentencePosition >= sentence.size() ) {
                     sentence.clear();
@@ -272,6 +274,8 @@ public class TrainWord2VecModel extends Thread {
 
     // The code of this method is a straightforward translation of Google's C code
     // TODO: check if it could be written in a better way
+    // word is the word we are checking, so w, it has position sentencePosition in the sentence.  For some reason
+    // we use a randomStartingWord, why?
     private void skipGram(Vocabulary vocabulary, ArrayList<String> sentence, String word, int sentencePosition,
                           int randomStartingWord) {
         int lastWordIndex;
@@ -290,6 +294,9 @@ public class TrainWord2VecModel extends Thread {
                 if ( lastWordIndex == -1 ) {
                     continue;
                 }
+		// two cases
+		//   - let's assume that this is w
+		//   - let's assume that this is c (we are no choosing this one)
                 relatedWordIndexOne = lastWordIndex * neuralNetwork.getVectorDimensions();
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenError0[neuronIndex] = 0.0f;
@@ -334,8 +341,13 @@ public class TrainWord2VecModel extends Thread {
                     Random randomNumberGenerator = new Random();
                     TargetLabel targetLabel = new TargetLabel(randomNumberGenerator);
 
+		    // neuralNetwork.getNegativeSamples() = k
+		    // sample represents c_N
                     for ( int sample = 0; sample < neuralNetwork.getNegativeSamples() + 1; sample++ ) {
+			// sample == 0, represents w
+			// if we want to update w, then we should not continue
                         if ( !targetLabel.compute(sample, word) ) {
+			    // only if coincedently we draw our own word
                             continue;
                         }
                         if ( neuralNetwork.getUsePosition() ) {
@@ -347,16 +359,23 @@ public class TrainWord2VecModel extends Thread {
                                 relatedWordIndexTwo += wordIndex;
                             }
                         } else {
-                            relatedWordIndexTwo = targetLabel.getTarget() * neuralNetwork.getVectorDimensions();
-                        }
+			    // this is then c_N
+			    relatedWordIndexTwo = targetLabel.getTarget() * neuralNetwork.getVectorDimensions();
+			}
                         exponential = 0.0f;
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
+			    // this is the dotproduct
                             exponential += neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex)
                                     * neuralNetwork.getValueContextVector(relatedWordIndexTwo
                                     + neuronIndex);
                         }
+			// compute the gradient
+			// gives a direction based on label which depends on being sampmle represent w or c_N
                         gradient = computeGradient(exponential, targetLabel.getLabel());
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
+			    // previous values + the context
+			    // this sums over c_N multiplied with the gradient
+			    // it is an array of size d (= neuralNetwork.getVectorDimensions())
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
                                     * neuralNetwork.getValueContextVector(relatedWordIndexTwo
                                     + neuronIndex));
@@ -369,10 +388,13 @@ public class TrainWord2VecModel extends Thread {
                             }
                             else
                             {
+				// update c_N with w (not w)
                                 neuralNetwork.incrementValueContextVector(relatedWordIndexTwo + neuronIndex, gradient * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
                             }
                         }
-                    }
+                    } // end sample loop
+	  
+		    
                 }
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     if ( threadSynchronization )
@@ -384,6 +406,7 @@ public class TrainWord2VecModel extends Thread {
                     }
                     else
                     {
+			// update w with hiddenError that represents sum of all combinations of c_N
                         neuralNetwork.incrementValueWordVector(relatedWordIndexOne + neuronIndex, hiddenError0[neuronIndex]);
                     }
                 }
@@ -405,7 +428,8 @@ public class TrainWord2VecModel extends Thread {
         } else if ( exponential < -exponentialTable.getMaximumExponential() ) {
             gradient = label * neuralNetwork.getCurrentAlpha();
         } else {
-            gradient = (label
+	    // probably the most used case
+            gradient = (label // only 0 or 1
                     - exponentialTable.get((int)((exponential + exponentialTable.getMaximumExponential())
                     * (exponentialTable.getTableSize() / exponentialTable.getMaximumExponential()
                     / 2)))) * neuralNetwork.getCurrentAlpha();
@@ -415,6 +439,9 @@ public class TrainWord2VecModel extends Thread {
 
     private class TargetLabel {
         private int target;
+	// either set to the index of w?
+
+	// either 0 or 1, but what does it mean?
         private int label;
         private final Random randomNumberGenerator;
 
@@ -432,6 +459,8 @@ public class TrainWord2VecModel extends Thread {
 
         private boolean compute(int sample, String word) {
             if ( sample == 0 ) {
+		// this means we're dealing with sample representing w
+		// label has influence on the direction of the gradient (negative or positive)
                 target = vocabulary.getWord(word).getSortedIndex();
                 label = 1;
             } else {
