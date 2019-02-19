@@ -44,15 +44,16 @@ public class WordPairs
 
     public void addPair(String wordOne, String wordTwo)
     {
-        this.addSingleton(wordOne);
-        if ( pairOccurrences.containsKey(wordOne + separator + wordTwo) )
+        String pair = wordOne + separator + wordTwo;
+        if ( pairOccurrences.containsKey(pair) )
         {
-            pairOccurrences.put(wordOne + separator + wordTwo, pairOccurrences.get(wordOne + separator + wordTwo) + 1);
+            pairOccurrences.put(pair, pairOccurrences.get(pair) + 1);
         }
         else
         {
-            pairOccurrences.put(wordOne + separator + wordTwo, 1);
+            pairOccurrences.put(pair, 1);
         }
+        this.addSingleton(wordOne);
         totalPairOccurrences++;
     }
 
