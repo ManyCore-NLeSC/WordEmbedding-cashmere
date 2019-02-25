@@ -25,6 +25,13 @@ public class Word2VecPMIComparisonCommandLineArguments
     private String vectorFilename = "";
     @Parameter(names = {"-context_file"}, description = "Word2Vec context file.", required = true)
     private String contextFilename = "";
+    // Options
+    @Parameter(names = {"-distance"}, description = "Compute the Euclidean distance between matrices.")
+    private boolean distance = false;
+    @Parameter(names = {"-deviation"}, description = "Compute the objective function deviation.")
+    private boolean deviation = false;
+    @Parameter(names = {"-frobenius"}, description = "Compute the Frobenius norm of the matrices.")
+    private boolean frobenius = false;
 
     public boolean getHelp()
     {
@@ -74,5 +81,20 @@ public class Word2VecPMIComparisonCommandLineArguments
     public String getContextFileName()
     {
         return contextFilename;
+    }
+
+    public boolean getDistance()
+    {
+        return distance;
+    }
+
+    public boolean getDeviation()
+    {
+        return deviation;
+    }
+
+    public boolean getFrobenius()
+    {
+        return frobenius;
     }
 }
