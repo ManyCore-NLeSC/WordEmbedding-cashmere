@@ -15,7 +15,7 @@ import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
 import nl.esciencecenter.wordembedding.utilities.io.ReadWord2VecWordVectors;
-import nl.esciencecenter.wordembedding.validation.CompareObjectiveFunction;
+import nl.esciencecenter.wordembedding.validation.EvaluateMatrixSimilarity;
 
 
 public class Word2VecPMIComparison
@@ -97,8 +97,10 @@ public class Word2VecPMIComparison
         // Empty line
         System.out.println();
         // Compute statistics and differences
-        System.out.println("Average distance between Word2Vec and PMI: " + CompareObjectiveFunction.distanceFromPMIWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
-        System.out.println("The deviation of the objective function between Word2Vec and PMI is: " + CompareObjectiveFunction.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
+        System.out.println("Average distance between Word2Vec and PMI: " + EvaluateMatrixSimilarity.distanceFromPMIWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
+        System.out.println("The deviation of the objective function between Word2Vec and PMI is: " + EvaluateMatrixSimilarity.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
+        System.out.println("The Frobenius norm of Word2Vec is: " + EvaluateMatrixSimilarity.computeFrobeniusNorm(pairs, words, contexts, maxPairs));
+        System.out.println("The Frobenius norm of PMI is: " + EvaluateMatrixSimilarity.computeFrobeniusNorm(pairs, pmiTable, arguments.getNegativeSamples(), maxPairs));
     }
 
     private static Word2VecPMIComparisonCommandLineArguments parseCommandLine(String[] args)

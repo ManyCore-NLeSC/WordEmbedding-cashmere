@@ -5,7 +5,7 @@ import nl.esciencecenter.wordembedding.math.DotProduct;
 import nl.esciencecenter.wordembedding.math.Negate;
 import nl.esciencecenter.wordembedding.math.Sigmoid;
 
-public class CompareObjectiveFunction {
+public class EvaluateMatrixSimilarity {
     public static double objectiveFunctionWord2Vec(WordPairs pairs, WordEmbedding words, WordEmbedding contexts, int k, long maxPairs)
     {
         long pairsCounter = 0;
@@ -66,5 +66,39 @@ public class CompareObjectiveFunction {
             pairsCounter++;
         }
         return Math.sqrt(distance) / pairsCounter;
+    }
+
+    public static double computeFrobeniusNorm(WordPairs pairs, WordEmbedding words, WordEmbedding contexts, long maxPairs)
+    {
+        long pairsCounter = 0;
+        double norm = 0;
+        for ( String pair : pairs.getPairs() )
+        {
+            if ( pairsCounter >= maxPairs )
+            {
+                break;
+            }
+            String [] pairWords = pair.split(pairs.getSeparator());
+            norm += Math.pow(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1])), 2);
+            pairsCounter++;
+        }
+        return Math.sqrt(norm);
+    }
+
+    public static double computeFrobeniusNorm(WordPairs pairs, PMITable pmiTable, int k, long maxPairs)
+    {
+        long pairsCounter = 0;
+        double norm = 0;
+        for ( String pair : pairs.getPairs() )
+        {
+            if ( pairsCounter >= maxPairs )
+            {
+                break;
+            }
+            String [] pairWords = pair.split(pairs.getSeparator());
+            norm += Math.pow(pmiTable.getPMI(pairWords[0], pairWords[1]) - Math.log(k), 2);
+            pairsCounter++;
+        }
+        return Math.sqrt(norm);
     }
 }
