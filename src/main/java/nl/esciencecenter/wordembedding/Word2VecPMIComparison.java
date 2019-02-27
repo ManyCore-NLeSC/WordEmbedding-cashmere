@@ -109,6 +109,7 @@ public class Word2VecPMIComparison
         {
             System.out.println("The Frobenius norm of Word2Vec is: " + EvaluateMatrixSimilarity.computeFrobeniusNorm(pairs, words, contexts, maxPairs));
             System.out.println("The Frobenius norm of PMI is: " + EvaluateMatrixSimilarity.computeFrobeniusNorm(pairs, pmiTable, arguments.getNegativeSamples(), maxPairs));
+            System.out.println("The Frobenius norm of (PMI - Word2Vec) is: " + EvaluateMatrixSimilarity.computeFrobeniusNorm(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
         }
     }
 

@@ -101,4 +101,21 @@ public class EvaluateMatrixSimilarity {
         }
         return Math.sqrt(norm);
     }
+
+    public static double computeFrobeniusNorm(WordPairs pairs, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, long maxPairs)
+    {
+        long pairsCounter = 0;
+        double norm = 0;
+        for ( String pair : pairs.getPairs() )
+        {
+            if ( pairsCounter >= maxPairs )
+            {
+                break;
+            }
+            String [] pairWords = pair.split(pairs.getSeparator());
+            norm += Math.pow((pmiTable.getPMI(pairWords[0], pairWords[1]) - Math.log(k)) + DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1])), 2);
+            pairsCounter++;
+        }
+        return Math.sqrt(norm);
+    }
 }
