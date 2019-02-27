@@ -51,10 +51,10 @@ public class TrainWord2VecModel extends Thread {
 
         // Training loop
         try {
-	    // loops over the whole file
+            ArrayList<String> sentence = new ArrayList<>();
+	        // loops over the whole file, processed one line at the time
             while ( (line = fileReader.readLine()) != null ) {
-                ArrayList<String> sentence = new ArrayList<>();
-
+                // Updating learning rate and print update message
                 if ( (currentWordCount - previousWordCount) > updateInterval ) {
                     synchronized ( neuralNetwork ) {
                         neuralNetwork.incrementGlobalWordCount(currentWordCount - previousWordCount);
@@ -73,56 +73,55 @@ public class TrainWord2VecModel extends Thread {
                         }
                     }
                 }
-                if ( sentence.size() == 0 ) {
-                    while ( !line.isEmpty() ) {
-                        String word = ReadWord.readWord(line, false);
+                // Create the sentence by removing all words that are not in the vocabulary
+                while ( !line.isEmpty() ) {
+                    String word = ReadWord.readWord(line, false);
 
-                        if ( word == null ) {
-                            line = line.trim();
-                            continue;
-                        } else {
-                            line = line.substring(word.length());
-                            line = line.trim();
-                        }
-                        if ( vocabulary.getWord(word) == null ) {
-                            continue;
-                        }
-                        currentWordCount++;
-                        if ( neuralNetwork.getSamplingFactor() > 0 ) {
-                            float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences()
-                                    / (neuralNetwork.getSamplingFactor() * vocabulary.getNrWords())) + 1)
-                                    * (neuralNetwork.getSamplingFactor() * vocabulary.getNrWords())
-                                    / vocabulary.getWord(word).getOccurrences());
-
-                            if ( sample < randomNumberGenerator.nextFloat() ) {
-                                continue;
-                            }
-                        }
-                        sentence.add(word);
+                    if ( word == null ) {
+                        line = line.trim();
+                        continue;
+                    } else {
+                        line = line.substring(word.length());
+                        line = line.trim();
                     }
-                    sentencePosition = 0;
+                    if ( vocabulary.getWord(word) == null ) {
+                        continue;
+                    }
+                    currentWordCount++;
+                    if ( neuralNetwork.getSamplingFactor() > 0 ) {
+                        float sample = (float)((Math.sqrt(vocabulary.getWord(word).getOccurrences()
+                                / (neuralNetwork.getSamplingFactor() * vocabulary.getNrWords())) + 1)
+                                * (neuralNetwork.getSamplingFactor() * vocabulary.getNrWords())
+                                / vocabulary.getWord(word).getOccurrences());
+
+                        if ( sample < randomNumberGenerator.nextFloat() ) {
+                            continue;
+                        }
+                    }
+                    sentence.add(word);
                 }
+                sentencePosition = 0;
                 // Increment the word counter for every sentence to account for "</s>"
                 currentWordCount++;
-                if ( sentence.size() == 0 ) {
-                    // If there are no words in the sentence, read another line.
-                    continue;
-                }
-                String word = sentence.get(sentencePosition);
-                for ( int neuronIndex = 0; neuronIndex < hiddenLayer0.length; neuronIndex++ ) {
-                    hiddenLayer0[neuronIndex] = 0.0f;
-                    hiddenError0[neuronIndex] = 0.0f;
-                }
-                int randomStartingWord = randomNumberGenerator.nextInt(neuralNetwork.getWindowSize());
-                if ( neuralNetwork.getCBOW() ) {
-                    CBOW(vocabulary, sentence, word, sentencePosition, randomStartingWord);
-                } else {
-                    skipGram(vocabulary, sentence, word, sentencePosition, randomStartingWord);
-                }
-		// this is where we move to the next word in the sentence
-                sentencePosition++;
-                if ( sentencePosition >= sentence.size() ) {
-                    sentence.clear();
+                // Process the sentence
+                while ( sentence.size() != 0 )
+                {
+                    String word = sentence.get(sentencePosition);
+                    for ( int neuronIndex = 0; neuronIndex < hiddenLayer0.length; neuronIndex++ ) {
+                        hiddenLayer0[neuronIndex] = 0.0f;
+                        hiddenError0[neuronIndex] = 0.0f;
+                    }
+                    int randomStartingWord = randomNumberGenerator.nextInt(neuralNetwork.getWindowSize());
+                    if ( neuralNetwork.getCBOW() ) {
+                        CBOW(vocabulary, sentence, word, sentencePosition, randomStartingWord);
+                    } else {
+                        skipGram(vocabulary, sentence, word, sentencePosition, randomStartingWord);
+                    }
+                    // this is where we move to the next word in the sentence
+                    sentencePosition++;
+                    if ( sentencePosition >= sentence.size() ) {
+                        sentence.clear();
+                    }
                 }
             }
         } catch ( IOException err ) {
@@ -284,7 +283,7 @@ public class TrainWord2VecModel extends Thread {
         float exponential;
         float gradient;
 
-        for ( int wordIndex = randomStartingWord; wordIndex < (neuralNetwork.getWindowSize() * 2) - 1; wordIndex++ ) {
+        for ( int wordIndex = randomStartingWord; wordIndex < (neuralNetwork.getWindowSize() * 2) + 1 - randomStartingWord; wordIndex++ ) {
             if ( wordIndex != neuralNetwork.getWindowSize() ) {
                 lastWordIndex = sentencePosition - neuralNetwork.getWindowSize() + wordIndex;
                 if ( lastWordIndex < 0 || lastWordIndex >= sentence.size() ) {
@@ -294,9 +293,9 @@ public class TrainWord2VecModel extends Thread {
                 if ( lastWordIndex == -1 ) {
                     continue;
                 }
-		// two cases
-		//   - let's assume that this is w
-		//   - let's assume that this is c (we are no choosing this one)
+                // two cases
+                //   - let's assume that this is w
+                //   - let's assume that this is c (we are no choosing this one)
                 relatedWordIndexOne = lastWordIndex * neuralNetwork.getVectorDimensions();
                 for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
                     hiddenError0[neuronIndex] = 0.0f;
@@ -341,13 +340,13 @@ public class TrainWord2VecModel extends Thread {
                     Random randomNumberGenerator = new Random();
                     TargetLabel targetLabel = new TargetLabel(randomNumberGenerator);
 
-		    // neuralNetwork.getNegativeSamples() = k
-		    // sample represents c_N
+                    // neuralNetwork.getNegativeSamples() = k
+                    // sample represents c_N
                     for ( int sample = 0; sample < neuralNetwork.getNegativeSamples() + 1; sample++ ) {
-			// sample == 0, represents w
-			// if we want to update w, then we should not continue
+                        // sample == 0, represents w
+                        // if we want to update w, then we should not continue
                         if ( !targetLabel.compute(sample, word) ) {
-			    // only if coincedently we draw our own word
+			                // only if coincedently we draw our own word
                             continue;
                         }
                         if ( neuralNetwork.getUsePosition() ) {
@@ -364,18 +363,18 @@ public class TrainWord2VecModel extends Thread {
 			}
                         exponential = 0.0f;
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-			    // this is the dotproduct
+			                // this is the dotproduct
                             exponential += neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex)
                                     * neuralNetwork.getValueContextVector(relatedWordIndexTwo
                                     + neuronIndex);
                         }
-			// compute the gradient
-			// gives a direction based on label which depends on being sampmle represent w or c_N
+                        // compute the gradient
+                        // gives a direction based on label which depends on being sampmle represent w or c_N
                         gradient = computeGradient(exponential, targetLabel.getLabel());
                         for ( int neuronIndex = 0; neuronIndex < neuralNetwork.getVectorDimensions(); neuronIndex++ ) {
-			    // previous values + the context
-			    // this sums over c_N multiplied with the gradient
-			    // it is an array of size d (= neuralNetwork.getVectorDimensions())
+                            // previous values + the context
+                            // this sums over c_N multiplied with the gradient
+                            // it is an array of size d (= neuralNetwork.getVectorDimensions())
                             hiddenError0[neuronIndex] = hiddenError0[neuronIndex] + (gradient
                                     * neuralNetwork.getValueContextVector(relatedWordIndexTwo
                                     + neuronIndex));
@@ -388,7 +387,7 @@ public class TrainWord2VecModel extends Thread {
                             }
                             else
                             {
-				// update c_N with w (not w)
+				                // update c_N with w (not w)
                                 neuralNetwork.incrementValueContextVector(relatedWordIndexTwo + neuronIndex, gradient * neuralNetwork.getValueWordVector(relatedWordIndexOne + neuronIndex));
                             }
                         }

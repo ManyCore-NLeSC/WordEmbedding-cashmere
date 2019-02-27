@@ -117,9 +117,8 @@ public class NeuralNetworkWord2Vec {
         }
         if (vectorFilename.equals(""))
         {
-            for ( int index = 0; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
-                wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f)
-                    / vectorDimensions;
+            for ( int index = vectorDimensions; index < vocabulary.getNrWords() * vectorDimensions; index++ ) {
+                wordVector[index] = (((float)(randomNumberGenerator.nextInt()) / (float)(Integer.MAX_VALUE)) - 0.5f) / vectorDimensions;
             }
         }
         else
