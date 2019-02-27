@@ -52,7 +52,7 @@ public class Word2VecCommandLineArguments {
     @Parameter(names = {"-threads"}, description = "Number of threads.")
     private int threads = 1;
     @Parameter(names = {"-synchronize", "-sync"}, description = "Thread synchronization during training.", arity = 1)
-    private boolean threadSynchronization = true;
+    private boolean threadSynchronization = false;
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
     private int seed = 1;
     @Parameter(names = {"-pinit"}, description = "Read the word vectors initialization from the specified file.")
