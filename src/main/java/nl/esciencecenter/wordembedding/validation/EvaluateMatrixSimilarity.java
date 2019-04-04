@@ -2,7 +2,6 @@ package nl.esciencecenter.wordembedding.validation;
 
 import nl.esciencecenter.wordembedding.data.*;
 import nl.esciencecenter.wordembedding.math.DotProduct;
-import nl.esciencecenter.wordembedding.math.Negate;
 import nl.esciencecenter.wordembedding.math.Sigmoid;
 
 public class EvaluateMatrixSimilarity {
@@ -19,7 +18,7 @@ public class EvaluateMatrixSimilarity {
             String [] pairWords = pair.split(pairs.getSeparator());
             double localObjective = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
             localObjective *= Math.log(Sigmoid.compute(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1]))));
-            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(DotProduct.compute(Negate.compute(words.getWordCoordinates(pairWords[0])), contexts.getWordCoordinates(pairWords[1]))));
+            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(-(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1])))));
             globalObjective += localObjective;
             pairsCounter++;
         }
@@ -44,7 +43,7 @@ public class EvaluateMatrixSimilarity {
             pmiObjective += localObjective;
             localObjective = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
             localObjective *= Math.log(Sigmoid.compute(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1]))));
-            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(DotProduct.compute(Negate.compute(words.getWordCoordinates(pairWords[0])), contexts.getWordCoordinates(pairWords[1]))));
+            localObjective += k * pairs.getSingletonOccurrences(pairWords[0]) * ((float)(pairs.getSingletonOccurrences(pairWords[1])) / (float)(pairs.getTotalPairs())) * Math.log(Sigmoid.compute(-(DotProduct.compute(words.getWordCoordinates(pairWords[0]), contexts.getWordCoordinates(pairWords[1])))));
             word2vecObjective += localObjective;
             pairsCounter++;
         }
