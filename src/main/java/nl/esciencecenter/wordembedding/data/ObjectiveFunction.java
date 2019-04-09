@@ -17,6 +17,11 @@ public class ObjectiveFunction {
         return word2vec;
     }
 
+    public double getPercentageOfDeviation()
+    {
+        return ((word2vec - pmi) / pmi) * 100;
+    }
+
     public void incrementPMI(PMITable pmiTable, String wordOne, String wordTwo, int k)
     {
         double localObjective = Math.log(Sigmoid.compute(pmiTable.getPMI(wordOne, wordTwo) - Math.log(k)));
