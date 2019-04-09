@@ -19,6 +19,11 @@ public class PMITable
         return Math.max(this.getPMI(wordOne, wordTwo), 0);
     }
 
+    public WordPairs getPairs()
+    {
+        return pairs;
+    }
+
     private float log2(float x)
     {
         return (float)(Math.log(x) / Math.log(2));
