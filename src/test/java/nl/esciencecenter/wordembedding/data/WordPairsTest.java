@@ -122,7 +122,7 @@ public class WordPairsTest {
         pairs.addPair("bearded", "fox");
         pairs.sort();
         long previousOccurrences = 0;
-        for ( String wordPair : pairs.getSortedPairs() )
+        for ( String wordPair : pairs.getPairs() )
         {
             String [] pairWords = wordPair.split(pairs.getSeparator());
             if ( previousOccurrences > 0 )
@@ -132,7 +132,7 @@ public class WordPairsTest {
             previousOccurrences = pairs.getPairOccurrences(pairWords[0], pairWords[1]);
         }
         previousOccurrences = 0;
-        for ( String singleton : pairs.getSortedSingletons() )
+        for ( String singleton : pairs.getSingletons() )
         {
             if ( previousOccurrences > 0 )
             {
