@@ -142,6 +142,22 @@ public class WordPairsTest {
         }
     }
 
+    @Test
+    public void testProbabilities()
+    {
+        float probability = 0;
+        WordPairs pairs = new WordPairs(1);
+        Vocabulary vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        LearnWordPairs.learn(pairs, vocabulary, kingSentence.split("[ \t]+"));
+        assertEquals(0.357142, (float)(pairs.getSingletonOccurrences("a")) / pairs.getTotalPairs(), 0.000001);
+        for ( String word : pairs.getSingletons() )
+        {
+            probability += (float)(pairs.getSingletonOccurrences(word)) / pairs.getTotalPairs();
+        }
+        assertEquals(1.0, probability, 0.000001);
+    }
+
     private void populateVocabulary(Vocabulary vocabulary, String [] values)
     {
         for ( int word = 0; word < values.length; word++ )
