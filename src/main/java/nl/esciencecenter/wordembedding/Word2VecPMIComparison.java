@@ -7,10 +7,8 @@ import java.io.IOException;
 import com.beust.jcommander.JCommander;
 
 import nl.esciencecenter.wordembedding.commandline.Word2VecPMIComparisonCommandLineArguments;
-import nl.esciencecenter.wordembedding.data.PMITable;
-import nl.esciencecenter.wordembedding.data.Vocabulary;
-import nl.esciencecenter.wordembedding.data.WordEmbedding;
-import nl.esciencecenter.wordembedding.data.WordPairs;
+import nl.esciencecenter.wordembedding.data.*;
+import nl.esciencecenter.wordembedding.utilities.ComputeObjectiveFunction;
 import nl.esciencecenter.wordembedding.utilities.ReduceVocabulary;
 import nl.esciencecenter.wordembedding.utilities.io.ReadVocabulary;
 import nl.esciencecenter.wordembedding.utilities.LearnWordPairs;
@@ -103,7 +101,16 @@ public class Word2VecPMIComparison
         }
         if ( arguments.getDeviation() )
         {
-            System.out.println("The deviation of the objective function between Word2Vec and PMI is: " + EvaluateMatrixSimilarity.deviationFromOptimalWord2Vec(pairs, pmiTable, words, contexts, arguments.getNegativeSamples(), maxPairs));
+            ObjectiveFunction objective = new ObjectiveFunction();
+            try {
+                file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
+                ComputeObjectiveFunction.compute(objective, vocabulary, pmiTable, words, contexts, arguments.getNegativeSamples(), file);
+                file.close();
+            } catch ( IOException err ) {
+                System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");
+                return;
+            }
+            System.out.println("The deviation from the optimal objective value is " + String.format("%.2f", objective.getPercentageOfDeviation()) + "%");
         }
         if ( arguments.getFrobenius() )
         {
