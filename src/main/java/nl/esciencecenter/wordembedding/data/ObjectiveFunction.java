@@ -19,7 +19,7 @@ public class ObjectiveFunction {
 
     public double getPercentageOfDeviation()
     {
-        return ((word2vec - pmi) / pmi) * 100;
+        return ((word2vec / pmi) - 1) * -100;
     }
 
     public void incrementPMI(PMITable pmiTable, String wordOne, String wordTwo, int k)
