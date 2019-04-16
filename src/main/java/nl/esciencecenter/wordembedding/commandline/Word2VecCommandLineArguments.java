@@ -29,7 +29,7 @@ public class Word2VecCommandLineArguments {
     private boolean progress = false;
     @Parameter(names = {"-windowSize"}, description = "Window size.")
     private int windowSize = 5;
-    @Parameter(names = {"-hierarchical_softmax", "-hs"}, description = "Enable Hierarchical Softmax.", arity = 1)
+    @Parameter(names = {"-no_hierarchical_softmax", "-hs"}, description = "Disable Hierarchical Softmax.")
     private boolean softmax = true;
     @Parameter(names = {"-learning_rate", "-alpha"}, description = "Starting learning rate.")
     private float alpha = 0.025f;
@@ -51,7 +51,7 @@ public class Word2VecCommandLineArguments {
     private String outContextVectorsFilename = "";
     @Parameter(names = {"-threads"}, description = "Number of threads.")
     private int threads = 1;
-    @Parameter(names = {"-synchronize", "-sync"}, description = "Thread synchronization during training.", arity = 1)
+    @Parameter(names = {"-synchronize", "-sync"}, description = "Thread synchronization during training.")
     private boolean threadSynchronization = false;
     @Parameter(names = {"-seed"}, description = "The seed for the random number generator.")
     private int seed = 1;
