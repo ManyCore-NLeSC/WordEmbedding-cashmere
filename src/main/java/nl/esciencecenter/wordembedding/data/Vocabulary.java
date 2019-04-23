@@ -164,9 +164,10 @@ public class Vocabulary {
 
     public String getRandomWord()
     {
+        float randomNumber = randomNumberGenerator.nextFloat();
         for ( Word word : words.values() )
         {
-            if ( randomNumberGenerator.nextFloat() < ((float)(word.getOccurrences()) / (float)(occurrences)) )
+            if ( randomNumber < ((float)(word.getOccurrences()) / (float)(occurrences)) )
             {
                 return word.getWord();
             }
