@@ -8,6 +8,7 @@ public class Vocabulary {
     private long maxWordOccurrences;
     private long occurrences;
     private final LinkedHashMap<String, Word> words;
+    private ArrayList<String> keys;
     private Random randomNumberGenerator;
 
     public Vocabulary() {
@@ -16,6 +17,7 @@ public class Vocabulary {
         maxWordOccurrences = 0;
         occurrences = 0;
         words = new LinkedHashMap<>();
+        keys = new ArrayList<>();
         randomNumberGenerator = new Random();
     }
 
@@ -162,6 +164,7 @@ public class Vocabulary {
         {
             maxWordOccurrences = words.get(word.getWord()).getOccurrences();
         }
+        keys.add(word.getWord());
     }
 
     public void addWord(String word) {
@@ -170,6 +173,7 @@ public class Vocabulary {
 
     public void removeWord(String word) {
         words.remove(word);
+        keys.remove(word);
     }
 
     public Word getWord(String word) {
@@ -178,17 +182,18 @@ public class Vocabulary {
 
     public String getRandomWord()
     {
-        for ( Word word : words.values() )
+        while ( true )
         {
-            if (  word.getWord().equals("</s>") ) {
+            Word randomWord = words.get(keys.get(randomNumberGenerator.nextInt(keys.size())));
+            float probability = ((float)(randomWord.getOccurrences()) / (float)(occurrences)) / ((float)(maxWordOccurrences) / (float)(occurrences));
+            if (  randomWord.getWord().equals("</s>") ) {
                 continue;
             }
-            if ( randomNumberGenerator.nextFloat() < ((float)(word.getOccurrences()) / (float)(occurrences)) )
+            if ( randomNumberGenerator.nextFloat() < probability )
             {
-                return word.getWord();
+                return randomWord.getWord();
             }
         }
-        return "";
     }
 
     public Collection<Word> getWords() {
