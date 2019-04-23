@@ -25,8 +25,9 @@ public class ComputeObjectiveFunction {
                         {
                             if ( sampling )
                             {
-                                function.incrementPMI(pmiTable, vocabulary, values[word], values[targetWord], k);
-                                function.incrementWord2Vec(vocabulary, words, contexts, values[word], values[targetWord], k);
+                                String negativeSample = vocabulary.getRandomWord();
+                                function.incrementPMI(pmiTable, values[word], values[targetWord], negativeSample, k);
+                                function.incrementWord2Vec(words, contexts, values[word], values[targetWord], negativeSample, k);
                             }
                             else
                             {
