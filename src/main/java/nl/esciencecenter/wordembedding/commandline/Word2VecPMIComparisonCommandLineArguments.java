@@ -2,8 +2,7 @@ package nl.esciencecenter.wordembedding.commandline;
 
 import com.beust.jcommander.Parameter;
 
-public class Word2VecPMIComparisonCommandLineArguments
-{
+public class Word2VecPMIComparisonCommandLineArguments {
     @Parameter(names = {"-help", "-h"}, help = true)
     private boolean help = false;
     @Parameter(names = {"-ppmi"}, description = "Use PPMI instead of PMI.")
@@ -30,67 +29,62 @@ public class Word2VecPMIComparisonCommandLineArguments
     private boolean distance = false;
     @Parameter(names = {"-deviation"}, description = "Compute the objective function deviation.")
     private boolean deviation = false;
+    @Parameter(names = {"-sampling"}, description = "Sample the negative samples in the vocabulary.")
+    private boolean sampling = false;
     @Parameter(names = {"-frobenius"}, description = "Compute the Frobenius norm of the matrices.")
     private boolean frobenius = false;
 
-    public boolean getHelp()
-    {
+    public boolean getHelp() {
         return help;
     }
 
-    public boolean getPPMI()
-    {
+    public boolean getPPMI() {
         return ppmi;
     }
 
-    public String getVocabularyFileName()
-    {
+    public String getVocabularyFileName() {
         return vocabularyFilename;
     }
 
-    public int getWindow()
-    {
+    public int getWindow() {
         return window;
     }
 
-    public int getNegativeSamples()
-    {
+    public int getNegativeSamples() {
         return negativeSamples;
     }
 
-    public int getSamplingRate()
-    {
+    public int getSamplingRate() {
         return samplingRate;
     }
 
-    public long getMaxPairs()
-    {
+    public long getMaxPairs() {
         return maxPairs;
     }
 
-    public String getCorpusFileName()
-    {
+    public String getCorpusFileName() {
         return corpusFilename;
     }
 
-    public String getVectorFileName()
-    {
+    public String getVectorFileName() {
         return vectorFilename;
     }
 
-    public String getContextFileName()
-    {
+    public String getContextFileName() {
         return contextFilename;
     }
 
-    public boolean getDistance()
-    {
+    public boolean getDistance() {
         return distance;
     }
 
-    public boolean getDeviation()
-    {
+    public boolean getDeviation() {
         return deviation;
+    }
+
+    public boolean getSampling()
+    {
+        return sampling;
     }
 
     public boolean getFrobenius()

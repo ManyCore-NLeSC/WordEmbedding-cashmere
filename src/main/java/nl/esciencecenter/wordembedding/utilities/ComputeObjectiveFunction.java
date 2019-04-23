@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ComputeObjectiveFunction {
-    public static void compute(ObjectiveFunction function, Vocabulary vocabulary, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, BufferedReader fileReader) throws IOException
+    public static void compute(ObjectiveFunction function, Vocabulary vocabulary, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, boolean sampling, BufferedReader fileReader) throws IOException
     {
         String line;
 
@@ -23,8 +23,16 @@ public class ComputeObjectiveFunction {
                     {
                         if ( (vocabulary.getWord(values[word]) != null) && (vocabulary.getWord(values[targetWord]) != null) )
                         {
-                            function.incrementPMI(pmiTable, values[word], values[targetWord], k);
-                            function.incrementWord2Vec(words, contexts, values[word], values[targetWord], k);
+                            if ( sampling )
+                            {
+                                function.incrementPMI(pmiTable, vocabulary, values[word], values[targetWord], k);
+                                function.incrementWord2Vec(vocabulary, words, contexts, values[word], values[targetWord], k);
+                            }
+                            else
+                            {
+                                function.incrementPMI(pmiTable, values[word], values[targetWord], k);
+                                function.incrementWord2Vec(words, contexts, values[word], values[targetWord], k);
+                            }
                         }
                     }
                 }
