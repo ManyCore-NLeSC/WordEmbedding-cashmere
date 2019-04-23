@@ -5,6 +5,7 @@ import java.util.*;
 public class Vocabulary {
     private int maxSize;
     private int occurrenceThreshold;
+    private long maxWordOccurrences;
     private long occurrences;
     private final LinkedHashMap<String, Word> words;
     private Random randomNumberGenerator;
@@ -12,6 +13,7 @@ public class Vocabulary {
     public Vocabulary() {
         maxSize = Integer.MAX_VALUE;
         occurrenceThreshold = 0;
+        maxWordOccurrences = 0;
         occurrences = 0;
         words = new LinkedHashMap<>();
         randomNumberGenerator = new Random();
@@ -38,6 +40,11 @@ public class Vocabulary {
 
     public int getOccurrenceThreshold() {
         return occurrenceThreshold;
+    }
+
+    public long getMaxWordOccurrences()
+    {
+        return maxWordOccurrences;
     }
 
     public long getOccurrences() {
@@ -142,11 +149,18 @@ public class Vocabulary {
     }
 
     public void addWord(Word word) {
-        if ( words.containsKey(word.getWord()) ) {
+        if ( words.containsKey(word.getWord()) )
+        {
             words.get(word.getWord()).incrementOccurrences();
-        } else {
+        }
+        else
+        {
             words.put(word.getWord(), word);
             word.incrementOccurrences();
+        }
+        if ( words.get(word.getWord()).getOccurrences() > maxWordOccurrences)
+        {
+            maxWordOccurrences = words.get(word.getWord()).getOccurrences();
         }
     }
 
@@ -164,10 +178,12 @@ public class Vocabulary {
 
     public String getRandomWord()
     {
-        float randomNumber = randomNumberGenerator.nextFloat();
         for ( Word word : words.values() )
         {
-            if ( randomNumber < ((float)(word.getOccurrences()) / (float)(occurrences)) )
+            if (  word.getWord().equals("</s>") ) {
+                continue;
+            }
+            if ( randomNumberGenerator.nextFloat() < ((float)(word.getOccurrences()) / (float)(occurrences)) )
             {
                 return word.getWord();
             }

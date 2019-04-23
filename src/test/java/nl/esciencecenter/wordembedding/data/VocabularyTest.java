@@ -42,6 +42,7 @@ public class VocabularyTest {
         }
         assertEquals(9, vocabulary.getOccurrences());
         assertEquals(9, occurrences);
+        assertEquals(2, vocabulary.getMaxWordOccurrences());
         occurrences = 0;
         vocabulary = new Vocabulary();
         populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
@@ -51,6 +52,7 @@ public class VocabularyTest {
         }
         assertEquals(8, vocabulary.getOccurrences());
         assertEquals(8, occurrences);
+        assertEquals(3, vocabulary.getMaxWordOccurrences());
     }
 
     @Test
