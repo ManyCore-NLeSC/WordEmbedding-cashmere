@@ -6,6 +6,8 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 
 public class VocabularyTest {
+    private final String foxSentence = "the quick brown fox jumps over the lazy dog";
+    private final String kingSentence = "a man a bearded king is a man";
     private final String stringOne = "common";
     private final String stringTwo = "word";
 
@@ -29,6 +31,29 @@ public class VocabularyTest {
     }
 
     @Test
+    public void getOccurrences()
+    {
+        long occurrences = 0;
+        Vocabulary vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, foxSentence.split("[ \t]+"));
+        for ( Word word : vocabulary.getWords() )
+        {
+            occurrences += word.getOccurrences();
+        }
+        assertEquals(9, vocabulary.getOccurrences());
+        assertEquals(9, occurrences);
+        occurrences = 0;
+        vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        for ( Word word : vocabulary.getWords() )
+        {
+            occurrences += word.getOccurrences();
+        }
+        assertEquals(8, vocabulary.getOccurrences());
+        assertEquals(8, occurrences);
+    }
+
+    @Test
     public void words() {
         Word wordOne = new Word(stringOne, 3);
         Word wordTwo = new Word(stringTwo);
@@ -46,5 +71,14 @@ public class VocabularyTest {
         assertEquals(stringOne, vocabularyOne.getWord(stringOne).getWord());
         assertEquals(null, vocabularyOne.getWord(stringTwo));
         assertEquals(1, vocabularyOne.getWords().size());
+    }
+
+    private void populateVocabulary(Vocabulary vocabulary, String [] values)
+    {
+        for ( int word = 0; word < values.length; word++ )
+        {
+            vocabulary.addWord(values[word]);
+        }
+        vocabulary.sort();
     }
 }
