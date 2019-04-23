@@ -162,15 +162,16 @@ public class Vocabulary {
         return words.get(word);
     }
 
-    public Word getRandomWord() {
+    public String getRandomWord()
+    {
         for ( Word word : words.values() )
         {
             if ( randomNumberGenerator.nextFloat() < ((float)(word.getOccurrences()) / (float)(occurrences)) )
             {
-                return word;
+                return word.getWord();
             }
         }
-        return null;
+        return "";
     }
 
     public Collection<Word> getWords() {
