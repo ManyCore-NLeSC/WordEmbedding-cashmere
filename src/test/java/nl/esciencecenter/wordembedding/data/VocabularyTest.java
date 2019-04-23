@@ -73,6 +73,20 @@ public class VocabularyTest {
         assertEquals(1, vocabularyOne.getWords().size());
     }
 
+    @Test
+    public void testProbabilities()
+    {
+        float probability = 0;
+        Vocabulary vocabulary = new Vocabulary();
+        populateVocabulary(vocabulary, kingSentence.split("[ \t]+"));
+        assertEquals(0.125, (float)(vocabulary.getWord("king").getOccurrences()) / (float)(vocabulary.getOccurrences()), 0.000001);
+        for ( Word word : vocabulary.getWords() )
+        {
+            probability += (float)(word.getOccurrences()) / (float)(vocabulary.getOccurrences());
+        }
+        assertEquals(1.0, probability, 0.000001);
+    }
+
     private void populateVocabulary(Vocabulary vocabulary, String [] values)
     {
         for ( int word = 0; word < values.length; word++ )
