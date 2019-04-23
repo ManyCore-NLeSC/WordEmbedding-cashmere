@@ -7,12 +7,14 @@ public class Vocabulary {
     private int occurrenceThreshold;
     private long occurrences;
     private final LinkedHashMap<String, Word> words;
+    private Random randomNumberGenerator;
 
     public Vocabulary() {
         maxSize = Integer.MAX_VALUE;
         occurrenceThreshold = 0;
         occurrences = 0;
         words = new LinkedHashMap<>();
+        randomNumberGenerator = new Random();
     }
 
     public Vocabulary(int occurrenceThreshold) {
@@ -158,6 +160,17 @@ public class Vocabulary {
 
     public Word getWord(String word) {
         return words.get(word);
+    }
+
+    public Word getRandomWord() {
+        for ( Word word : words.values() )
+        {
+            if ( randomNumberGenerator.nextFloat() < ((float)(word.getOccurrences()) / (float)(occurrences)) )
+            {
+                return word;
+            }
+        }
+        return null;
     }
 
     public Collection<Word> getWords() {
