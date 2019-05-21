@@ -182,12 +182,19 @@ public class Vocabulary {
 
     public String getRandomWord()
     {
-        Word randomWord = words.get(keys.get(randomNumberGenerator.nextInt(keys.size())));
-        while ( randomWord.getWord().equals("</s>") )
+        while ( true )
         {
-            randomWord = words.get(keys.get(randomNumberGenerator.nextInt(keys.size())));
+            Word randomWord = words.get(keys.get(randomNumberGenerator.nextInt(keys.size())));
+            while ( randomWord.getWord().equals("</s>") )
+            {
+                randomWord = words.get(keys.get(randomNumberGenerator.nextInt(keys.size())));
+            }
+            float probability = ((float)(randomWord.getOccurrences()) / this.occurrences) * (1.0f / ((float)(maxWordOccurrences) / this.occurrences));
+            if ( randomNumberGenerator.nextFloat() < probability )
+            {
+                return randomWord.getWord();
+            }
         }
-        return randomWord.getWord();
     }
 
     public Collection<Word> getWords() {
