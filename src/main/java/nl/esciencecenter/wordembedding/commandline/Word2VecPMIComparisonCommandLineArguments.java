@@ -31,6 +31,8 @@ public class Word2VecPMIComparisonCommandLineArguments {
     private boolean deviation = false;
     @Parameter(names = {"-sampling"}, description = "Sample the negative samples in the vocabulary.")
     private boolean sampling = false;
+    @Parameter(names = {"-fraction"}, description = "Use only a fraction of the words for the negative sampling.")
+    private float samplingFraction = 1.0f;
     @Parameter(names = {"-frobenius"}, description = "Compute the Frobenius norm of the matrices.")
     private boolean frobenius = false;
 
@@ -85,6 +87,11 @@ public class Word2VecPMIComparisonCommandLineArguments {
     public boolean getSampling()
     {
         return sampling;
+    }
+
+    public float getSamplingFraction()
+    {
+        return samplingFraction;
     }
 
     public boolean getFrobenius()

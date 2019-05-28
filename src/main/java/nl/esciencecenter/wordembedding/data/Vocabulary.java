@@ -18,7 +18,7 @@ public class Vocabulary {
         occurrences = 0;
         words = new LinkedHashMap<>();
         keys = new ArrayList<>();
-        randomNumberGenerator = new Random();
+        randomNumberGenerator = new Random(System.nanoTime());
     }
 
     public Vocabulary(int occurrenceThreshold) {
@@ -180,10 +180,10 @@ public class Vocabulary {
         return words.get(word);
     }
 
-    public String getRandomWord()
+    public String getRandomWord(float fraction)
     {
         // Pick a random number between 0 and occurrences
-        long randomOccurrences = randomNumberGenerator.nextLong() % (occurrences - words.get("</s>").getOccurrences());
+        long randomOccurrences = (long)(((occurrences - words.get("</s>").getOccurrences()) * randomNumberGenerator.nextFloat()) * fraction);
         long accumulator = 0;
         for ( String word : words.keySet() )
         {

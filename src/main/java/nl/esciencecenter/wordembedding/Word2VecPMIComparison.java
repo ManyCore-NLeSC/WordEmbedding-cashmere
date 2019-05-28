@@ -104,7 +104,7 @@ public class Word2VecPMIComparison
             ObjectiveFunction objective = new ObjectiveFunction();
             try {
                 file = new BufferedReader(new FileReader(arguments.getCorpusFileName()));
-                ComputeObjectiveFunction.compute(objective, vocabulary, pmiTable, words, contexts, arguments.getNegativeSamples(), arguments.getSampling(), file);
+                ComputeObjectiveFunction.compute(objective, vocabulary, pmiTable, words, contexts, arguments.getNegativeSamples(), arguments.getSampling(), arguments.getSamplingFraction(), file);
                 file.close();
             } catch ( IOException err ) {
                 System.err.println("Impossible to open \"" + arguments.getCorpusFileName() + "\".");

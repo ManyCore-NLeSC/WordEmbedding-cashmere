@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ComputeObjectiveFunction {
-    public static void compute(ObjectiveFunction function, Vocabulary vocabulary, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, boolean sampling, BufferedReader fileReader) throws IOException
+    public static void compute(ObjectiveFunction function, Vocabulary vocabulary, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, boolean sampling, float samplingFraction, BufferedReader fileReader) throws IOException
     {
         String line;
 
@@ -25,7 +25,7 @@ public class ComputeObjectiveFunction {
                         {
                             if ( sampling )
                             {
-                                String negativeSample = vocabulary.getRandomWord();
+                                String negativeSample = vocabulary.getRandomWord(samplingFraction);
                                 function.incrementPMI(pmiTable, values[word], values[targetWord], negativeSample, k);
                                 function.incrementWord2Vec(words, contexts, values[word], values[targetWord], negativeSample, k);
                             }
