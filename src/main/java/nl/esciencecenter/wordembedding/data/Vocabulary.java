@@ -8,7 +8,6 @@ public class Vocabulary {
     private long maxWordOccurrences;
     private long occurrences;
     private final LinkedHashMap<String, Word> words;
-    private ArrayList<String> keys;
     private Random randomNumberGenerator;
 
     public Vocabulary() {
@@ -17,7 +16,6 @@ public class Vocabulary {
         maxWordOccurrences = 0;
         occurrences = 0;
         words = new LinkedHashMap<>();
-        keys = new ArrayList<>();
         randomNumberGenerator = new Random(System.nanoTime());
     }
 
@@ -164,7 +162,6 @@ public class Vocabulary {
         {
             maxWordOccurrences = words.get(word.getWord()).getOccurrences();
         }
-        keys.add(word.getWord());
     }
 
     public void addWord(String word) {
@@ -173,7 +170,6 @@ public class Vocabulary {
 
     public void removeWord(String word) {
         words.remove(word);
-        keys.remove(word);
     }
 
     public Word getWord(String word) {
