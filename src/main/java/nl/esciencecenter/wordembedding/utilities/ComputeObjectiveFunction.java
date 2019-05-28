@@ -11,6 +11,7 @@ import java.io.IOException;
 public class ComputeObjectiveFunction {
     public static void compute(ObjectiveFunction function, Vocabulary vocabulary, PMITable pmiTable, WordEmbedding words, WordEmbedding contexts, int k, boolean sampling, float samplingFraction, BufferedReader fileReader) throws IOException
     {
+        long processedPairs = 0;
         String line;
 
         while ( (line = fileReader.readLine()) != null ) {
@@ -23,6 +24,7 @@ public class ComputeObjectiveFunction {
                     {
                         if ( (vocabulary.getWord(values[word]) != null) && (vocabulary.getWord(values[targetWord]) != null) )
                         {
+                            processedPairs++;
                             if ( sampling )
                             {
                                 String negativeSample = vocabulary.getRandomWord(samplingFraction);
@@ -34,10 +36,17 @@ public class ComputeObjectiveFunction {
                                 function.incrementPMI(pmiTable, values[word], values[targetWord], k);
                                 function.incrementWord2Vec(words, contexts, values[word], values[targetWord], k);
                             }
+                            printUpdateInfo(((float)(processedPairs) / pmiTable.getPairs().getTotalPairs()) * 100.0f);
                         }
                     }
                 }
             }
         }
+        System.out.println();
+    }
+
+    private static void printUpdateInfo(float progress) {
+        System.out.format("\rProgress: %.2f%%", progress);
+        System.out.flush();
     }
 }
