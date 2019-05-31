@@ -179,7 +179,7 @@ public class Vocabulary {
     public String getRandomWord(float fraction)
     {
         // Pick a random number between 0 and occurrences
-        long randomOccurrences = (long)(((occurrences - words.get("</s>").getOccurrences()) * randomNumberGenerator.nextFloat()) * fraction);
+        long randomOccurrences = (long)(((occurrences - words.get("</s>").getOccurrences()) * fraction) * randomNumberGenerator.nextFloat());
         long accumulator = 0;
         for ( String word : words.keySet() )
         {
