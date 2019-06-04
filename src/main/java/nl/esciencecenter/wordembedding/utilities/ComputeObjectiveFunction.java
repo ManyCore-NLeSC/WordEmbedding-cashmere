@@ -36,7 +36,10 @@ public class ComputeObjectiveFunction {
                                 function.incrementPMI(pmiTable, values[word], values[targetWord], k);
                                 function.incrementWord2Vec(words, contexts, values[word], values[targetWord], k);
                             }
-                            printUpdateInfo(((float)(processedPairs) / pmiTable.getPairs().getTotalPairs()) * 100.0f);
+                            if ( (processedPairs % 10000) == 0 )
+                            {
+                                printUpdateInfo(((float)(processedPairs) / pmiTable.getPairs().getTotalPairs()) * 100.0f);
+                            }
                         }
                     }
                 }
